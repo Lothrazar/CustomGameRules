@@ -23,7 +23,7 @@ public class ConfigManager {
     COMMON_BUILDER.comment("General settings").push(GameRuleMod.MODID);
     list.add(new GameRuleWrapper(GameRules.DO_FIRE_TICK, false));
     list.add(new GameRuleWrapper(GameRules.MOB_GRIEFING, false));
-    list.add(new GameRuleWrapper(GameRules.KEEP_INVENTORY, true));
+    list.add(new GameRuleWrapper(GameRules.KEEP_INVENTORY, false));
     list.add(new GameRuleWrapper(GameRules.DO_MOB_SPAWNING, true));
     list.add(new GameRuleWrapper(GameRules.DO_MOB_LOOT, true));
     list.add(new GameRuleWrapper(GameRules.DO_TILE_DROPS, true));
@@ -35,7 +35,7 @@ public class ConfigManager {
     list.add(new GameRuleWrapper(GameRules.SHOW_DEATH_MESSAGES, true));
     //  randomTickSpeed = 3
     list.add(new GameRuleWrapper(GameRules.SEND_COMMAND_FEEDBACK, true));
-    list.add(new GameRuleWrapper(GameRules.REDUCED_DEBUG_INFO, true));
+    list.add(new GameRuleWrapper(GameRules.REDUCED_DEBUG_INFO, false));
     // trigger internal
     list.add(new GameRuleWrapper(GameRules.SPECTATORS_GENERATE_CHUNKS, false));
     //  spawnRadius = 10
@@ -47,7 +47,7 @@ public class ConfigManager {
     list.add(new GameRuleWrapper(GameRules.ANNOUNCE_ADVANCEMENTS, true));
     list.add(new GameRuleWrapper(GameRules.DISABLE_RAIDS, false));
     list.add(new GameRuleWrapper(GameRules.DO_INSOMNIA, true));
-    list.add(new GameRuleWrapper(GameRules.DO_IMMEDIATE_RESPAWN, true));
+    list.add(new GameRuleWrapper(GameRules.DO_IMMEDIATE_RESPAWN, false));
     //
     list.add(new GameRuleWrapper(GameRules.DROWNING_DAMAGE, true));
     list.add(new GameRuleWrapper(GameRules.FALL_DAMAGE, true));
@@ -59,7 +59,8 @@ public class ConfigManager {
           .define("default." + rule.getName(),
               rule.getDefaultValue());
     }
-    KEEP_EXP = COMMON_BUILDER.comment("If this gamerule is true and you keep inventory, you no longer keep any experience it is gone on death.")
+    KEEP_EXP = COMMON_BUILDER.comment("If the keepInventory gamerule is true"
+        + " and keepExperience is false, you no longer keep any experience it is gone on death.")
         .define("change." + GameRules.KEEP_INVENTORY.getName() + ".keepExperience", false);
     COMMON_BUILDER.pop();
     COMMON_CONFIG = COMMON_BUILDER.build();
