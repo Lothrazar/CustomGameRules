@@ -5,13 +5,13 @@ import net.minecraft.world.GameRules.BooleanValue;
 import net.minecraft.world.GameRules.RuleKey;
 import net.minecraftforge.common.ForgeConfigSpec;
 
-public class GameRuleWrapper {
+public class GameRuleBoolWrapper {
 
   private GameRules.RuleKey<GameRules.BooleanValue> reference;
   ForgeConfigSpec.BooleanValue config;
   private boolean defaultValue;
 
-  public GameRuleWrapper(RuleKey<BooleanValue> reference, boolean defaultValue) {
+  public GameRuleBoolWrapper(RuleKey<BooleanValue> reference, boolean defaultValue) {
     super();
     this.setReference(reference);
     this.setDefaultValue(defaultValue);
@@ -23,6 +23,10 @@ public class GameRuleWrapper {
 
   public boolean getDefaultValue() {
     return defaultValue;
+  }
+
+  public boolean getConfigValue() {
+    return config.get();
   }
 
   public void setDefaultValue(boolean defaultValue) {

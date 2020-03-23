@@ -11,7 +11,8 @@ import net.minecraftforge.common.ForgeConfigSpec.BooleanValue;
 
 public class ConfigManager {
 
-  public static List<GameRuleWrapper> list = new ArrayList<>();
+  public static List<GameRuleBoolWrapper> boolList = new ArrayList<>();
+  public static List<GameRuleIntWrapper> intList = new ArrayList<>();
   private static final ForgeConfigSpec.Builder COMMON_BUILDER = new ForgeConfigSpec.Builder();
   private static ForgeConfigSpec COMMON_CONFIG;
   public static BooleanValue KEEP_EXP;
@@ -21,43 +22,48 @@ public class ConfigManager {
 
   private static void initConfig() {
     COMMON_BUILDER.comment("General settings").push(GameRuleMod.MODID);
-    list.add(new GameRuleWrapper(GameRules.DO_FIRE_TICK, false));
-    list.add(new GameRuleWrapper(GameRules.MOB_GRIEFING, false));
-    list.add(new GameRuleWrapper(GameRules.KEEP_INVENTORY, false));
-    list.add(new GameRuleWrapper(GameRules.DO_MOB_SPAWNING, true));
-    list.add(new GameRuleWrapper(GameRules.DO_MOB_LOOT, true));
-    list.add(new GameRuleWrapper(GameRules.DO_TILE_DROPS, true));
-    list.add(new GameRuleWrapper(GameRules.DO_ENTITY_DROPS, true));
-    list.add(new GameRuleWrapper(GameRules.COMMAND_BLOCK_OUTPUT, true));
-    list.add(new GameRuleWrapper(GameRules.NATURAL_REGENERATION, true));
-    list.add(new GameRuleWrapper(GameRules.DO_DAYLIGHT_CYCLE, true));
-    list.add(new GameRuleWrapper(GameRules.LOG_ADMIN_COMMANDS, false));
-    list.add(new GameRuleWrapper(GameRules.SHOW_DEATH_MESSAGES, true));
-    //  randomTickSpeed = 3
-    list.add(new GameRuleWrapper(GameRules.SEND_COMMAND_FEEDBACK, true));
-    list.add(new GameRuleWrapper(GameRules.REDUCED_DEBUG_INFO, false));
+    boolList.add(new GameRuleBoolWrapper(GameRules.DO_FIRE_TICK, false));
+    boolList.add(new GameRuleBoolWrapper(GameRules.MOB_GRIEFING, false));
+    boolList.add(new GameRuleBoolWrapper(GameRules.KEEP_INVENTORY, false));
+    boolList.add(new GameRuleBoolWrapper(GameRules.DO_MOB_SPAWNING, true));
+    boolList.add(new GameRuleBoolWrapper(GameRules.DO_MOB_LOOT, true));
+    boolList.add(new GameRuleBoolWrapper(GameRules.DO_TILE_DROPS, true));
+    boolList.add(new GameRuleBoolWrapper(GameRules.DO_ENTITY_DROPS, true));
+    boolList.add(new GameRuleBoolWrapper(GameRules.COMMAND_BLOCK_OUTPUT, true));
+    boolList.add(new GameRuleBoolWrapper(GameRules.NATURAL_REGENERATION, true));
+    boolList.add(new GameRuleBoolWrapper(GameRules.DO_DAYLIGHT_CYCLE, true));
+    boolList.add(new GameRuleBoolWrapper(GameRules.LOG_ADMIN_COMMANDS, false));
+    boolList.add(new GameRuleBoolWrapper(GameRules.SHOW_DEATH_MESSAGES, true));
+    intList.add(new GameRuleIntWrapper(GameRules.RANDOM_TICK_SPEED, 3));
+    boolList.add(new GameRuleBoolWrapper(GameRules.SEND_COMMAND_FEEDBACK, true));
+    boolList.add(new GameRuleBoolWrapper(GameRules.REDUCED_DEBUG_INFO, false));
     // trigger internal
-    list.add(new GameRuleWrapper(GameRules.SPECTATORS_GENERATE_CHUNKS, false));
-    //  spawnRadius = 10
-    list.add(new GameRuleWrapper(GameRules.DISABLE_ELYTRA_MOVEMENT_CHECK, true));
-    // maxEntityCramming = 24
-    list.add(new GameRuleWrapper(GameRules.DO_WEATHER_CYCLE, true));
-    list.add(new GameRuleWrapper(GameRules.DO_LIMITED_CRAFTING, false));
-    //maxCommandChainLength = 65536
-    list.add(new GameRuleWrapper(GameRules.ANNOUNCE_ADVANCEMENTS, true));
-    list.add(new GameRuleWrapper(GameRules.DISABLE_RAIDS, false));
-    list.add(new GameRuleWrapper(GameRules.DO_INSOMNIA, true));
-    list.add(new GameRuleWrapper(GameRules.DO_IMMEDIATE_RESPAWN, false));
+    boolList.add(new GameRuleBoolWrapper(GameRules.SPECTATORS_GENERATE_CHUNKS, false));
+    intList.add(new GameRuleIntWrapper(GameRules.SPAWN_RADIUS, 10));
+    boolList.add(new GameRuleBoolWrapper(GameRules.DISABLE_ELYTRA_MOVEMENT_CHECK, true));
+    intList.add(new GameRuleIntWrapper(GameRules.MAX_ENTITY_CRAMMING, 24));
+    boolList.add(new GameRuleBoolWrapper(GameRules.DO_WEATHER_CYCLE, true));
+    boolList.add(new GameRuleBoolWrapper(GameRules.DO_LIMITED_CRAFTING, false));
+    intList.add(new GameRuleIntWrapper(GameRules.MAX_COMMAND_CHAIN_LENGTH, 65536));
+    boolList.add(new GameRuleBoolWrapper(GameRules.ANNOUNCE_ADVANCEMENTS, true));
+    boolList.add(new GameRuleBoolWrapper(GameRules.DISABLE_RAIDS, false));
+    boolList.add(new GameRuleBoolWrapper(GameRules.DO_INSOMNIA, true));
+    boolList.add(new GameRuleBoolWrapper(GameRules.DO_IMMEDIATE_RESPAWN, false));
     //
-    list.add(new GameRuleWrapper(GameRules.DROWNING_DAMAGE, true));
-    list.add(new GameRuleWrapper(GameRules.FALL_DAMAGE, true));
-    list.add(new GameRuleWrapper(GameRules.FIRE_DAMAGE, true));
-    list.add(new GameRuleWrapper(GameRules.field_230127_D_, true));//patrol
-    list.add(new GameRuleWrapper(GameRules.field_230128_E_, true));//trader
-    for (GameRuleWrapper rule : list) {
+    boolList.add(new GameRuleBoolWrapper(GameRules.DROWNING_DAMAGE, true));
+    boolList.add(new GameRuleBoolWrapper(GameRules.FALL_DAMAGE, true));
+    boolList.add(new GameRuleBoolWrapper(GameRules.FIRE_DAMAGE, true));
+    boolList.add(new GameRuleBoolWrapper(GameRules.field_230127_D_, true));//patrol
+    boolList.add(new GameRuleBoolWrapper(GameRules.field_230128_E_, true));//trader
+    for (GameRuleBoolWrapper rule : boolList) {
       rule.config = COMMON_BUILDER.comment("Default value for this gamerule")
           .define("default." + rule.getName(),
               rule.getDefaultValue());
+    }
+    for (GameRuleIntWrapper rule : intList) {
+      rule.config = COMMON_BUILDER.comment("Default value for this gamerule")
+          .defineInRange("default." + rule.getName(),
+              rule.getDefaultValue(), 0, 999999999);
     }
     KEEP_EXP = COMMON_BUILDER.comment("If the keepInventory gamerule is true"
         + " and keepExperience is false, you no longer keep any experience it is gone on death.")
