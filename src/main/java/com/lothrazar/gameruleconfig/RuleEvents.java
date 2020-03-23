@@ -11,7 +11,6 @@ import net.minecraft.world.GameRules.BooleanValue;
 import net.minecraft.world.GameRules.IntegerValue;
 import net.minecraft.world.World;
 import net.minecraft.world.dimension.DimensionType;
-import net.minecraftforge.client.event.GuiScreenEvent.InitGuiEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
@@ -53,8 +52,6 @@ public class RuleEvents {
 
   @SubscribeEvent
   public void onPlayerDeath(PlayerEvent.Clone event) {
-    //exp? cost?
-    InitGuiEvent e;
     BlockPos deathPos = event.getOriginal().getPosition();
     PlayerEntity player = event.getPlayer();
     World world = player.world;
