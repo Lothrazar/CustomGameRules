@@ -1,11 +1,17 @@
 package com.lothrazar.gameruleconfig;
 
 import java.lang.reflect.Method;
+import java.util.Iterator;
+import net.minecraft.entity.item.ItemEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.GameRules.BooleanValue;
 import net.minecraft.world.GameRules.IntegerValue;
 import net.minecraft.world.World;
 import net.minecraft.world.dimension.DimensionType;
+import net.minecraftforge.client.event.GuiScreenEvent.InitGuiEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
@@ -48,17 +54,55 @@ public class RuleEvents {
   @SubscribeEvent
   public void onPlayerDeath(PlayerEvent.Clone event) {
     //exp? cost?
-    World world = event.getPlayer().world;
+    InitGuiEvent e;
+    BlockPos deathPos = event.getOriginal().getPosition();
+    PlayerEntity player = event.getPlayer();
+    World world = player.world;
     if (!world.isRemote && event.isWasDeath()
         && !ConfigManager.KEEP_EXP.get()) {
       boolean keepInv = world.getGameRules().get(GameRules.KEEP_INVENTORY).get();
       //exp zero
       if (keepInv) {
         //        LOGGER.info("set exp zero on death");
-        event.getPlayer().experience = 0;
-        event.getPlayer().experienceLevel = 0;
-        event.getPlayer().experienceTotal = 0;
+        player.experience = 0;
+        player.experienceLevel = 0;
+        player.experienceTotal = 0;
       }
     }
+    if (!world.isRemote && event.isWasDeath()
+        && !ConfigManager.KEEP_ARMOR.get()) {
+      boolean keepInv = world.getGameRules().get(GameRules.KEEP_INVENTORY).get();
+      //exp zero
+      if (keepInv) {
+        // do not keep armor
+        Iterator<ItemStack> i = player.getArmorInventoryList().iterator();
+        while (i.hasNext()) {
+          ItemStack is = i.next();
+          //player.dropItem will drop AFTER DEATH. so
+          this.drop(player.world, deathPos, is);
+        }
+      }
+    }
+    if (!world.isRemote && event.isWasDeath()
+        && !ConfigManager.KEEP_WEAPONS.get()) {
+      boolean keepInv = world.getGameRules().get(GameRules.KEEP_INVENTORY).get();
+      //exp zero
+      if (keepInv) {
+        // do not keep armor
+        Iterator<ItemStack> i = player.getHeldEquipment().iterator();
+        while (i.hasNext()) {
+          ItemStack is = i.next();
+          this.drop(player.world, deathPos, is);
+        }
+      }
+    }
+  }
+
+  public void drop(World world, BlockPos p, ItemStack i) {
+    ItemEntity e = new ItemEntity(world, p.getX(), p.getY(), p.getZ(), i.copy());
+    if (!world.isRemote && !i.isEmpty()) {
+      world.addEntity(e);
+    }
+    i.setCount(0);
   }
 }

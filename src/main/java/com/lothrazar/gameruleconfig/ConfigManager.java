@@ -16,6 +16,8 @@ public class ConfigManager {
   private static final ForgeConfigSpec.Builder COMMON_BUILDER = new ForgeConfigSpec.Builder();
   private static ForgeConfigSpec COMMON_CONFIG;
   public static BooleanValue KEEP_EXP;
+  public static BooleanValue KEEP_ARMOR;
+  static BooleanValue KEEP_WEAPONS;
   static {
     initConfig();
   }
@@ -68,6 +70,12 @@ public class ConfigManager {
     KEEP_EXP = COMMON_BUILDER.comment("If the keepInventory gamerule is true"
         + " and keepExperience is false, you no longer keep any experience it is gone on death.")
         .define("change." + GameRules.KEEP_INVENTORY.getName() + ".keepExperience", false);
+    KEEP_ARMOR = COMMON_BUILDER.comment("If the keepInventory gamerule is true"
+        + " and keepArmor is false, you no longer keep any armor it dropped on death.")
+        .define("change." + GameRules.KEEP_INVENTORY.getName() + ".keepArmor", false);
+    KEEP_WEAPONS = COMMON_BUILDER.comment("If the keepInventory gamerule is true"
+        + " and keepArmor is false, you no longer keep any armor it dropped on death.")
+        .define("change." + GameRules.KEEP_INVENTORY.getName() + ".keepWeapons", false);
     COMMON_BUILDER.pop();
     COMMON_CONFIG = COMMON_BUILDER.build();
   }
