@@ -2,8 +2,19 @@ package com.lothrazar.gameruleconfig;
 
 import java.lang.reflect.Method;
 import java.util.Iterator;
+import net.minecraft.entity.boss.WitherEntity;
 import net.minecraft.entity.item.ItemEntity;
+import net.minecraft.entity.merchant.villager.VillagerEntity;
+import net.minecraft.entity.monster.CreeperEntity;
+import net.minecraft.entity.monster.RavagerEntity;
+import net.minecraft.entity.monster.SilverfishEntity;
+import net.minecraft.entity.passive.FoxEntity;
+import net.minecraft.entity.passive.SheepEntity;
+import net.minecraft.entity.passive.SnowGolemEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.projectile.FireballEntity;
+import net.minecraft.entity.projectile.SmallFireballEntity;
+import net.minecraft.entity.projectile.WitherSkullEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.GameRules;
@@ -11,12 +22,86 @@ import net.minecraft.world.GameRules.BooleanValue;
 import net.minecraft.world.GameRules.IntegerValue;
 import net.minecraft.world.World;
 import net.minecraft.world.dimension.DimensionType;
+import net.minecraftforge.event.entity.EntityMobGriefingEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.eventbus.api.Event.Result;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 
 public class RuleEvents {
+
+  /**
+   * 
+   * <li>{@link Result#ALLOW} means this instance of mob griefing is allowed.</li>
+   * <li>{@link Result#DEFAULT} means the {@code mobGriefing} game rule is used to determine the behaviour.</li>
+   * <li>{@link Result#DENY} means this instance of mob griefing is not allowed.</li><br>
+   * 
+   * @param event
+   */
+  @SubscribeEvent
+  public void onEntityMobGriefingEvent(EntityMobGriefingEvent event) {
+    //if rule is false, this event does not trigger, so its always true
+    boolean ruleIsTrue = event.getEntity().world.getGameRules().get(GameRules.MOB_GRIEFING).get();
+    GameRuleMod.LOGGER.info("mobGriefing = " + ruleIsTrue);
+    //true is default, allows destruction
+    //so if true do7 nothing
+    if (ruleIsTrue) {
+      return;//let default take over and rely on rule
+    }
+    //if rule set FALSE
+    // then we have list of entities we ALLOW to grief so we pick only what is allowed
+    if (ConfigManager.GRIEFCREEPER.get() && event.getEntity() instanceof CreeperEntity) {
+      //
+      GameRuleMod.LOGGER.info("allow creeper blow  override rule ");
+      event.setResult(Result.ALLOW);
+    }
+    if (ConfigManager.WITHERGRF.get() && (event.getEntity() instanceof WitherEntity || event.getEntity() instanceof WitherSkullEntity)) {
+      //
+      GameRuleMod.LOGGER.info("cancel wither");
+      event.setResult(Result.ALLOW);
+    }
+    if (ConfigManager.SNOWGOLEMGRF.get() && event.getEntity() instanceof SnowGolemEntity) {
+      //
+      GameRuleMod.LOGGER.info("cancel snow ");
+      event.setResult(Result.ALLOW);
+    }
+    if (ConfigManager.SILVERFISHGRF.get() && event.getEntity() instanceof SilverfishEntity) {
+      //enter stone blocks 
+      GameRuleMod.LOGGER.info("cancel SilverfishEntity ");
+      event.setResult(Result.ALLOW);
+    }
+    if (ConfigManager.RAVAGERGRF.get() && event.getEntity() instanceof RavagerEntity) {
+      //break on collide
+      GameRuleMod.LOGGER.info("cancel RavagerEntity ");
+      event.setResult(Result.ALLOW);
+    }
+    if (ConfigManager.FOXGRF.get() && event.getEntity() instanceof FoxEntity) {
+      //eat berries
+      GameRuleMod.LOGGER.info("cancel FoxEntity ");
+      event.setResult(Result.ALLOW);
+    }
+    if (ConfigManager.GHASTGRF.get() && event.getEntity() instanceof FireballEntity) {
+      // ghast
+      GameRuleMod.LOGGER.info("cancel ghast firebll ");
+      event.setResult(Result.ALLOW);
+    }
+    if (ConfigManager.VILLAGERGRF.get() && event.getEntity() instanceof VillagerEntity) {
+      // ex farming
+      GameRuleMod.LOGGER.info("cancel VillagerEntity ");
+      event.setResult(Result.ALLOW);
+    }
+    if (ConfigManager.SHEEPGRF.get() && event.getEntity() instanceof SheepEntity) {
+      // eat grass
+      GameRuleMod.LOGGER.info("cancel SheepEntity ");
+      event.setResult(Result.ALLOW);
+    }
+    if (ConfigManager.BLAZEFBALLGRF.get() && event.getEntity() instanceof SmallFireballEntity) {
+      // blaze fireball
+      GameRuleMod.LOGGER.info("cancel SmallFireballEntity  ");
+      event.setResult(Result.ALLOW);
+    }
+  }
 
   @SubscribeEvent
   public void onServerStarting(FMLServerStartingEvent event) {

@@ -18,6 +18,16 @@ public class ConfigManager {
   public static BooleanValue KEEP_EXP;
   public static BooleanValue KEEP_ARMOR;
   static BooleanValue KEEP_WEAPONS;
+  static BooleanValue GRIEFCREEPER;
+  static BooleanValue WITHERGRF;
+  static BooleanValue SNOWGOLEMGRF;
+  static BooleanValue SILVERFISHGRF;
+  static BooleanValue RAVAGERGRF;
+  static BooleanValue FOXGRF;
+  static BooleanValue GHASTGRF;
+  static BooleanValue VILLAGERGRF;
+  static BooleanValue SHEEPGRF;
+  static BooleanValue BLAZEFBALLGRF;
   static {
     initConfig();
   }
@@ -76,6 +86,37 @@ public class ConfigManager {
     KEEP_WEAPONS = COMMON_BUILDER.comment("If the keepInventory gamerule is true"
         + " and keepArmor is false, you no longer keep any armor it dropped on death.")
         .define("change." + GameRules.KEEP_INVENTORY.getName() + ".keepWeapons", false);
+    ////////////////////
+    GRIEFCREEPER = COMMON_BUILDER.comment("If the mobGriefing gamerule is false and this is true, "
+        + "it will allow creeper explosions to bypass gamerule and affect the world.")
+        .define("change." + GameRules.MOB_GRIEFING.getName() + ".creeper", true);
+    WITHERGRF = COMMON_BUILDER.comment("If the mobGriefing gamerule is false and this is true, "
+        + "it will allow wither and projectiles to bypass gamerule and affect the world.")
+        .define("change." + GameRules.MOB_GRIEFING.getName() + ".wither", true);
+    SNOWGOLEMGRF = COMMON_BUILDER.comment("If the mobGriefing gamerule is false and this is true, "
+        + "it will allow snow golems to bypass gamerule and affect the world.")
+        .define("change." + GameRules.MOB_GRIEFING.getName() + ".snowgolem", true);
+    SILVERFISHGRF = COMMON_BUILDER.comment("If the mobGriefing gamerule is false and this is true, "
+        + "it will allow silverfish (entering blocks) to bypass gamerule and affect the world.")
+        .define("change." + GameRules.MOB_GRIEFING.getName() + ".silverfish", true);
+    RAVAGERGRF = COMMON_BUILDER.comment("If the mobGriefing gamerule is false and this is true, "
+        + "it will allow ravagers (in the raids) to bypass gamerule and affect the world.")
+        .define("change." + GameRules.MOB_GRIEFING.getName() + ".ravager", true);
+    FOXGRF = COMMON_BUILDER.comment("If the mobGriefing gamerule is false and this is true, "
+        + "it will allow foxes eating berries to bypass gamerule and affect the world.")
+        .define("change." + GameRules.MOB_GRIEFING.getName() + ".fox", true);
+    GHASTGRF = COMMON_BUILDER.comment("If the mobGriefing gamerule is false and this is true, "
+        + "it will allow ghasts projectiles to bypass gamerule and affect the world.")
+        .define("change." + GameRules.MOB_GRIEFING.getName() + ".ghast", true);
+    VILLAGERGRF = COMMON_BUILDER.comment("If the mobGriefing gamerule is false and this is true, "
+        + "it will allow villagers (farming) to bypass gamerule and affect the world.")
+        .define("change." + GameRules.MOB_GRIEFING.getName() + ".villager", true);
+    SHEEPGRF = COMMON_BUILDER.comment("If the mobGriefing gamerule is false and this is true, "
+        + "it will allow sheep (eating grass) to bypass gamerule and affect the world.")
+        .define("change." + GameRules.MOB_GRIEFING.getName() + ".sheep", true);
+    BLAZEFBALLGRF = COMMON_BUILDER.comment("If the mobGriefing gamerule is false and this is true, "
+        + "it will allow blaze (projectiles / setting fire) to bypass gamerule and affect the world.")
+        .define("change." + GameRules.MOB_GRIEFING.getName() + ".blaze", true);
     COMMON_BUILDER.pop();
     COMMON_CONFIG = COMMON_BUILDER.build();
   }
