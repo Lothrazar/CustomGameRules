@@ -6,6 +6,7 @@ import net.minecraft.entity.boss.WitherEntity;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.merchant.villager.VillagerEntity;
 import net.minecraft.entity.monster.CreeperEntity;
+import net.minecraft.entity.monster.EndermanEntity;
 import net.minecraft.entity.monster.RavagerEntity;
 import net.minecraft.entity.monster.SilverfishEntity;
 import net.minecraft.entity.passive.FoxEntity;
@@ -43,7 +44,6 @@ public class RuleEvents {
   public void onEntityMobGriefingEvent(EntityMobGriefingEvent event) {
     //if rule is false, this event does not trigger, so its always true
     boolean ruleIsTrue = event.getEntity().world.getGameRules().get(GameRules.MOB_GRIEFING).get();
-    GameRuleMod.LOGGER.info("mobGriefing = " + ruleIsTrue);
     //true is default, allows destruction
     //so if true do7 nothing
     if (ruleIsTrue) {
@@ -51,54 +51,46 @@ public class RuleEvents {
     }
     //if rule set FALSE
     // then we have list of entities we ALLOW to grief so we pick only what is allowed
+    if (ConfigManager.ENDERGRF.get() && event.getEntity() instanceof EndermanEntity) {
+      event.setResult(Result.ALLOW);
+    }
     if (ConfigManager.GRIEFCREEPER.get() && event.getEntity() instanceof CreeperEntity) {
-      //
-      GameRuleMod.LOGGER.info("allow creeper blow  override rule ");
       event.setResult(Result.ALLOW);
     }
     if (ConfigManager.WITHERGRF.get() && (event.getEntity() instanceof WitherEntity || event.getEntity() instanceof WitherSkullEntity)) {
       //
-      GameRuleMod.LOGGER.info("cancel wither");
       event.setResult(Result.ALLOW);
     }
     if (ConfigManager.SNOWGOLEMGRF.get() && event.getEntity() instanceof SnowGolemEntity) {
       //
-      GameRuleMod.LOGGER.info("cancel snow ");
       event.setResult(Result.ALLOW);
     }
     if (ConfigManager.SILVERFISHGRF.get() && event.getEntity() instanceof SilverfishEntity) {
-      //enter stone blocks 
-      GameRuleMod.LOGGER.info("cancel SilverfishEntity ");
+      //enter stone blocks  
       event.setResult(Result.ALLOW);
     }
     if (ConfigManager.RAVAGERGRF.get() && event.getEntity() instanceof RavagerEntity) {
       //break on collide
-      GameRuleMod.LOGGER.info("cancel RavagerEntity ");
       event.setResult(Result.ALLOW);
     }
     if (ConfigManager.FOXGRF.get() && event.getEntity() instanceof FoxEntity) {
-      //eat berries
-      GameRuleMod.LOGGER.info("cancel FoxEntity ");
+      //eat berries 
       event.setResult(Result.ALLOW);
     }
     if (ConfigManager.GHASTGRF.get() && event.getEntity() instanceof FireballEntity) {
-      // ghast
-      GameRuleMod.LOGGER.info("cancel ghast firebll ");
+      // ghast fireball
       event.setResult(Result.ALLOW);
     }
     if (ConfigManager.VILLAGERGRF.get() && event.getEntity() instanceof VillagerEntity) {
-      // ex farming
-      GameRuleMod.LOGGER.info("cancel VillagerEntity ");
+      // villager farming
       event.setResult(Result.ALLOW);
     }
     if (ConfigManager.SHEEPGRF.get() && event.getEntity() instanceof SheepEntity) {
-      // eat grass
-      GameRuleMod.LOGGER.info("cancel SheepEntity ");
+      // sheep eat grass
       event.setResult(Result.ALLOW);
     }
     if (ConfigManager.BLAZEFBALLGRF.get() && event.getEntity() instanceof SmallFireballEntity) {
       // blaze fireball
-      GameRuleMod.LOGGER.info("cancel SmallFireballEntity  ");
       event.setResult(Result.ALLOW);
     }
   }
@@ -145,7 +137,6 @@ public class RuleEvents {
       boolean keepInv = world.getGameRules().get(GameRules.KEEP_INVENTORY).get();
       //exp zero
       if (keepInv) {
-        //        LOGGER.info("set exp zero on death");
         player.experience = 0;
         player.experienceLevel = 0;
         player.experienceTotal = 0;
