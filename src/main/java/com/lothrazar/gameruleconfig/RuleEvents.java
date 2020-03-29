@@ -9,7 +9,9 @@ import net.minecraft.entity.monster.CreeperEntity;
 import net.minecraft.entity.monster.EndermanEntity;
 import net.minecraft.entity.monster.RavagerEntity;
 import net.minecraft.entity.monster.SilverfishEntity;
+import net.minecraft.entity.monster.ZombieEntity;
 import net.minecraft.entity.passive.FoxEntity;
+import net.minecraft.entity.passive.RabbitEntity;
 import net.minecraft.entity.passive.SheepEntity;
 import net.minecraft.entity.passive.SnowGolemEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -49,6 +51,20 @@ public class RuleEvents {
     if (ruleIsTrue) {
       return;//let default take over and rely on rule
     }
+    //    
+    //    
+    //    Rabit Entity: raidFarmGoal eats carrots
+    //    
+    //    
+    if (ConfigManager.ZOMBIEGRF.get() && event.getEntity() instanceof ZombieEntity) {
+      //turtle eggs, doors
+      event.setResult(Result.ALLOW);
+    }
+    if (ConfigManager.RABBITGRF.get() && event.getEntity() instanceof RabbitEntity) {
+      event.setResult(Result.ALLOW);
+    }
+    //    
+    //    
     //if rule set FALSE
     // then we have list of entities we ALLOW to grief so we pick only what is allowed
     if (ConfigManager.ENDERGRF.get() && event.getEntity() instanceof EndermanEntity) {
@@ -58,7 +74,7 @@ public class RuleEvents {
       event.setResult(Result.ALLOW);
     }
     if (ConfigManager.WITHERGRF.get() && (event.getEntity() instanceof WitherEntity || event.getEntity() instanceof WitherSkullEntity)) {
-      //
+      ////
       event.setResult(Result.ALLOW);
     }
     if (ConfigManager.SNOWGOLEMGRF.get() && event.getEntity() instanceof SnowGolemEntity) {

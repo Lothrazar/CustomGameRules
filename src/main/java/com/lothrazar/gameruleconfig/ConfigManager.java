@@ -29,6 +29,8 @@ public class ConfigManager {
   static BooleanValue SHEEPGRF;
   static BooleanValue BLAZEFBALLGRF;
   static BooleanValue ENDERGRF;
+  static BooleanValue ZOMBIEGRF;
+  static BooleanValue RABBITGRF;
   static {
     initConfig();
   }
@@ -121,6 +123,12 @@ public class ConfigManager {
     BLAZEFBALLGRF = COMMON_BUILDER.comment("If the mobGriefing gamerule is false and this is true, "
         + "it will allow blaze (projectiles / setting fire) to bypass gamerule and affect the world.")
         .define("change." + GameRules.MOB_GRIEFING.getName() + ".blaze", true);
+    ZOMBIEGRF = COMMON_BUILDER.comment("If the mobGriefing gamerule is false and this is true, "
+        + "it will allow zombies to bypass gamerule and affect the world (for example doors, turtle eggs).")
+        .define("change." + GameRules.MOB_GRIEFING.getName() + ".zombie", true);
+    RABBITGRF = COMMON_BUILDER.comment("If the mobGriefing gamerule is false and this is true, "
+        + "it will allow rabbits to bypass gamerule and affect the world (for example, raiding carrot farms and eating them).")
+        .define("change." + GameRules.MOB_GRIEFING.getName() + ".rabbit", true);
     COMMON_BUILDER.pop();
     COMMON_CONFIG = COMMON_BUILDER.build();
   }
