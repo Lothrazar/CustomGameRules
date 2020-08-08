@@ -1,0 +1,11 @@
+{
+
+
+
+
+	"gamerule.customgamerules.cactusDamage":"Cactus Damage",
+	"gamerule.customgamerules.berryDamage":"Berry Damage",
+	"gamerule.customgamerules.pearlDamage":"Ender Pearl Damage",
+	"gamerule.customgamerules.tntDamage":"TNT Damage",
+	"gamerule.customgamerules.suffocationDamage":"Suffocation Damage"
+}
