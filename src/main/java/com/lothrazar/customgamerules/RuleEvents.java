@@ -1,5 +1,6 @@
 package com.lothrazar.customgamerules;
 
+import java.util.Iterator;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -7,15 +8,18 @@ import net.minecraft.entity.projectile.EyeOfEnderEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
+import net.minecraftforge.event.entity.EntityMobGriefingEvent;
 import net.minecraftforge.event.entity.living.EnderTeleportEvent;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
+import net.minecraftforge.event.entity.living.LivingDropsEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.Event.Result;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 public class RuleEvents {
 
-  //was LivingUpdateEvent 
   @SubscribeEvent
   public void onLivingUpdateEvent(net.minecraftforge.event.entity.EntityEvent event) {
     if (event.getEntity() instanceof EyeOfEnderEntity) {
@@ -28,7 +32,6 @@ public class RuleEvents {
 
   @SubscribeEvent
   public void onEnderTeleportEvent(EnderTeleportEvent event) {
-    EyeOfEnderEntity xy;
     if ((event.getEntityLiving() instanceof PlayerEntity) == false) {
       return;
     }
@@ -46,11 +49,12 @@ public class RuleEvents {
     }
     PlayerEntity player = (PlayerEntity) event.getEntityLiving();
     World world = player.world;
-    if (event.getSource() == DamageSource.FALL &&
-        !RuleRegistry.isEnabled(world, RuleRegistry.doLilypadsBreak)) {
-      if (world.getBlockState(player.getPosition().down()).getBlock() == Blocks.LILY_PAD) {
-        world.destroyBlock(player.getPosition().down(), true, player);
-        //
+    if (event.getSource() == DamageSource.FALL //&&
+    ) {
+      System.out.println("lillypad " + RuleRegistry.isEnabled(world, RuleRegistry.doLilypadsBreak));
+      if (world.getBlockState(player.getPosition()).getBlock() == Blocks.LILY_PAD) {
+        world.destroyBlock(player.getPosition(), true, player);
+        event.setAmount(0);
       }
     }
     if (event.getSource() == DamageSource.IN_WALL &&
@@ -87,8 +91,14 @@ public class RuleEvents {
    * 
    * @param event
    */
-  //  @SubscribeEvent
-  //  public void onEntityMobGriefingEvent(EntityMobGriefingEvent event) {
+  @SubscribeEvent
+  public void onEntityMobGriefingEvent(EntityMobGriefingEvent event) {
+    World world = event.getEntity().world;
+    if (RuleRegistry.isEnabled(world, GameRules.MOB_GRIEFING)) {
+      return;
+    }
+  }
+
   //    //if rule is false, this event does not trigger, so its always true
   //    boolean ruleIsTrue = event.getEntity().world.getGameRules().get(GameRules.MOB_GRIEFING).get();
   //    //true is default, allows destruction
@@ -157,21 +167,48 @@ public class RuleEvents {
   //  }
   // 
   //
-  //  @SubscribeEvent
-  //  public void onPlayerDeath(PlayerEvent.Clone event) {
-  //    BlockPos deathPos = event.getOriginal().getPosition();
-  //    PlayerEntity player = event.getPlayer();
-  //    World world = player.world;
-  //    if (!world.isRemote && event.isWasDeath()
-  //        && !ConfigManager.KEEP_EXP.get()) {
-  //      boolean keepInv = world.getGameRules().get(GameRules.KEEP_INVENTORY).get();
-  //      //exp zero
-  //      if (keepInv) {
-  //        player.experience = 0;
-  //        player.experienceLevel = 0;
-  //        player.experienceTotal = 0;
-  //      }
-  //    }
+  @SubscribeEvent
+  public void onPlayerDeath(PlayerEvent.Clone event) {
+    if (!event.isWasDeath()) {
+      return;
+    }
+    BlockPos deathPos = event.getOriginal().getPosition();
+    PlayerEntity player = event.getPlayer();
+    World world = player.world;
+    if (RuleRegistry.isEnabled(world, GameRules.KEEP_INVENTORY)) {
+      //sub- rules of keep inventory
+      if (RuleRegistry.isEnabled(world, RuleRegistry.keepInventoryExperience)) {
+        player.experience = 0;
+        player.experienceLevel = 0;
+        player.experienceTotal = 0;
+      }
+    }
+  }
+
+  @SubscribeEvent
+  public void onPlayerDrops(LivingDropsEvent event) {
+    if (event.getEntityLiving() instanceof PlayerEntity == false) {
+      return;
+    }
+    PlayerEntity player = (PlayerEntity) event.getEntityLiving();
+    World world = player.world;
+    if (RuleRegistry.isEnabled(world, GameRules.KEEP_INVENTORY)) {
+      //sub- rules of keep inventory
+      if (RuleRegistry.isEnabled(world, RuleRegistry.keepInventoryArmor)) {
+        Iterator<ItemStack> i = player.getArmorInventoryList().iterator();
+        while (i.hasNext()) {
+          ItemStack is = i.next();
+          //player.dropItem will drop AFTER DEATH. so
+          //          this.drop(player.world, deathPos, is);
+          event.getDrops().add(new ItemEntity(world,
+              player.getPosX(), player.getPosY(), player.getPosZ(),
+              is.copy()));
+          GameRuleMod.LOGGER.info("set count zero" + is);
+          is.setCount(0);
+        }
+      }
+    }
+  }
   //    if (!world.isRemote && event.isWasDeath()
   //        && !ConfigManager.KEEP_ARMOR.get()) {
   //      boolean keepInv = world.getGameRules().get(GameRules.KEEP_INVENTORY).get();
@@ -198,8 +235,7 @@ public class RuleEvents {
   //          this.drop(player.world, deathPos, is);
   //        }
   //      }
-  //    }
-  //  }
+
   public void drop(World world, BlockPos p, ItemStack i) {
     ItemEntity e = new ItemEntity(world, p.getX(), p.getY(), p.getZ(), i.copy());
     if (!world.isRemote && !i.isEmpty()) {

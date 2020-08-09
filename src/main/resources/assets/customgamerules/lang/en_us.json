@@ -1,11 +1,15 @@
 {
 
-	"gamerule.customgamerules.doEyesAlwaysBreak":"Ender Eyes always break when thrown",
+	"gamerule.doEyesAlwaysBreak":"Ender Eyes always break when thrown",
 
+	"gamerule.doLilypadsBreak":"Lily Pads break when player falls on them, preventing damage",
+	"gamerule.keepInventoryExperience":"Keep experience after death (requires keepInventory=true)",
+	"gamerule.keepInventoryEquipment":"Keep armor and hotbar after death  (requires keepInventory=true)",
 
+	"gamerule.mobGriefingCreeper":"Griefing creepers (requires mobGriefing=true)",
 
-	"gamerule.customgamerules.cactusDamage":"Cactus Damage",
-	"gamerule.customgamerules.berryDamage":"Berry Damage",
-	"gamerule.customgamerules.pearlDamage":"Ender Pearl Damage",
-	"gamerule.customgamerules.suffocationDamage":"Suffocation Damage"
+	"gamerule.cactusDamage":"Cactus Damage",
+	"gamerule.berryDamage":"Berry Damage",
+	"gamerule.pearlDamage":"Ender Pearl Damage",
+	"gamerule.suffocationDamage":"Suffocation Damage"
 }

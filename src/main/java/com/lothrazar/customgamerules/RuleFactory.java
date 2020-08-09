@@ -1,6 +1,7 @@
 package com.lothrazar.customgamerules;
 
 import java.lang.reflect.Method;
+import net.minecraft.command.impl.GameRuleCommand;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.GameRules.BooleanValue;
 import net.minecraft.world.GameRules.Category;
@@ -14,11 +15,15 @@ public class RuleFactory {
   public static RuleKey<BooleanValue> createBoolean(String id, boolean defaultVal, Category cat) {
     try {
       //access transformers cfg SHULD make this create public
-      //  GameRules.BooleanValue.create(true);
+      //      GameRules.BooleanValue.create(true);
+      //      BufferBuilder.
       Method m = ObfuscationReflectionHelper.findMethod(GameRules.BooleanValue.class, "func_223567_b", boolean.class);
       m.setAccessible(true);
       RuleType<BooleanValue> b = (RuleType<BooleanValue>) m.invoke(null, defaultVal);
-      return GameRules.func_234903_a_(GameRuleMod.MODID + "." + id, cat, b);
+      RuleKey<BooleanValue> rule = GameRules.func_234903_a_(id, cat, b);
+      //\
+      GameRuleCommand x;
+      return rule;
     }
     catch (Exception e) {
       GameRuleMod.LOGGER.error("Create rule fail", e);
