@@ -1,7 +1,9 @@
 package com.lothrazar.customgamerules;
 
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.projectile.EyeOfEnderEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
@@ -13,8 +15,20 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 public class RuleEvents {
 
+  //was LivingUpdateEvent 
+  @SubscribeEvent
+  public void onLivingUpdateEvent(net.minecraftforge.event.entity.EntityEvent event) {
+    if (event.getEntity() instanceof EyeOfEnderEntity) {
+      EyeOfEnderEntity eye = (EyeOfEnderEntity) event.getEntity();
+      if (RuleRegistry.isEnabled(eye.world, RuleRegistry.doEyesAlwaysBreak)) {
+        eye.shatterOrDrop = false;
+      }
+    }
+  }
+
   @SubscribeEvent
   public void onEnderTeleportEvent(EnderTeleportEvent event) {
+    EyeOfEnderEntity xy;
     if ((event.getEntityLiving() instanceof PlayerEntity) == false) {
       return;
     }
@@ -32,6 +46,13 @@ public class RuleEvents {
     }
     PlayerEntity player = (PlayerEntity) event.getEntityLiving();
     World world = player.world;
+    if (event.getSource() == DamageSource.FALL &&
+        !RuleRegistry.isEnabled(world, RuleRegistry.doLilypadsBreak)) {
+      if (world.getBlockState(player.getPosition().down()).getBlock() == Blocks.LILY_PAD) {
+        world.destroyBlock(player.getPosition().down(), true, player);
+        //
+      }
+    }
     if (event.getSource() == DamageSource.IN_WALL &&
         !RuleRegistry.isEnabled(world, RuleRegistry.suffocationDamage)) {
       event.setCanceled(true);
@@ -52,7 +73,7 @@ public class RuleEvents {
     //      //both will be PLAYER if its set by flint and steel
     //      //both null if TNT set by automated method
     //      //BUT ALSO this triggers for Creeper entities, etc
-    //      GameRuleMod.LOGGER.info("explosion immd source " + event.getSource().getImmediateSource());
+    GameRuleMod.LOGGER.info("explosion immd source " + event.getSource().getImmediateSource());
     //      GameRuleMod.LOGGER.info("explosion true source " + event.getSource().getTrueSource());
     //      event.setCanceled(true);
     //    }
