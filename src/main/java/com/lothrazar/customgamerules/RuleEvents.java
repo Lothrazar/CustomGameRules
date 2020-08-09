@@ -2,9 +2,15 @@ package com.lothrazar.customgamerules;
 
 import java.util.Iterator;
 import net.minecraft.block.Blocks;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.boss.WitherEntity;
 import net.minecraft.entity.item.ItemEntity;
+import net.minecraft.entity.monster.CreeperEntity;
+import net.minecraft.entity.monster.EndermanEntity;
+import net.minecraft.entity.monster.ZombieEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.EyeOfEnderEntity;
+import net.minecraft.entity.projectile.WitherSkullEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
@@ -93,45 +99,35 @@ public class RuleEvents {
    */
   @SubscribeEvent
   public void onEntityMobGriefingEvent(EntityMobGriefingEvent event) {
-    World world = event.getEntity().world;
-    if (RuleRegistry.isEnabled(world, GameRules.MOB_GRIEFING)) {
+    Entity ent = event.getEntity();
+    World world = ent.world;
+    if (!RuleRegistry.isEnabled(world, GameRules.MOB_GRIEFING)) {
+      //mob griefing not allowed, do nothing
+      return;
+    }
+    // mobGriefing == true, meaning a DEFAULT result will fall back to that and allow the grief
+    //check if we want to deny specific mobs
+    //if that mobs rule is FALSE then deny it
+    if (!RuleRegistry.isEnabled(world, RuleRegistry.mobGriefingCreeper) && ent instanceof CreeperEntity) {
+      event.setResult(Result.DENY);
+      return;
+    }
+    if (!RuleRegistry.isEnabled(world, RuleRegistry.mobGriefingZombie) && event.getEntity() instanceof ZombieEntity) {
+      //turtle eggs, doors
+      event.setResult(Result.DENY);
+      return;
+    }
+    if (!RuleRegistry.isEnabled(world, RuleRegistry.mobGriefingEnderman) && event.getEntity() instanceof EndermanEntity) {
+      event.setResult(Result.DENY);
+      return;
+    }
+    if (!RuleRegistry.isEnabled(world, RuleRegistry.mobGriefingWither) &&
+        (event.getEntity() instanceof WitherEntity || event.getEntity() instanceof WitherSkullEntity)) {
+      event.setResult(Result.DENY);
       return;
     }
   }
 
-  //    //if rule is false, this event does not trigger, so its always true
-  //    boolean ruleIsTrue = event.getEntity().world.getGameRules().get(GameRules.MOB_GRIEFING).get();
-  //    //true is default, allows destruction
-  //    //so if true do7 nothing
-  //    if (ruleIsTrue) {
-  //      return;//let default take over and rely on rule
-  //    }
-  //    //    
-  //    //    
-  //    //    Rabit Entity: raidFarmGoal eats carrots
-  //    //    
-  //    //    
-  //    if (ConfigManager.ZOMBIEGRF.get() && event.getEntity() instanceof ZombieEntity) {
-  //      //turtle eggs, doors
-  //      event.setResult(Result.ALLOW);
-  //    }
-  //    if (ConfigManager.RABBITGRF.get() && event.getEntity() instanceof RabbitEntity) {
-  //      event.setResult(Result.ALLOW);
-  //    }
-  //    //    
-  //    //    
-  //    //if rule set FALSE
-  //    // then we have list of entities we ALLOW to grief so we pick only what is allowed
-  //    if (ConfigManager.ENDERGRF.get() && event.getEntity() instanceof EndermanEntity) {
-  //      event.setResult(Result.ALLOW);
-  //    }
-  //    if (ConfigManager.GRIEFCREEPER.get() && event.getEntity() instanceof CreeperEntity) {
-  //      event.setResult(Result.ALLOW);
-  //    }
-  //    if (ConfigManager.WITHERGRF.get() && (event.getEntity() instanceof WitherEntity || event.getEntity() instanceof WitherSkullEntity)) {
-  //      ////
-  //      event.setResult(Result.ALLOW);
-  //    }
   //    if (ConfigManager.SNOWGOLEMGRF.get() && event.getEntity() instanceof SnowGolemEntity) {
   //      //
   //      event.setResult(Result.ALLOW);

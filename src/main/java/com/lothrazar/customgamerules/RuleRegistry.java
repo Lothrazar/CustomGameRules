@@ -17,18 +17,30 @@ public class RuleRegistry {
   public static RuleKey<BooleanValue> keepInventoryExperience;
   public static RuleKey<BooleanValue> keepInventoryArmor;
   public static RuleKey<BooleanValue> mobGriefingCreeper;
+  public static RuleKey<BooleanValue> mobGriefingEnderman;
+  public static RuleKey<BooleanValue> mobGriefingVillager;
+  public static RuleKey<BooleanValue> mobGriefingZombie;
+  public static RuleKey<BooleanValue> mobGriefingWither;
 
   public static void setup() {
-    // ____Damage
+    doEyesAlwaysBreak = RuleFactory.createBoolean("doEyesAlwaysBreak", true, GameRules.Category.DROPS);
+    // Player  ____Damage
     suffocationDamage = RuleFactory.createBoolean("suffocationDamage", true, GameRules.Category.PLAYER);
     pearlDamage = RuleFactory.createBoolean("pearlDamage", true, GameRules.Category.PLAYER);
     cactusDamage = RuleFactory.createBoolean("cactusDamage", true, GameRules.Category.PLAYER);
     berryDamage = RuleFactory.createBoolean("berryDamage", true, GameRules.Category.PLAYER);
+    // Player other
     doLilypadsBreak = RuleFactory.createBoolean("doLilypadsBreak", true, GameRules.Category.PLAYER);
-    doEyesAlwaysBreak = RuleFactory.createBoolean("doEyesAlwaysBreak", true, GameRules.Category.DROPS);
     keepInventoryExperience = RuleFactory.createBoolean("keepInventoryExperience", false, GameRules.Category.PLAYER);
     keepInventoryArmor = RuleFactory.createBoolean("keepInventoryArmor", false, GameRules.Category.PLAYER);
-    mobGriefingCreeper = RuleFactory.createBoolean("mobGriefingCreeper", false, GameRules.Category.MOBS);
+    // mobGriefing
+    mobGriefingCreeper = RuleFactory.createBoolean("mobGriefingCreeper", true, GameRules.Category.MOBS);
+    mobGriefingEnderman = RuleFactory.createBoolean("mobGriefingEnderman", false, GameRules.Category.MOBS);
+    mobGriefingVillager = RuleFactory.createBoolean("mobGriefingVillager", true, GameRules.Category.MOBS);
+    mobGriefingZombie = RuleFactory.createBoolean("mobGriefingZombie", true, GameRules.Category.MOBS);
+    mobGriefingWither = RuleFactory.createBoolean("mobGriefingWither", true, GameRules.Category.MOBS);
+    //
+    //
     //    tntDamage = RuleFactory.createBoolean("tntDamage", true, GameRules.Category.PLAYER);
     // do____
     //    RuleFactory.createBoolean("doBurnBabyZombies", false);
