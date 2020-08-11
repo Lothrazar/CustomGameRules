@@ -27,23 +27,22 @@ import net.minecraftforge.event.entity.EntityMobGriefingEvent;
 import net.minecraftforge.event.entity.living.EnderTeleportEvent;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
+import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.EntityInteract;
 import net.minecraftforge.eventbus.api.Event.Result;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 public class RuleEvents {
+
   //
-  //  @SubscribeEvent
-  //  public void onPlayerContainerEvent(PlayerContainerEvent event) {
-  //    System.out.println("?" + event.getContainer());
-  //    if (event.getContainer() instanceof MerchantContainer
-  //        && event.getPlayer().openContainer != null) {
-  //      //cannot cancel   
-  //      //      event.getPlayer().closeScreen();
-  //      //    event.setCanceled(true); 
-  //    }
-  //  }
+  @SubscribeEvent
+  public void onPlayerContainerEvent(LivingEntityUseItemEvent.Tick event) {
+    if (event.getItem().isFood() && RuleRegistry.isEnabled(event.getEntity().world, RuleRegistry.doInstantEating)
+        && event.getDuration() > 0) {
+      event.setDuration(1);//dont set to zero, then it goes -1 and breks
+    }
+  }
 
   @SubscribeEvent
   public void onEntityInteract(EntityInteract event) {
