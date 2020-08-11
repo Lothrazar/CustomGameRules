@@ -3,39 +3,94 @@ package com.lothrazar.customgamerules;
 import java.util.Iterator;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.boss.WitherEntity;
 import net.minecraft.entity.item.ItemEntity;
+import net.minecraft.entity.merchant.villager.VillagerEntity;
 import net.minecraft.entity.monster.CreeperEntity;
 import net.minecraft.entity.monster.EndermanEntity;
+import net.minecraft.entity.monster.RavagerEntity;
+import net.minecraft.entity.monster.SilverfishEntity;
 import net.minecraft.entity.monster.ZombieEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.EyeOfEnderEntity;
+import net.minecraft.entity.projectile.FireballEntity;
+import net.minecraft.entity.projectile.SmallFireballEntity;
 import net.minecraft.entity.projectile.WitherSkullEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
+import net.minecraftforge.event.entity.EntityEvent;
+import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.EntityMobGriefingEvent;
 import net.minecraftforge.event.entity.living.EnderTeleportEvent;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent.EntityInteract;
 import net.minecraftforge.eventbus.api.Event.Result;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 public class RuleEvents {
+  //
+  //  @SubscribeEvent
+  //  public void onPlayerContainerEvent(PlayerContainerEvent event) {
+  //    System.out.println("?" + event.getContainer());
+  //    if (event.getContainer() instanceof MerchantContainer
+  //        && event.getPlayer().openContainer != null) {
+  //      //cannot cancel   
+  //      //      event.getPlayer().closeScreen();
+  //      //    event.setCanceled(true); 
+  //    }
+  //  }
 
   @SubscribeEvent
-  public void onLivingUpdateEvent(net.minecraftforge.event.entity.EntityEvent event) {
+  public void onEntityInteract(EntityInteract event) {
+    if (!RuleRegistry.isEnabled(event.getWorld(), RuleRegistry.doVillagerTrading)
+        && event.getEntity() instanceof PlayerEntity
+        && event.getTarget() instanceof VillagerEntity) {
+      //  
+      event.setCanceled(true);
+      event.setResult(Result.DENY);
+    }
+  }
+
+  /***
+   * doMobItemPickup
+   * 
+   */
+  @SubscribeEvent
+  public void onEntityJoinWorldEvent(EntityJoinWorldEvent event) {
+    if (!RuleRegistry.isEnabled(event.getWorld(), RuleRegistry.doMobItemPickup)
+        && event.getEntity() instanceof MobEntity) {
+      MobEntity mob = (MobEntity) event.getEntity();
+      if (mob.canPickUpLoot()) {
+        mob.setCanPickUpLoot(false);
+        //   GameRuleMod.LOGGER.info("After edit mob with pickup " + mob.canPickUpLoot());
+      }
+    }
+  }
+
+  /***
+   * doEyesAlwaysBreak
+   * 
+   */
+  @SubscribeEvent
+  public void onLivingUpdateEvent(EntityEvent event) {
     if (event.getEntity() instanceof EyeOfEnderEntity) {
       EyeOfEnderEntity eye = (EyeOfEnderEntity) event.getEntity();
-      if (RuleRegistry.isEnabled(eye.world, RuleRegistry.doEyesAlwaysBreak)) {
+      if (eye.shatterOrDrop &&
+          RuleRegistry.isEnabled(eye.world, RuleRegistry.doEyesAlwaysBreak)) {
         eye.shatterOrDrop = false;
       }
     }
   }
 
+  /***
+   * pearlDamage
+   * 
+   */
   @SubscribeEvent
   public void onEnderTeleportEvent(EnderTeleportEvent event) {
     if ((event.getEntityLiving() instanceof PlayerEntity) == false) {
@@ -48,6 +103,16 @@ public class RuleEvents {
     }
   }
 
+  /***
+   * <pre>
+    * berryDamage
+   * cactusDamage
+   * doLilypadsBreak
+   * suffocationDamage
+   * </pre>
+   * 
+   * 
+   */
   @SubscribeEvent
   public void onLivingDamageEvent(LivingDamageEvent event) {
     if ((event.getEntityLiving() instanceof PlayerEntity) == false) {
@@ -82,20 +147,15 @@ public class RuleEvents {
     //      //immediate is tnt entity, true is the player that lit the thing if any
     //      //both will be PLAYER if its set by flint and steel
     //      //both null if TNT set by automated method
-    //      //BUT ALSO this triggers for Creeper entities, etc
-    GameRuleMod.LOGGER.info("explosion immd source " + event.getSource().getImmediateSource());
+    //    //      //BUT ALSO this triggers for Creeper entities, etc
+    //    GameRuleMod.LOGGER.info("explosion immd source " + event.getSource().getImmediateSource());
     //      GameRuleMod.LOGGER.info("explosion true source " + event.getSource().getTrueSource());
     //      event.setCanceled(true);
     //    }
   }
 
-  /**
-   * 
-   * <li>{@link Result#ALLOW} means this instance of mob griefing is allowed.</li>
-   * <li>{@link Result#DEFAULT} means the {@code mobGriefing} game rule is used to determine the behaviour.</li>
-   * <li>{@link Result#DENY} means this instance of mob griefing is not allowed.</li><br>
-   * 
-   * @param event
+  /***
+   * mobGriefing_____
    */
   @SubscribeEvent
   public void onEntityMobGriefingEvent(EntityMobGriefingEvent event) {
@@ -112,65 +172,59 @@ public class RuleEvents {
       event.setResult(Result.DENY);
       return;
     }
-    if (!RuleRegistry.isEnabled(world, RuleRegistry.mobGriefingZombie) && event.getEntity() instanceof ZombieEntity) {
+    if (!RuleRegistry.isEnabled(world, RuleRegistry.mobGriefingZombie) && ent instanceof ZombieEntity) {
       //turtle eggs, doors
       event.setResult(Result.DENY);
       return;
     }
-    if (!RuleRegistry.isEnabled(world, RuleRegistry.mobGriefingEnderman) && event.getEntity() instanceof EndermanEntity) {
+    if (!RuleRegistry.isEnabled(world, RuleRegistry.mobGriefingEnderman) && ent instanceof EndermanEntity) {
       event.setResult(Result.DENY);
       return;
     }
     if (!RuleRegistry.isEnabled(world, RuleRegistry.mobGriefingWither) &&
-        (event.getEntity() instanceof WitherEntity || event.getEntity() instanceof WitherSkullEntity)) {
+        (ent instanceof WitherEntity || ent instanceof WitherSkullEntity)) {
       event.setResult(Result.DENY);
       return;
     }
+    if (!RuleRegistry.isEnabled(world, RuleRegistry.mobGriefingRavager) && ent instanceof RavagerEntity) {
+      //break on collide
+      event.setResult(Result.DENY);
+    }
+    if (!RuleRegistry.isEnabled(world, RuleRegistry.mobGriefingSilverfish) && ent instanceof SilverfishEntity) {
+      //entering the stone
+      event.setResult(Result.DENY);
+    }
+    if (!RuleRegistry.isEnabled(world, RuleRegistry.mobGriefingGhast) && ent instanceof FireballEntity) {
+      // GHAST Fireball
+      event.setResult(Result.DENY);
+    }
+    if (!RuleRegistry.isEnabled(world, RuleRegistry.mobGriefingBlaze) && ent instanceof SmallFireballEntity) {
+      // GHAST Fireball
+      event.setResult(Result.DENY);
+    }
+    if (!RuleRegistry.isEnabled(world, RuleRegistry.mobGriefingVillager) && ent instanceof VillagerEntity) {
+      // farming
+      event.setResult(Result.DENY);
+    }
+    //snow golem, silverfish, sheep not done
   }
 
-  //    if (ConfigManager.SNOWGOLEMGRF.get() && event.getEntity() instanceof SnowGolemEntity) {
-  //      //
-  //      event.setResult(Result.ALLOW);
-  //    }
-  //    if (ConfigManager.SILVERFISHGRF.get() && event.getEntity() instanceof SilverfishEntity) {
-  //      //enter stone blocks  
-  //      event.setResult(Result.ALLOW);
-  //    }
-  //    if (ConfigManager.RAVAGERGRF.get() && event.getEntity() instanceof RavagerEntity) {
-  //      //break on collide
-  //      event.setResult(Result.ALLOW);
-  //    }
-  //    if (ConfigManager.FOXGRF.get() && event.getEntity() instanceof FoxEntity) {
-  //      //eat berries 
-  //      event.setResult(Result.ALLOW);
-  //    }
-  //    if (ConfigManager.GHASTGRF.get() && event.getEntity() instanceof FireballEntity) {
-  //      // ghast fireball
-  //      event.setResult(Result.ALLOW);
-  //    }
-  //    if (ConfigManager.VILLAGERGRF.get() && event.getEntity() instanceof VillagerEntity) {
-  //      // villager farming
-  //      event.setResult(Result.ALLOW);
-  //    }
-  //    if (ConfigManager.SHEEPGRF.get() && event.getEntity() instanceof SheepEntity) {
-  //      // sheep eat grass
-  //      event.setResult(Result.ALLOW);
-  //    }
-  //    if (ConfigManager.BLAZEFBALLGRF.get() && event.getEntity() instanceof SmallFireballEntity) {
-  //      // blaze fireball
-  //      event.setResult(Result.ALLOW);
-  //    }
-  //  }
-  // 
-  //
+  /***
+   * keepInventoryExperience
+   */
   @SubscribeEvent
   public void onPlayerDeath(PlayerEvent.Clone event) {
     if (!event.isWasDeath()) {
       return;
     }
-    BlockPos deathPos = event.getOriginal().getPosition();
+    //BlockPos deathPos = event.getOriginal().getPosition();
     PlayerEntity player = event.getPlayer();
     World world = player.world;
+    //    if (RuleRegistry.isEnabled(world, RuleRegistry.doReduceHeartsOnDeath)
+    //        && !player.isCreative()
+    //        && player.getMaxHealth() > 2) {
+    //      EntityHelpers.incrementMaxHealth(player);
+    //    }
     if (RuleRegistry.isEnabled(world, GameRules.KEEP_INVENTORY)) {
       //sub- rules of keep inventory
       if (RuleRegistry.isEnabled(world, RuleRegistry.keepInventoryExperience)) {
@@ -181,6 +235,9 @@ public class RuleEvents {
     }
   }
 
+  /***
+   * keepInventoryArmor
+   */
   @SubscribeEvent
   public void onPlayerDrops(LivingDropsEvent event) {
     if (event.getEntityLiving() instanceof PlayerEntity == false) {
@@ -199,44 +256,17 @@ public class RuleEvents {
           event.getDrops().add(new ItemEntity(world,
               player.getPosX(), player.getPosY(), player.getPosZ(),
               is.copy()));
-          GameRuleMod.LOGGER.info("set count zero" + is);
+          //          GameRuleMod.LOGGER.info("set count zero" + is);
           is.setCount(0);
         }
       }
     }
   }
-  //    if (!world.isRemote && event.isWasDeath()
-  //        && !ConfigManager.KEEP_ARMOR.get()) {
-  //      boolean keepInv = world.getGameRules().get(GameRules.KEEP_INVENTORY).get();
-  //      //exp zero
-  //      if (keepInv) {
-  //        // do not keep armor
-  //        Iterator<ItemStack> i = player.getArmorInventoryList().iterator();
-  //        while (i.hasNext()) {
-  //          ItemStack is = i.next();
-  //          //player.dropItem will drop AFTER DEATH. so
-  //          this.drop(player.world, deathPos, is);
-  //        }
-  //      }
+  //  public void drop(World world, BlockPos p, ItemStack i) {
+  //    ItemEntity e = new ItemEntity(world, p.getX(), p.getY(), p.getZ(), i.copy());
+  //    if (!world.isRemote && !i.isEmpty()) {
+  //      world.addEntity(e);
   //    }
-  //    if (!world.isRemote && event.isWasDeath()
-  //        && !ConfigManager.KEEP_WEAPONS.get()) {
-  //      boolean keepInv = world.getGameRules().get(GameRules.KEEP_INVENTORY).get();
-  //      //exp zero
-  //      if (keepInv) {
-  //        // do not keep armor
-  //        Iterator<ItemStack> i = player.getHeldEquipment().iterator();
-  //        while (i.hasNext()) {
-  //          ItemStack is = i.next();
-  //          this.drop(player.world, deathPos, is);
-  //        }
-  //      }
-
-  public void drop(World world, BlockPos p, ItemStack i) {
-    ItemEntity e = new ItemEntity(world, p.getX(), p.getY(), p.getZ(), i.copy());
-    if (!world.isRemote && !i.isEmpty()) {
-      world.addEntity(e);
-    }
-    i.setCount(0);
-  }
+  //    i.setCount(0);
+  //  }
 }

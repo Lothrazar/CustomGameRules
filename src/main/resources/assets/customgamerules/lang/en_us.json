@@ -1,12 +1,27 @@
 {
+	"gamerule.doMobItemPickup":"Disable item pickup when any Mob joins the world",
 
 	"gamerule.doEyesAlwaysBreak":"Ender Eyes always break when thrown",
 
 	"gamerule.doLilypadsBreak":"Lily Pads break when player falls on them, preventing damage",
+	"gamerule.doVillagerTrading":"Trading enabled",
+	
+	
 	"gamerule.keepInventoryExperience":"Keep experience after death (requires keepInventory=true)",
 	"gamerule.keepInventoryEquipment":"Keep armor and hotbar after death  (requires keepInventory=true)",
 
-	"gamerule.mobGriefingCreeper":"Griefing creepers (requires mobGriefing=true)",
+	
+	"gamerule.mobGriefingCreeper":"Destructive creepers (requires mobGriefing=true)",
+	"gamerule.mobGriefingEnderman":"Destructive enderman (requires mobGriefing=true)",
+	"gamerule.mobGriefingVillager":"Destructive villagers (requires mobGriefing=true)",
+	"gamerule.mobGriefingZombie":"Destructive zombies (requires mobGriefing=true)",
+	"gamerule.mobGriefingWither":"Destructive wither (requires mobGriefing=true)",
+	"gamerule.mobGriefingRavager":"Destructive ravagers (requires mobGriefing=true)",
+	"gamerule.mobGriefingSilverfish":"Destructive silverfish (requires mobGriefing=true)",
+	"gamerule.mobGriefingGhast":"Destructive ghast (requires mobGriefing=true)",
+	"gamerule.mobGriefingBlaze":"Destructive blaze (requires mobGriefing=true)",
+
+
 
 	"gamerule.cactusDamage":"Cactus Damage",
 	"gamerule.berryDamage":"Berry Damage",

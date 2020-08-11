@@ -21,9 +21,49 @@ public class RuleRegistry {
   public static RuleKey<BooleanValue> mobGriefingVillager;
   public static RuleKey<BooleanValue> mobGriefingZombie;
   public static RuleKey<BooleanValue> mobGriefingWither;
+  public static RuleKey<BooleanValue> mobGriefingRavager;
+  public static RuleKey<BooleanValue> mobGriefingGhast;
+  public static RuleKey<BooleanValue> mobGriefingSilverfish;
+  public static RuleKey<BooleanValue> mobGriefingBlaze;
+  public static RuleKey<BooleanValue> doMobItemPickup;
+  //  public static RuleKey<BooleanValue> doReduceHeartsOnDeath;
+  public static RuleKey<BooleanValue> doVillagerTrading;
 
+  /**
+   * <pre>
+   *    * PREFIXES
+   * command___
+   * disable___
+   * do___
+   * max___
+   * natural___ 
+   * random___
+   * reduced__
+   * send__
+   * show__
+   * 
+   * 
+   * SUFFIXES
+   * ___Damage
+   * 
+   * 
+   * SINGLE USE ONLY / DONT FIT
+   *  forgiveDeadPlayers
+   *  announceAdvancements
+   *  keepInventory
+   *  logAdminCommands
+   *  mobGriefing
+   *  naturalRegeneration
+   *  randomTickSpeed
+   *  reducedDebugInfo
+   *  sendCommandFeedback
+   *  spawnRadius
+   *  spectatorsGenerateChunks
+   *  universalAnger
+   *  showTags
+   * </pre>
+   */
   public static void setup() {
-    doEyesAlwaysBreak = RuleFactory.createBoolean("doEyesAlwaysBreak", true, GameRules.Category.DROPS);
     // Player  ____Damage
     suffocationDamage = RuleFactory.createBoolean("suffocationDamage", true, GameRules.Category.PLAYER);
     pearlDamage = RuleFactory.createBoolean("pearlDamage", true, GameRules.Category.PLAYER);
@@ -33,12 +73,21 @@ public class RuleRegistry {
     doLilypadsBreak = RuleFactory.createBoolean("doLilypadsBreak", true, GameRules.Category.PLAYER);
     keepInventoryExperience = RuleFactory.createBoolean("keepInventoryExperience", false, GameRules.Category.PLAYER);
     keepInventoryArmor = RuleFactory.createBoolean("keepInventoryArmor", false, GameRules.Category.PLAYER);
-    // mobGriefing
+    //drops
+    doEyesAlwaysBreak = RuleFactory.createBoolean("doEyesAlwaysBreak", true, GameRules.Category.DROPS);
+    //mobs
+    doVillagerTrading = RuleFactory.createBoolean("doVillagerTrading", true, GameRules.Category.MOBS);
+    //mobs - mobGriefing
     mobGriefingCreeper = RuleFactory.createBoolean("mobGriefingCreeper", true, GameRules.Category.MOBS);
     mobGriefingEnderman = RuleFactory.createBoolean("mobGriefingEnderman", false, GameRules.Category.MOBS);
     mobGriefingVillager = RuleFactory.createBoolean("mobGriefingVillager", true, GameRules.Category.MOBS);
     mobGriefingZombie = RuleFactory.createBoolean("mobGriefingZombie", true, GameRules.Category.MOBS);
     mobGriefingWither = RuleFactory.createBoolean("mobGriefingWither", true, GameRules.Category.MOBS);
+    mobGriefingRavager = RuleFactory.createBoolean("mobGriefingRavager", true, GameRules.Category.MOBS);
+    mobGriefingSilverfish = RuleFactory.createBoolean("mobGriefingSilverfish", true, GameRules.Category.MOBS);
+    mobGriefingGhast = RuleFactory.createBoolean("mobGriefingGhast", true, GameRules.Category.MOBS);
+    mobGriefingBlaze = RuleFactory.createBoolean("mobGriefingBlaze", true, GameRules.Category.MOBS);
+    doMobItemPickup = RuleFactory.createBoolean("doMobItemPickup", true, GameRules.Category.MOBS);
     //
     //
     //    tntDamage = RuleFactory.createBoolean("tntDamage", true, GameRules.Category.PLAYER);
