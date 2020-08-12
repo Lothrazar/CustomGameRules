@@ -29,6 +29,7 @@ public class RuleRegistry {
   //  public static RuleKey<BooleanValue> doReduceHeartsOnDeath;
   public static RuleKey<BooleanValue> doVillagerTrading;
   public static RuleKey<BooleanValue> doInstantEating;
+  public static RuleKey<BooleanValue> doInstantExp;
 
   /**
    * <pre>
@@ -75,6 +76,8 @@ public class RuleRegistry {
     keepInventoryExperience = RuleFactory.createBoolean("keepInventoryExperience", false, GameRules.Category.PLAYER);
     keepInventoryArmor = RuleFactory.createBoolean("keepInventoryArmor", false, GameRules.Category.PLAYER);
     doInstantEating = RuleFactory.createBoolean("doInstantEating", false, GameRules.Category.PLAYER);
+    doInstantExp = RuleFactory.createBoolean("doInstantExp", false, GameRules.Category.PLAYER);
+    //    doExpCooldown = RuleFactory.createBoolean("doInstantEating", true, GameRules.Category.PLAYER);
     //drops
     doEyesAlwaysBreak = RuleFactory.createBoolean("doEyesAlwaysBreak", true, GameRules.Category.DROPS);
     //mobs

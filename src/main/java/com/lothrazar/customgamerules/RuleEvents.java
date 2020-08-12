@@ -30,12 +30,21 @@ import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.EntityInteract;
+import net.minecraftforge.event.entity.player.PlayerXpEvent;
 import net.minecraftforge.eventbus.api.Event.Result;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 public class RuleEvents {
 
-  //
+  @SubscribeEvent
+  public void onPlayerXpEvent(PlayerXpEvent event) {
+    if (RuleRegistry.isEnabled(event.getEntity().world, RuleRegistry.doInstantExp)) {
+      //reset XP on pickup
+      if (event.getPlayer().xpCooldown > 0)
+        event.getPlayer().xpCooldown = 0;
+    }
+  }
+
   @SubscribeEvent
   public void onPlayerContainerEvent(LivingEntityUseItemEvent.Tick event) {
     if (event.getItem().isFood() && RuleRegistry.isEnabled(event.getEntity().world, RuleRegistry.doInstantEating)
