@@ -2,6 +2,8 @@ package com.lothrazar.customgamerules;
 
 import java.util.Iterator;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.CoralBlock;
+import net.minecraft.block.IceBlock;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.boss.WitherEntity;
@@ -28,6 +30,7 @@ import net.minecraftforge.event.entity.living.EnderTeleportEvent;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
+import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.EntityInteract;
 import net.minecraftforge.event.entity.player.PlayerXpEvent;
@@ -38,16 +41,21 @@ public class RuleEvents {
 
   @SubscribeEvent
   public void onPlayerXpEvent(PlayerXpEvent event) {
-    if (RuleRegistry.isEnabled(event.getEntity().world, RuleRegistry.doInstantExp)) {
+    CoralBlock x;
+    IceBlock y;
+    PlayerEntity player = event.getPlayer();
+    //    Blocks.BRAIN_CORAL.getOffsetType()
+    if (RuleRegistry.isEnabled(player.world, RuleRegistry.doInstantExp)) {
       //reset XP on pickup
-      if (event.getPlayer().xpCooldown > 0)
-        event.getPlayer().xpCooldown = 0;
+      if (player.xpCooldown > 0)
+        player.xpCooldown = 0;
     }
   }
 
   @SubscribeEvent
-  public void onPlayerContainerEvent(LivingEntityUseItemEvent.Tick event) {
-    if (event.getItem().isFood() && RuleRegistry.isEnabled(event.getEntity().world, RuleRegistry.doInstantEating)
+  public void onLivingEntityUseItemEvent(LivingEntityUseItemEvent.Tick event) {
+    Entity entity = event.getEntity();
+    if (event.getItem().isFood() && RuleRegistry.isEnabled(entity.world, RuleRegistry.doInstantEating)
         && event.getDuration() > 0) {
       event.setDuration(1);//dont set to zero, then it goes -1 and breks
     }
@@ -81,12 +89,35 @@ public class RuleEvents {
   }
 
   /***
+   * doNetherVoidAbove
+   * 
+   */
+  @SubscribeEvent
+  public void onLivingUpdateEvent(LivingUpdateEvent event) {
+    Entity entity = event.getEntity();
+    if (entity == null || entity.world == null) {
+      return;
+    }
+    if (entity.lastTickPosY > 128
+        && UtilWorld.dimensionToString(entity.world).equalsIgnoreCase("minecraft:the_nether") //
+        && RuleRegistry.isEnabled(entity.world, RuleRegistry.doNetherVoidAbove)) {
+      //WTF is null about this
+      if (entity.isAlive())
+        entity.attackEntityFrom(DamageSource.OUT_OF_WORLD, 0.5F);
+    }
+  }
+
+  /***
    * doEyesAlwaysBreak
    * 
    */
   @SubscribeEvent
-  public void onLivingUpdateEvent(EntityEvent event) {
-    if (event.getEntity() instanceof EyeOfEnderEntity) {
+  public void onNonLivingEntityTick(EntityEvent event) {
+    Entity entity = event.getEntity();
+    if (entity == null || entity.world == null) {
+      return;
+    }
+    if (entity instanceof EyeOfEnderEntity) {
       EyeOfEnderEntity eye = (EyeOfEnderEntity) event.getEntity();
       if (eye.shatterOrDrop &&
           RuleRegistry.isEnabled(eye.world, RuleRegistry.doEyesAlwaysBreak)) {

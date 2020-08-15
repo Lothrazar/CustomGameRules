@@ -30,6 +30,7 @@ public class RuleRegistry {
   public static RuleKey<BooleanValue> doVillagerTrading;
   public static RuleKey<BooleanValue> doInstantEating;
   public static RuleKey<BooleanValue> doInstantExp;
+  public static RuleKey<BooleanValue> doNetherVoidAbove;
 
   /**
    * <pre>
@@ -93,6 +94,8 @@ public class RuleRegistry {
     mobGriefingGhast = RuleFactory.createBoolean("mobGriefingGhast", true, GameRules.Category.MOBS);
     mobGriefingBlaze = RuleFactory.createBoolean("mobGriefingBlaze", true, GameRules.Category.MOBS);
     doMobItemPickup = RuleFactory.createBoolean("doMobItemPickup", true, GameRules.Category.MOBS);
+    //misc
+    doNetherVoidAbove = RuleFactory.createBoolean("doNetherVoidAbove", true, GameRules.Category.MISC);
     //
     //
     //    tntDamage = RuleFactory.createBoolean("tntDamage", true, GameRules.Category.PLAYER);
