@@ -1,5 +1,6 @@
 package com.lothrazar.customgamerules;
 
+import com.lothrazar.customgamerules.util.RuleFactory;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.GameRules.BooleanValue;
 import net.minecraft.world.GameRules.RuleKey;
@@ -32,6 +33,7 @@ public class RuleRegistry {
   public static RuleKey<BooleanValue> doInstantExp;
   public static RuleKey<BooleanValue> doNetherVoidAbove;
   public static RuleKey<BooleanValue> doArmorStandWeapons;
+  public static RuleKey<BooleanValue> doAlwaysUpdateMap;
 
   /**
    * <pre>
@@ -92,7 +94,8 @@ public class RuleRegistry {
     //
     // do______ 
     //
-    doLilypadsBreak = RuleFactory.createBoolean("doLilypadsBreak", false, GameRules.Category.PLAYER);
+    doAlwaysUpdateMap = RuleFactory.createBoolean("doAlwaysUpdateMaps", true, GameRules.Category.PLAYER);
+    doLilypadsBreak = RuleFactory.createBoolean("doLilypadsBreak", true, GameRules.Category.PLAYER);
     doInstantEating = RuleFactory.createBoolean("doInstantEating", false, GameRules.Category.PLAYER);
     doInstantExp = RuleFactory.createBoolean("doInstantExp", true, GameRules.Category.PLAYER);
     doArmorStandWeapons = RuleFactory.createBoolean("doArmorStandWeapons", true, GameRules.Category.PLAYER);

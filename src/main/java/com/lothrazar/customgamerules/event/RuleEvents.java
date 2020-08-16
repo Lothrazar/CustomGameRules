@@ -1,8 +1,10 @@
-package com.lothrazar.customgamerules;
+package com.lothrazar.customgamerules.event;
 
 import java.util.Iterator;
+import com.lothrazar.customgamerules.RuleRegistry;
+import com.lothrazar.customgamerules.util.UtilWorld;
 import net.minecraft.block.Blocks;
-import net.minecraft.block.CoralBlock;
+import net.minecraft.block.FallingBlock;
 import net.minecraft.block.IceBlock;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.MobEntity;
@@ -23,6 +25,7 @@ import net.minecraft.entity.projectile.WitherSkullEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.FoodStats;
 import net.minecraft.util.Hand;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
@@ -43,12 +46,22 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 public class RuleEvents {
 
+  IceBlock y;
+  FallingBlock g;
+
+  void sandbox() {
+    //
+    //FallingBlock.class
+    //mixin 
+    //   public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand) {
+  }
+
+  /**
+   * doInstantExp
+   */
   @SubscribeEvent
   public void onPlayerXpEvent(PlayerXpEvent event) {
-    CoralBlock x;
-    IceBlock y;
     PlayerEntity player = event.getPlayer();
-    //    Blocks.BRAIN_CORAL.getOffsetType()
     if (RuleRegistry.isEnabled(player.world, RuleRegistry.doInstantExp)) {
       //reset XP on pickup
       if (player.xpCooldown > 0)
@@ -56,6 +69,9 @@ public class RuleEvents {
     }
   }
 
+  /**
+   * doInstantEating
+   */
   @SubscribeEvent
   public void onLivingEntityUseItemEvent(LivingEntityUseItemEvent.Tick event) {
     Entity entity = event.getEntity();
@@ -65,6 +81,9 @@ public class RuleEvents {
     }
   }
 
+  /**
+   * disableVillagerTrading
+   */
   @SubscribeEvent
   public void onEntityInteract(EntityInteract event) {
     if (RuleRegistry.isEnabled(event.getWorld(), RuleRegistry.disableVillagerTrading)
@@ -76,7 +95,7 @@ public class RuleEvents {
     }
   }
 
-  /***
+  /**
    * doMobItemPickup
    * 
    */
@@ -92,6 +111,9 @@ public class RuleEvents {
     }
   }
 
+  /**
+   * doArmorStandWeapons
+   */
   @SubscribeEvent
   public void onEntityInteractSpecific(PlayerInteractEvent.EntityInteractSpecific event) {
     //
@@ -148,6 +170,11 @@ public class RuleEvents {
       if (entity.isAlive())
         entity.attackEntityFrom(DamageSource.OUT_OF_WORLD, 0.5F);
     }
+    //
+    if (event.getEntityLiving() instanceof PlayerEntity) {
+      PlayerEntity player = (PlayerEntity) event.getEntityLiving();
+      FoodStats food = player.getFoodStats();
+    }
   }
 
   /***
@@ -185,15 +212,8 @@ public class RuleEvents {
     }
   }
 
-  /***
-   * <pre>
-    * berryDamage
-   * cactusDamage
-   * doLilypadsBreak
-   * suffocationDamage
-   * </pre>
-   * 
-   * 
+  /**
+   * berryDamage cactusDamage doLilypadsBreak suffocationDamage
    */
   @SubscribeEvent
   public void onLivingDamageEvent(LivingDamageEvent event) {

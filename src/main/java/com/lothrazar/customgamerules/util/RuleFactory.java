@@ -1,6 +1,7 @@
-package com.lothrazar.customgamerules;
+package com.lothrazar.customgamerules.util;
 
 import java.lang.reflect.Method;
+import com.lothrazar.customgamerules.GameRuleMod;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.GameRules.BooleanValue;
 import net.minecraft.world.GameRules.Category;
@@ -13,8 +14,8 @@ public class RuleFactory {
   @SuppressWarnings("unchecked")
   public static RuleKey<BooleanValue> createBoolean(String id, boolean defaultVal, Category cat) {
     try {
+      //      GameRules.BooleanValue.create(true);
       //access transformers cfg SHULD make this create public
-      //      BufferBuilder.
       Method m = ObfuscationReflectionHelper.findMethod(GameRules.BooleanValue.class, "func_223567_b", boolean.class);
       m.setAccessible(true);
       RuleType<BooleanValue> b = (RuleType<BooleanValue>) m.invoke(null, defaultVal);

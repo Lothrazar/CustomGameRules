@@ -1,4 +1,4 @@
-package com.lothrazar.customgamerules;
+package com.lothrazar.customgamerules.util;
 
 import java.util.ArrayList;
 import java.util.List;
