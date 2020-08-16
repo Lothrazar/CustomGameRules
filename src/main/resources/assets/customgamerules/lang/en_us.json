@@ -1,9 +1,10 @@
 {
-	"gamerule.doAlwaysUpdateMaps":"Update maps from inventory even if not held by player",
 	"gamerule.disableBiomeIceFreeze":"Disable water freezing due to biome temperature",
 	"gamerule.disableBlockGravity":"Disable blocks falling from gravity (sand, gravel, ...)",
 	"gamerule.disableVillagerTrading":"Disable villager trading",
+	"gamerule.disableDecayLeaves":"Disable naturally decaying leaves",
 
+	"gamerule.doMapsAlwaysUpdate":"Update maps from inventory even if not held by player",
 	"gamerule.doEyesAlwaysBreak":"Ender Eyes always break when thrown",
 	"gamerule.doInstantEating":"Ender Eyes always break when thrown",
 	"gamerule.doInstantExp":"No delay on XP pickup",

@@ -9,6 +9,7 @@
         "FilledMapItemRefreshMixin",
         "FallingBlockGravityMixin",
         "BiomeAntiFreeze",
-        "IceAntiMelt"
+        "IceAntiMelt",
+        "LeavesAntiDecay"
     ]
 }

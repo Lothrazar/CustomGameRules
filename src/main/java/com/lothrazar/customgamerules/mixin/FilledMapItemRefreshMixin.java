@@ -21,7 +21,7 @@ public class FilledMapItemRefreshMixin {
     FilledMapItem map = (FilledMapItem) (Object) this;
     //    Item test = map.asItem();
     if (!worldIn.isRemote &&
-        RuleRegistry.isEnabled(worldIn, RuleRegistry.doAlwaysUpdateMap)) {
+        RuleRegistry.isEnabled(worldIn, RuleRegistry.doMapsAlwaysUpdate)) {
       MapData mapdata = FilledMapItem.getMapData(stack, worldIn);
       if (mapdata != null) {
         if (entityIn instanceof PlayerEntity) {

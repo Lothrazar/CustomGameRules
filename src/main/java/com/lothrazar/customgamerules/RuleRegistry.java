@@ -33,10 +33,11 @@ public class RuleRegistry {
   public static RuleKey<BooleanValue> doInstantExp;
   public static RuleKey<BooleanValue> doNetherVoidAbove;
   public static RuleKey<BooleanValue> doArmorStandWeapons;
-  public static RuleKey<BooleanValue> doAlwaysUpdateMap;
+  public static RuleKey<BooleanValue> doMapsAlwaysUpdate;
   public static RuleKey<BooleanValue> disableBlockGravity;
   public static RuleKey<BooleanValue> disableBiomeFreezeIce;
   public static RuleKey<BooleanValue> disableLightMeltIce;
+  public static RuleKey<BooleanValue> disableDecayLeaves;
 
   /**
    * <pre>
@@ -97,7 +98,7 @@ public class RuleRegistry {
     //
     // do______ 
     //
-    doAlwaysUpdateMap = RuleFactory.createBoolean("doAlwaysUpdateMaps", true, GameRules.Category.PLAYER);
+    doMapsAlwaysUpdate = RuleFactory.createBoolean("doMapsAlwaysUpdate", true, GameRules.Category.PLAYER);
     doLilypadsBreak = RuleFactory.createBoolean("doLilypadsBreak", true, GameRules.Category.PLAYER);
     doInstantEating = RuleFactory.createBoolean("doInstantEating", false, GameRules.Category.PLAYER);
     doInstantExp = RuleFactory.createBoolean("doInstantExp", true, GameRules.Category.PLAYER);
@@ -112,6 +113,7 @@ public class RuleRegistry {
     disableBlockGravity = RuleFactory.createBoolean("disableBlockGravity", false, GameRules.Category.UPDATES);
     disableBiomeFreezeIce = RuleFactory.createBoolean("disableBiomeFreezeIce", false, GameRules.Category.UPDATES);
     disableLightMeltIce = RuleFactory.createBoolean("disableLightMeltIce", false, GameRules.Category.UPDATES);
+    disableDecayLeaves = RuleFactory.createBoolean("disableDecayLeaves", false, GameRules.Category.UPDATES);
     //
     //mobGriefing_______
     //

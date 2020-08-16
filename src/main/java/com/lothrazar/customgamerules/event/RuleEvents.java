@@ -4,8 +4,7 @@ import java.util.Iterator;
 import com.lothrazar.customgamerules.RuleRegistry;
 import com.lothrazar.customgamerules.util.UtilWorld;
 import net.minecraft.block.Blocks;
-import net.minecraft.block.FallingBlock;
-import net.minecraft.block.IceBlock;
+import net.minecraft.block.LeavesBlock;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.boss.WitherEntity;
@@ -46,17 +45,9 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 public class RuleEvents {
 
-  IceBlock y;
-  FallingBlock g;
+  LeavesBlock y;
 
-  void sandbox() {
-    // Blocks.ICE.randomTick(state, worldIn, pos, random);
-    Blocks.TORCH.asItem();
-    //
-    //FallingBlock.class
-    //mixin 
-    //   public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand) {
-  }
+  void sandbox() {}
 
   /**
    * doInstantExp
