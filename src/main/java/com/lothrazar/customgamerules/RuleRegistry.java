@@ -27,10 +27,11 @@ public class RuleRegistry {
   public static RuleKey<BooleanValue> mobGriefingBlaze;
   public static RuleKey<BooleanValue> doMobItemPickup;
   //  public static RuleKey<BooleanValue> doReduceHeartsOnDeath;
-  public static RuleKey<BooleanValue> doVillagerTrading;
+  public static RuleKey<BooleanValue> disableVillagerTrading;
   public static RuleKey<BooleanValue> doInstantEating;
   public static RuleKey<BooleanValue> doInstantExp;
   public static RuleKey<BooleanValue> doNetherVoidAbove;
+  public static RuleKey<BooleanValue> doArmorStandWeapons;
 
   /**
    * <pre>
@@ -67,23 +68,44 @@ public class RuleRegistry {
    * </pre>
    */
   public static void setup() {
-    // Player  ____Damage
+    /**
+     * NEW:
+     * 
+     * 
+     * DO: this is ADDING something new to the game (usually def-true unless crazy)
+     * 
+     * 
+     * DISABLE: This is removing a feature in the game
+     */
+    //
+    //____Damage
+    //
     suffocationDamage = RuleFactory.createBoolean("suffocationDamage", true, GameRules.Category.PLAYER);
     pearlDamage = RuleFactory.createBoolean("pearlDamage", true, GameRules.Category.PLAYER);
     cactusDamage = RuleFactory.createBoolean("cactusDamage", true, GameRules.Category.PLAYER);
     berryDamage = RuleFactory.createBoolean("berryDamage", true, GameRules.Category.PLAYER);
-    // Player other
-    doLilypadsBreak = RuleFactory.createBoolean("doLilypadsBreak", true, GameRules.Category.PLAYER);
+    //
+    //   keepInventory _______
+    //
     keepInventoryExperience = RuleFactory.createBoolean("keepInventoryExperience", false, GameRules.Category.PLAYER);
     keepInventoryArmor = RuleFactory.createBoolean("keepInventoryArmor", false, GameRules.Category.PLAYER);
+    //
+    // do______ 
+    //
+    doLilypadsBreak = RuleFactory.createBoolean("doLilypadsBreak", false, GameRules.Category.PLAYER);
     doInstantEating = RuleFactory.createBoolean("doInstantEating", false, GameRules.Category.PLAYER);
-    doInstantExp = RuleFactory.createBoolean("doInstantExp", false, GameRules.Category.PLAYER);
-    //    doExpCooldown = RuleFactory.createBoolean("doInstantEating", true, GameRules.Category.PLAYER);
-    //drops
+    doInstantExp = RuleFactory.createBoolean("doInstantExp", true, GameRules.Category.PLAYER);
+    doArmorStandWeapons = RuleFactory.createBoolean("doArmorStandWeapons", true, GameRules.Category.PLAYER);
     doEyesAlwaysBreak = RuleFactory.createBoolean("doEyesAlwaysBreak", true, GameRules.Category.DROPS);
-    //mobs
-    doVillagerTrading = RuleFactory.createBoolean("doVillagerTrading", true, GameRules.Category.MOBS);
-    //mobs - mobGriefing
+    doNetherVoidAbove = RuleFactory.createBoolean("doNetherVoidAbove", false, GameRules.Category.MISC);
+    //= RuleFactory.createBoolean("doInstantEating", true, GameRules.Category.PLAYER);
+    //
+    //disable_____   
+    //
+    disableVillagerTrading = RuleFactory.createBoolean("disableVillagerTrading", false, GameRules.Category.MOBS);
+    //
+    //mobGriefing_______
+    //
     mobGriefingCreeper = RuleFactory.createBoolean("mobGriefingCreeper", true, GameRules.Category.MOBS);
     mobGriefingEnderman = RuleFactory.createBoolean("mobGriefingEnderman", false, GameRules.Category.MOBS);
     mobGriefingVillager = RuleFactory.createBoolean("mobGriefingVillager", true, GameRules.Category.MOBS);
@@ -95,7 +117,6 @@ public class RuleRegistry {
     mobGriefingBlaze = RuleFactory.createBoolean("mobGriefingBlaze", true, GameRules.Category.MOBS);
     doMobItemPickup = RuleFactory.createBoolean("doMobItemPickup", true, GameRules.Category.MOBS);
     //misc
-    doNetherVoidAbove = RuleFactory.createBoolean("doNetherVoidAbove", true, GameRules.Category.MISC);
     //
     //
     //    tntDamage = RuleFactory.createBoolean("tntDamage", true, GameRules.Category.PLAYER);

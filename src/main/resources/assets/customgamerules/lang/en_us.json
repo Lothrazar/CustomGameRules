@@ -1,14 +1,21 @@
 {
-	"gamerule.doMobItemPickup":"Disable item pickup when any Mob joins the world",
+	"gamerule.disableVillagerTrading":"Disable trading",
 
 	"gamerule.doEyesAlwaysBreak":"Ender Eyes always break when thrown",
+	"gamerule.doInstantEating":"Ender Eyes always break when thrown",
+	"gamerule.doInstantExp":"No delay on XP pickup",
+	"gamerule.doArmorStandWeapons":"Allow equipping armor stand main & offhand",
 
 	"gamerule.doLilypadsBreak":"Lily Pads break when player falls on them, preventing damage",
+	
+	"gamerule.doNetherVoidAbove":"Nether deals void damage above 128",
+	"gamerule.doMobItemPickup":"Disable item pickup when any Mob joins the world",
 	"gamerule.doVillagerTrading":"Trading enabled",
 	
 	
+	"gamerule.keepInventoryArmor":"Keep armor after death (requires keepInventory=true)",
 	"gamerule.keepInventoryExperience":"Keep experience after death (requires keepInventory=true)",
-	"gamerule.keepInventoryEquipment":"Keep armor and hotbar after death  (requires keepInventory=true)",
+
 
 	
 	"gamerule.mobGriefingCreeper":"Destructive creepers (requires mobGriefing=true)",

@@ -7,6 +7,7 @@ import net.minecraft.block.IceBlock;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.boss.WitherEntity;
+import net.minecraft.entity.item.ArmorStandEntity;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.merchant.villager.VillagerEntity;
 import net.minecraft.entity.monster.CreeperEntity;
@@ -19,8 +20,10 @@ import net.minecraft.entity.projectile.EyeOfEnderEntity;
 import net.minecraft.entity.projectile.FireballEntity;
 import net.minecraft.entity.projectile.SmallFireballEntity;
 import net.minecraft.entity.projectile.WitherSkullEntity;
+import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.Hand;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.EntityEvent;
@@ -32,6 +35,7 @@ import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.EntityInteract;
 import net.minecraftforge.event.entity.player.PlayerXpEvent;
 import net.minecraftforge.eventbus.api.Event.Result;
@@ -63,7 +67,7 @@ public class RuleEvents {
 
   @SubscribeEvent
   public void onEntityInteract(EntityInteract event) {
-    if (!RuleRegistry.isEnabled(event.getWorld(), RuleRegistry.doVillagerTrading)
+    if (RuleRegistry.isEnabled(event.getWorld(), RuleRegistry.disableVillagerTrading)
         && event.getEntity() instanceof PlayerEntity
         && event.getTarget() instanceof VillagerEntity) {
       //  
@@ -86,6 +90,45 @@ public class RuleEvents {
         //   GameRuleMod.LOGGER.info("After edit mob with pickup " + mob.canPickUpLoot());
       }
     }
+  }
+
+  @SubscribeEvent
+  public void onEntityInteractSpecific(PlayerInteractEvent.EntityInteractSpecific event) {
+    //
+    if (event.getWorld().isRemote) {
+      return;
+    } //server side only
+    if (!RuleRegistry.isEnabled(event.getWorld(), RuleRegistry.doArmorStandWeapons)) {
+      return;
+    }
+    if (event.getTarget() == null || event.getTarget() instanceof ArmorStandEntity == false) {
+      return;
+    }
+    ArmorStandEntity stand = (ArmorStandEntity) event.getTarget();
+    PlayerEntity player = event.getPlayer();
+    if (player.isSneaking() == false) {
+      return;
+    }
+    //gamerule: CAN EQUIP ARMOR STANDS
+    //bc when not sneaking, we do the normal single item version
+    //we just need to swap what we are holding
+    event.setCanceled(true);
+    swapArmorStand(stand, player, Hand.MAIN_HAND);
+    swapArmorStand(stand, player, Hand.OFF_HAND);
+    boolean showArms = !stand.getItemStackFromSlot(EquipmentSlotType.MAINHAND).isEmpty()
+        ||
+        !stand.getItemStackFromSlot(EquipmentSlotType.OFFHAND).isEmpty();
+    //oh at least one arm is holding a thing? ok
+    stand.setShowArms(showArms);
+  }
+
+  private void swapArmorStand(ArmorStandEntity stand, PlayerEntity player, Hand hand) {
+    ItemStack heldPlayer = player.getHeldItem(hand).copy();
+    ItemStack heldStand = stand.getHeldItem(hand).copy();
+    EquipmentSlotType slot = (hand == Hand.MAIN_HAND) ? EquipmentSlotType.MAINHAND : EquipmentSlotType.OFFHAND;
+    stand.setItemStackToSlot(slot, heldPlayer);
+    player.setItemStackToSlot(slot, heldStand);
+    //    stand.getShowArms()
   }
 
   /***
