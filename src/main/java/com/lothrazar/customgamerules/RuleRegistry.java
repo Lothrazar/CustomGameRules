@@ -39,6 +39,8 @@ public class RuleRegistry {
   public static RuleKey<BooleanValue> disableLightMeltIce;
   public static RuleKey<BooleanValue> disableDecayLeaves;
   public static RuleKey<BooleanValue> disableDecayCoral;
+  public static RuleKey<BooleanValue> disableGenerateObsidian;
+  public static RuleKey<BooleanValue> disableGenerateStone;
 
   /**
    * <pre>
@@ -116,6 +118,8 @@ public class RuleRegistry {
     disableLightMeltIce = RuleFactory.createBoolean("disableLightMeltIce", false, GameRules.Category.UPDATES);
     disableDecayLeaves = RuleFactory.createBoolean("disableDecayLeaves", false, GameRules.Category.UPDATES);
     disableDecayCoral = RuleFactory.createBoolean("disableDecayCoral", false, GameRules.Category.UPDATES);
+    disableGenerateStone = RuleFactory.createBoolean("disableGenerateStone", false, GameRules.Category.UPDATES);
+    disableGenerateObsidian = RuleFactory.createBoolean("disableGenerateObsidian", false, GameRules.Category.UPDATES);
     //
     //mobGriefing_______
     //

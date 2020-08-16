@@ -3,7 +3,7 @@ package com.lothrazar.customgamerules.event;
 import java.util.Iterator;
 import com.lothrazar.customgamerules.RuleRegistry;
 import com.lothrazar.customgamerules.util.UtilWorld;
-import net.minecraft.block.AbstractCoralPlantBlock;
+import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.CoralBlock;
 import net.minecraft.block.PistonBlock;
@@ -43,21 +43,39 @@ import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.EntityInteract;
 import net.minecraftforge.event.entity.player.PlayerXpEvent;
+import net.minecraftforge.event.world.BlockEvent.FluidPlaceBlockEvent;
 import net.minecraftforge.eventbus.api.Event.Result;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 public class RuleEvents {
 
-  CoralBlock y;
-
   void sandbox() {
-    //    y.onExplosionDestroy(worldIn, pos, explosionIn);
-    World w;
-    //    w.crea
+    CoralBlock y;
     SugarCaneBlock x;
     PistonBlock z;
-    AbstractCoralPlantBlock q;
-    Blocks.DEAD_BRAIN_CORAL.asItem();
+  }
+
+  /**
+   * disableGenerateObsidian * disableGenerateStone
+   */
+  @SubscribeEvent
+  public void onFluidPlaceBlockEvent(FluidPlaceBlockEvent event) {
+    if (!(event.getWorld() instanceof World)) {
+      return;
+    }
+    World world = (World) event.getWorld();
+    Block newBlock = event.getNewState().getBlock();
+    if (newBlock == Blocks.OBSIDIAN &&
+        RuleRegistry.isEnabled(world, RuleRegistry.disableGenerateObsidian)) {
+      //event.setCanceled(true);
+      event.setNewState(event.getOriginalState());
+    }
+    if ((newBlock == Blocks.COBBLESTONE || newBlock == Blocks.STONE) &&
+        RuleRegistry.isEnabled(world, RuleRegistry.disableGenerateStone)) {
+      //cancel should work but busted i guess IDK why
+      //      event.setCanceled(true);
+      event.setNewState(event.getOriginalState());
+    }
   }
 
   /**
@@ -228,7 +246,6 @@ public class RuleEvents {
     World world = player.world;
     if (event.getSource() == DamageSource.FALL //&&
     ) {
-      System.out.println("lillypad " + RuleRegistry.isEnabled(world, RuleRegistry.doLilypadsBreak));
       if (world.getBlockState(player.getPosition()).getBlock() == Blocks.LILY_PAD) {
         world.destroyBlock(player.getPosition(), true, player);
         event.setAmount(0);
@@ -362,17 +379,9 @@ public class RuleEvents {
           event.getDrops().add(new ItemEntity(world,
               player.getPosX(), player.getPosY(), player.getPosZ(),
               is.copy()));
-          //          GameRuleMod.LOGGER.info("set count zero" + is);
           is.setCount(0);
         }
       }
     }
   }
-  //  public void drop(World world, BlockPos p, ItemStack i) {
-  //    ItemEntity e = new ItemEntity(world, p.getX(), p.getY(), p.getZ(), i.copy());
-  //    if (!world.isRemote && !i.isEmpty()) {
-  //      world.addEntity(e);
-  //    }
-  //    i.setCount(0);
-  //  }
 }
