@@ -50,6 +50,8 @@ public class RuleEvents {
   FallingBlock g;
 
   void sandbox() {
+    // Blocks.ICE.randomTick(state, worldIn, pos, random);
+    Blocks.TORCH.asItem();
     //
     //FallingBlock.class
     //mixin 

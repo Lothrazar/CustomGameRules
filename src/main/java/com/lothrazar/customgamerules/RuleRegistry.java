@@ -35,7 +35,8 @@ public class RuleRegistry {
   public static RuleKey<BooleanValue> doArmorStandWeapons;
   public static RuleKey<BooleanValue> doAlwaysUpdateMap;
   public static RuleKey<BooleanValue> disableBlockGravity;
-  public static RuleKey<BooleanValue> disableBiomeIceFreeze;
+  public static RuleKey<BooleanValue> disableBiomeFreezeIce;
+  public static RuleKey<BooleanValue> disableLightMeltIce;
 
   /**
    * <pre>
@@ -109,7 +110,8 @@ public class RuleRegistry {
     //
     disableVillagerTrading = RuleFactory.createBoolean("disableVillagerTrading", false, GameRules.Category.MOBS);
     disableBlockGravity = RuleFactory.createBoolean("disableBlockGravity", false, GameRules.Category.UPDATES);
-    disableBiomeIceFreeze = RuleFactory.createBoolean("disableBiomeIceFreeze", false, GameRules.Category.UPDATES);
+    disableBiomeFreezeIce = RuleFactory.createBoolean("disableBiomeFreezeIce", false, GameRules.Category.UPDATES);
+    disableLightMeltIce = RuleFactory.createBoolean("disableLightMeltIce", false, GameRules.Category.UPDATES);
     //
     //mobGriefing_______
     //

@@ -17,7 +17,7 @@ public class BiomeAntiFreeze {
   public void tickMixin(IWorldReader worldIn, BlockPos water, boolean mustBeAtEdge, CallbackInfoReturnable<Boolean> info) {
     //if disable == true, then  
     if (worldIn instanceof World &&
-        RuleRegistry.isEnabled((World) worldIn, RuleRegistry.disableBiomeIceFreeze)) {
+        RuleRegistry.isEnabled((World) worldIn, RuleRegistry.disableBiomeFreezeIce)) {
       info.setReturnValue(false);
     }
   }
