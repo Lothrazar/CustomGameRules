@@ -14,7 +14,6 @@ import net.minecraft.world.server.ServerWorld;
 @Mixin(FallingBlock.class)
 public class FallingBlockGravityMixin {
 
-  // put a map in your inventory, this will trigger every time inventoryTick is triggered 
   @Inject(at = @At("HEAD"), method = "tick(Lnet/minecraft/block/BlockState;Lnet/minecraft/world/server/ServerWorld;Lnet/minecraft/util/math/BlockPos;Ljava/util/Random;)V", cancellable = true)
   public void tickMixin(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand, CallbackInfo info) {
     FallingBlock sand = (FallingBlock) (Object) this;
@@ -22,10 +21,4 @@ public class FallingBlockGravityMixin {
     if (RuleRegistry.isEnabled(worldIn, RuleRegistry.disableBlockGravity))
       info.cancel();
   }
-  //  @Inject(method = "tick", at = @At(value = "INVOKE", target = "tick(Lnet/minecraft/block/BlockState;Lnet/minecraft/world/server/ServerWorld;Lnet/minecraft/util/math/BlockPos;Ljava/util/Random;)V"), cancellable = true)
-  //  public void __tickMixin(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand, CallbackInfo info) {
-  //    FallingBlock sand = (FallingBlock) (Object) this;
-  //    //    sand.canFallThrough(state)
-  //    System.out.println("INVOIKE sand?  isCancellable = " + info.isCancellable());
-  //  }
 }
