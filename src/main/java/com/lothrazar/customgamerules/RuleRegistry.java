@@ -34,6 +34,7 @@ public class RuleRegistry {
   public static RuleKey<BooleanValue> doNetherVoidAbove;
   public static RuleKey<BooleanValue> doArmorStandWeapons;
   public static RuleKey<BooleanValue> doAlwaysUpdateMap;
+  public static RuleKey<BooleanValue> disableBlockGravity;
 
   /**
    * <pre>
@@ -106,6 +107,7 @@ public class RuleRegistry {
     //disable_____   
     //
     disableVillagerTrading = RuleFactory.createBoolean("disableVillagerTrading", false, GameRules.Category.MOBS);
+    disableBlockGravity = RuleFactory.createBoolean("disableBlockGravity", false, GameRules.Category.UPDATES);
     //
     //mobGriefing_______
     //

@@ -1,6 +1,7 @@
 {
 	"gamerule.doAlwaysUpdateMaps":"Update maps from inventory even if not held by player",
-	"gamerule.disableVillagerTrading":"Disable trading",
+	"gamerule.disableBlockGravity":"Disable blocks falling from gravity (sand, gravel, ...)",
+	"gamerule.disableVillagerTrading":"Disable villager trading",
 
 	"gamerule.doEyesAlwaysBreak":"Ender Eyes always break when thrown",
 	"gamerule.doInstantEating":"Ender Eyes always break when thrown",
