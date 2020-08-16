@@ -3,8 +3,11 @@ package com.lothrazar.customgamerules.event;
 import java.util.Iterator;
 import com.lothrazar.customgamerules.RuleRegistry;
 import com.lothrazar.customgamerules.util.UtilWorld;
+import net.minecraft.block.AbstractCoralPlantBlock;
 import net.minecraft.block.Blocks;
-import net.minecraft.block.LeavesBlock;
+import net.minecraft.block.CoralBlock;
+import net.minecraft.block.PistonBlock;
+import net.minecraft.block.SugarCaneBlock;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.boss.WitherEntity;
@@ -45,9 +48,17 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 public class RuleEvents {
 
-  LeavesBlock y;
+  CoralBlock y;
 
-  void sandbox() {}
+  void sandbox() {
+    //    y.onExplosionDestroy(worldIn, pos, explosionIn);
+    World w;
+    //    w.crea
+    SugarCaneBlock x;
+    PistonBlock z;
+    AbstractCoralPlantBlock q;
+    Blocks.DEAD_BRAIN_CORAL.asItem();
+  }
 
   /**
    * doInstantExp

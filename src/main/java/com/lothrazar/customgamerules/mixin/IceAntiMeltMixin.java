@@ -12,7 +12,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 @Mixin(IceBlock.class)
-public class IceAntiMelt {
+public class IceAntiMeltMixin {
 
   @Inject(at = @At(value = "HEAD"), method = "turnIntoWater(Lnet/minecraft/block/BlockState;Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;)V", cancellable = true)
   public void tickMixin(BlockState bs, World worldIn, BlockPos pos, CallbackInfo info) {

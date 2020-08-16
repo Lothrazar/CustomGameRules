@@ -12,7 +12,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.server.ServerWorld;
 
 @Mixin(LeavesBlock.class)
-public class LeavesAntiDecay {
+public class LeavesAntiDecayMixin {
 
   @Inject(at = @At(value = "HEAD"), method = "randomTick(Lnet/minecraft/block/BlockState;Lnet/minecraft/world/server/ServerWorld;Lnet/minecraft/util/math/BlockPos;Ljava/util/Random;)V", cancellable = true)
   public void tickMixin(BlockState bs, ServerWorld worldIn, BlockPos pos, Random rand, CallbackInfo info) {

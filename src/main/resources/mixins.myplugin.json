@@ -8,8 +8,10 @@
     "mixins": [
         "FilledMapItemRefreshMixin",
         "FallingBlockGravityMixin",
-        "BiomeAntiFreeze",
-        "IceAntiMelt",
-        "LeavesAntiDecay"
+        "BiomeAntiFreezeMixin",
+        "IceAntiMeltMixin",
+        "LeavesAntiDecayMixin",
+        "CoralAntiDecayMixin",
+        "CoralFanAntiDecayMixin"
     ]
 }

@@ -11,7 +11,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 
 @Mixin(Biome.class)
-public class BiomeAntiFreeze {
+public class BiomeAntiFreezeMixin {
 
   @Inject(at = @At(value = "HEAD"), method = "doesWaterFreeze(Lnet/minecraft/world/IWorldReader;Lnet/minecraft/util/math/BlockPos;Z)Z", cancellable = true)
   public void tickMixin(IWorldReader worldIn, BlockPos water, boolean mustBeAtEdge, CallbackInfoReturnable<Boolean> info) {

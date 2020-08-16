@@ -38,6 +38,7 @@ public class RuleRegistry {
   public static RuleKey<BooleanValue> disableBiomeFreezeIce;
   public static RuleKey<BooleanValue> disableLightMeltIce;
   public static RuleKey<BooleanValue> disableDecayLeaves;
+  public static RuleKey<BooleanValue> disableDecayCoral;
 
   /**
    * <pre>
@@ -114,6 +115,7 @@ public class RuleRegistry {
     disableBiomeFreezeIce = RuleFactory.createBoolean("disableBiomeFreezeIce", false, GameRules.Category.UPDATES);
     disableLightMeltIce = RuleFactory.createBoolean("disableLightMeltIce", false, GameRules.Category.UPDATES);
     disableDecayLeaves = RuleFactory.createBoolean("disableDecayLeaves", false, GameRules.Category.UPDATES);
+    disableDecayCoral = RuleFactory.createBoolean("disableDecayCoral", false, GameRules.Category.UPDATES);
     //
     //mobGriefing_______
     //
