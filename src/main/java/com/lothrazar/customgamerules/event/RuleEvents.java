@@ -18,6 +18,8 @@ import net.minecraft.entity.monster.EndermanEntity;
 import net.minecraft.entity.monster.RavagerEntity;
 import net.minecraft.entity.monster.SilverfishEntity;
 import net.minecraft.entity.monster.ZombieEntity;
+import net.minecraft.entity.passive.TameableEntity;
+import net.minecraft.entity.passive.horse.AbstractHorseEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.EyeOfEnderEntity;
 import net.minecraft.entity.projectile.FireballEntity;
@@ -116,12 +118,12 @@ public class RuleEvents {
   }
 
   /**
-   * doMobItemPickup
+   * disableMobItemPickup
    * 
    */
   @SubscribeEvent
   public void onEntityJoinWorldEvent(EntityJoinWorldEvent event) {
-    if (!RuleRegistry.isEnabled(event.getWorld(), RuleRegistry.doMobItemPickup)
+    if (RuleRegistry.isEnabled(event.getWorld(), RuleRegistry.disableMobItemPickup)
         && event.getEntity() instanceof MobEntity) {
       MobEntity mob = (MobEntity) event.getEntity();
       if (mob.canPickUpLoot()) {
@@ -237,13 +239,37 @@ public class RuleEvents {
    */
   @SubscribeEvent
   public void onLivingDamageEvent(LivingDamageEvent event) {
+    World world = event.getEntityLiving().world;
+    if (RuleRegistry.isEnabled(world, RuleRegistry.disablePetFriendlyFire)
+        && event.getSource().getTrueSource() instanceof PlayerEntity) {
+      PlayerEntity dmgOwner = (PlayerEntity) event.getSource().getTrueSource();
+      //pets!
+      if (event.getEntityLiving() instanceof AbstractHorseEntity) {
+        //can be tamed
+        AbstractHorseEntity horse = (AbstractHorseEntity) event.getEntityLiving();
+        if (horse.isTame() && horse.getOwnerUniqueId().equals(dmgOwner.getUniqueID())) {
+          //WOOOOO 
+          event.setAmount(0);
+          event.setCanceled(true);
+          return;
+        }
+      }
+      if (event.getEntityLiving() instanceof TameableEntity) {
+        //can be tamed
+        TameableEntity pet = (TameableEntity) event.getEntityLiving();
+        if (pet.isTamed() && pet.getOwnerId().equals(dmgOwner.getUniqueID())) {
+          //WOOOOO
+          event.setAmount(0);
+          event.setCanceled(true);
+          return;
+        }
+      }
+    }
     if ((event.getEntityLiving() instanceof PlayerEntity) == false) {
       return;
     }
     PlayerEntity player = (PlayerEntity) event.getEntityLiving();
-    World world = player.world;
-    if (event.getSource() == DamageSource.FALL //&&
-    ) {
+    if (event.getSource() == DamageSource.FALL) {
       if (world.getBlockState(player.getPosition()).getBlock() == Blocks.LILY_PAD) {
         world.destroyBlock(player.getPosition(), true, player);
         event.setAmount(0);
