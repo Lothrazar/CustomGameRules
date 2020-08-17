@@ -7,6 +7,9 @@
 	"gamerule.disableGenerateStone":"Disable stone generation from liquid",
 	"gamerule.disableGenerateObsidian":"Disable obsidian generation from liquid",
 	"gamerule.disableLightMeltIce":"Disable ice melting from things like light levels",
+	
+	"gamerule.doSugarGrowthUnlimited":"Sugar cane growth unlimited height",
+	"gamerule.doCactusGrowthUnlimited":"Cactus growth unlimited height",
 
 	"gamerule.doMapsAlwaysUpdate":"Update maps from inventory even if not held by player",
 	"gamerule.doEyesAlwaysBreak":"Ender Eyes always break when thrown",

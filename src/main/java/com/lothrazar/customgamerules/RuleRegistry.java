@@ -41,6 +41,8 @@ public class RuleRegistry {
   public static RuleKey<BooleanValue> disableDecayCoral;
   public static RuleKey<BooleanValue> disableGenerateObsidian;
   public static RuleKey<BooleanValue> disableGenerateStone;
+  public static RuleKey<BooleanValue> doCactusGrowthUnlimited;
+  public static RuleKey<BooleanValue> doSugarGrowthUnlimited;
 
   /**
    * <pre>
@@ -108,6 +110,8 @@ public class RuleRegistry {
     doArmorStandWeapons = RuleFactory.createBoolean("doArmorStandWeapons", true, GameRules.Category.PLAYER);
     doEyesAlwaysBreak = RuleFactory.createBoolean("doEyesAlwaysBreak", true, GameRules.Category.DROPS);
     doNetherVoidAbove = RuleFactory.createBoolean("doNetherVoidAbove", false, GameRules.Category.MISC);
+    doCactusGrowthUnlimited = RuleFactory.createBoolean("doCactusGrowthUnlimited", false, GameRules.Category.MISC);
+    doSugarGrowthUnlimited = RuleFactory.createBoolean("doSugarGrowthUnlimited", false, GameRules.Category.MISC);
     //= RuleFactory.createBoolean("doInstantEating", true, GameRules.Category.PLAYER);
     //
     //disable_____   

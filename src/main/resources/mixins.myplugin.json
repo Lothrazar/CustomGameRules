@@ -12,6 +12,8 @@
         "IceAntiMeltMixin",
         "LeavesAntiDecayMixin",
         "CoralAntiDecayMixin",
-        "CoralFanAntiDecayMixin"
+        "CoralFanAntiDecayMixin",
+        "CactusOverwriteMixin",
+        "SugarOverwriteMixin"
     ]
 }

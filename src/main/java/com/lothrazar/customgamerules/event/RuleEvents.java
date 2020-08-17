@@ -5,9 +5,8 @@ import com.lothrazar.customgamerules.RuleRegistry;
 import com.lothrazar.customgamerules.util.UtilWorld;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
-import net.minecraft.block.CoralBlock;
 import net.minecraft.block.PistonBlock;
-import net.minecraft.block.SugarCaneBlock;
+import net.minecraft.block.PumpkinBlock;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.boss.WitherEntity;
@@ -50,8 +49,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 public class RuleEvents {
 
   void sandbox() {
-    CoralBlock y;
-    SugarCaneBlock x;
+    PumpkinBlock y;
     PistonBlock z;
   }
 
