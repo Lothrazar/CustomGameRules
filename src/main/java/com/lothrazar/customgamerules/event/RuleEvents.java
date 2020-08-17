@@ -7,6 +7,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.PistonBlock;
 import net.minecraft.block.PumpkinBlock;
+import net.minecraft.client.renderer.entity.PlayerRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.boss.WitherEntity;
@@ -53,6 +54,8 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 public class RuleEvents {
 
   void sandbox() {
+    //    ClientPlayer c;
+    PlayerRenderer re;
     PumpkinBlock y;
     PistonBlock z;
   }
@@ -74,6 +77,10 @@ public class RuleEvents {
       return;
     }
     World world = (World) event.getWorld();
+    //    if (event.getOriginalState().getBlock() == Blocks.REDSTONE_WIRE) {
+    //      //      FluidMotionEvent abc;
+    //      GameRuleMod.LOGGER.info("water redstone?");
+    //    }
     Block newBlock = event.getNewState().getBlock();
     if (newBlock == Blocks.OBSIDIAN &&
         RuleRegistry.isEnabled(world, RuleRegistry.disableGenerateObsidian)) {
