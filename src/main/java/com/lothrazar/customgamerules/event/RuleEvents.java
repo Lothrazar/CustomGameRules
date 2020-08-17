@@ -36,6 +36,7 @@ import net.minecraftforge.event.entity.EntityEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.EntityMobGriefingEvent;
 import net.minecraftforge.event.entity.living.EnderTeleportEvent;
+import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
@@ -235,10 +236,10 @@ public class RuleEvents {
   }
 
   /**
-   * berryDamage cactusDamage doLilypadsBreak suffocationDamage
+   * disablePetFriendlyFire
    */
   @SubscribeEvent
-  public void onLivingDamageEvent(LivingDamageEvent event) {
+  public void onLivingAttackEvent(LivingAttackEvent event) {
     World world = event.getEntityLiving().world;
     if (RuleRegistry.isEnabled(world, RuleRegistry.disablePetFriendlyFire)
         && event.getSource().getTrueSource() instanceof PlayerEntity) {
@@ -248,23 +249,26 @@ public class RuleEvents {
         //can be tamed
         AbstractHorseEntity horse = (AbstractHorseEntity) event.getEntityLiving();
         if (horse.isTame() && horse.getOwnerUniqueId().equals(dmgOwner.getUniqueID())) {
-          //WOOOOO 
-          event.setAmount(0);
           event.setCanceled(true);
-          return;
+          //          EntityDamageSource f;  
         }
       }
       if (event.getEntityLiving() instanceof TameableEntity) {
         //can be tamed
         TameableEntity pet = (TameableEntity) event.getEntityLiving();
         if (pet.isTamed() && pet.getOwnerId().equals(dmgOwner.getUniqueID())) {
-          //WOOOOO
-          event.setAmount(0);
           event.setCanceled(true);
-          return;
         }
       }
     }
+  }
+
+  /**
+   * berryDamage cactusDamage doLilypadsBreak suffocationDamage
+   */
+  @SubscribeEvent
+  public void onLivingDamageEvent(LivingDamageEvent event) {
+    World world = event.getEntityLiving().world;
     if ((event.getEntityLiving() instanceof PlayerEntity) == false) {
       return;
     }
@@ -281,7 +285,7 @@ public class RuleEvents {
     }
     if (event.getSource() == DamageSource.CACTUS &&
         !RuleRegistry.isEnabled(world, RuleRegistry.cactusDamage)) {
-      //      GameRuleMod.LOGGER.info("cactus");
+      //     
       event.setCanceled(true);
       //      event.setAmount(0); 
     }
