@@ -45,6 +45,7 @@ public class RuleRegistry {
   public static RuleKey<BooleanValue> doCactusGrowthUnlimited;
   public static RuleKey<BooleanValue> doSugarGrowthUnlimited;
   public static RuleKey<BooleanValue> disablePetFriendlyFire;
+  public static RuleKey<BooleanValue> disableFarmlandTrampling;
 
   /**
    * <pre>
@@ -127,6 +128,7 @@ public class RuleRegistry {
     disableGenerateStone = RuleFactory.createBoolean("disableGenerateStone", false, GameRules.Category.UPDATES);
     disableGenerateObsidian = RuleFactory.createBoolean("disableGenerateObsidian", false, GameRules.Category.UPDATES);
     disablePetFriendlyFire = RuleFactory.createBoolean("disablePetFriendlyFire", true, GameRules.Category.UPDATES);
+    disableFarmlandTrampling = RuleFactory.createBoolean("disableFarmlandTrampling", false, GameRules.Category.UPDATES);
     //
     //mobGriefing_______
     //

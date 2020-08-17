@@ -45,6 +45,7 @@ import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.EntityInteract;
 import net.minecraftforge.event.entity.player.PlayerXpEvent;
+import net.minecraftforge.event.world.BlockEvent.FarmlandTrampleEvent;
 import net.minecraftforge.event.world.BlockEvent.FluidPlaceBlockEvent;
 import net.minecraftforge.eventbus.api.Event.Result;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -54,6 +55,14 @@ public class RuleEvents {
   void sandbox() {
     PumpkinBlock y;
     PistonBlock z;
+  }
+
+  @SubscribeEvent
+  public void onFarmlandTrampleEvent(FarmlandTrampleEvent event) {
+    if (event.getWorld() instanceof World &&
+        RuleRegistry.isEnabled((World) event.getWorld(), RuleRegistry.disableFarmlandTrampling)) {
+      event.setCanceled(true);
+    }
   }
 
   /**
