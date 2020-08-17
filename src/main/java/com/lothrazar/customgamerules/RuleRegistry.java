@@ -8,13 +8,32 @@ import net.minecraft.world.World;
 
 public class RuleRegistry {
 
+  public static RuleKey<BooleanValue> disableBiomeFreezeIce;
+  public static RuleKey<BooleanValue> disableBlockGravity;
+  public static RuleKey<BooleanValue> disableDecayCoral;
+  public static RuleKey<BooleanValue> disableDecayLeaves;
+  public static RuleKey<BooleanValue> disableFarmlandTrampling;
+  public static RuleKey<BooleanValue> disableGenerateObsidian;
+  public static RuleKey<BooleanValue> disableGenerateStone;
+  public static RuleKey<BooleanValue> disableLightMeltIce;
+  public static RuleKey<BooleanValue> disableMobItemPickup;
+  public static RuleKey<BooleanValue> disablePetFriendlyFire;
+  public static RuleKey<BooleanValue> disableVillagerTrading;
+  // that disable features
+  public static RuleKey<BooleanValue> doArmorStandWeapons;
+  public static RuleKey<BooleanValue> doLilypadsBreak;
+  public static RuleKey<BooleanValue> doEyesAlwaysBreak;
+  public static RuleKey<BooleanValue> doCactusGrowthUnlimited;
+  public static RuleKey<BooleanValue> doInstantEating;
+  public static RuleKey<BooleanValue> doInstantExp;
+  public static RuleKey<BooleanValue> doNetherVoidAbove;
+  public static RuleKey<BooleanValue> doMapsAlwaysUpdate;
+  public static RuleKey<BooleanValue> doSugarGrowthUnlimited;
   // Game rules related to player damage
   public static RuleKey<BooleanValue> suffocationDamage;
   public static RuleKey<BooleanValue> pearlDamage;
   public static RuleKey<BooleanValue> cactusDamage;
   public static RuleKey<BooleanValue> berryDamage;
-  public static RuleKey<BooleanValue> doLilypadsBreak;
-  public static RuleKey<BooleanValue> doEyesAlwaysBreak;
   // game rules that depend on other existing rules for fine-tuned control
   public static RuleKey<BooleanValue> keepInventoryExperience;
   public static RuleKey<BooleanValue> keepInventoryArmor;
@@ -27,25 +46,6 @@ public class RuleRegistry {
   public static RuleKey<BooleanValue> mobGriefingGhast;
   public static RuleKey<BooleanValue> mobGriefingSilverfish;
   public static RuleKey<BooleanValue> mobGriefingBlaze;
-  // that disable features
-  public static RuleKey<BooleanValue> disableMobItemPickup;
-  public static RuleKey<BooleanValue> disableVillagerTrading;
-  public static RuleKey<BooleanValue> doInstantEating;
-  public static RuleKey<BooleanValue> doInstantExp;
-  public static RuleKey<BooleanValue> doNetherVoidAbove;
-  public static RuleKey<BooleanValue> doArmorStandWeapons;
-  public static RuleKey<BooleanValue> doMapsAlwaysUpdate;
-  public static RuleKey<BooleanValue> disableBlockGravity;
-  public static RuleKey<BooleanValue> disableBiomeFreezeIce;
-  public static RuleKey<BooleanValue> disableLightMeltIce;
-  public static RuleKey<BooleanValue> disableDecayLeaves;
-  public static RuleKey<BooleanValue> disableDecayCoral;
-  public static RuleKey<BooleanValue> disableGenerateObsidian;
-  public static RuleKey<BooleanValue> disableGenerateStone;
-  public static RuleKey<BooleanValue> doCactusGrowthUnlimited;
-  public static RuleKey<BooleanValue> doSugarGrowthUnlimited;
-  public static RuleKey<BooleanValue> disablePetFriendlyFire;
-  public static RuleKey<BooleanValue> disableFarmlandTrampling;
 
   /**
    * <pre>
@@ -129,6 +129,7 @@ public class RuleRegistry {
     disableGenerateObsidian = RuleFactory.createBoolean("disableGenerateObsidian", false, GameRules.Category.UPDATES);
     disablePetFriendlyFire = RuleFactory.createBoolean("disablePetFriendlyFire", true, GameRules.Category.UPDATES);
     disableFarmlandTrampling = RuleFactory.createBoolean("disableFarmlandTrampling", false, GameRules.Category.UPDATES);
+    disableMobItemPickup = RuleFactory.createBoolean("disableMobItemPickup", true, GameRules.Category.MOBS);
     //
     //mobGriefing_______
     //
@@ -141,7 +142,6 @@ public class RuleRegistry {
     mobGriefingSilverfish = RuleFactory.createBoolean("mobGriefingSilverfish", true, GameRules.Category.MOBS);
     mobGriefingGhast = RuleFactory.createBoolean("mobGriefingGhast", true, GameRules.Category.MOBS);
     mobGriefingBlaze = RuleFactory.createBoolean("mobGriefingBlaze", true, GameRules.Category.MOBS);
-    disableMobItemPickup = RuleFactory.createBoolean("doMobItemPickup", true, GameRules.Category.MOBS);
     //misc
     //
     //

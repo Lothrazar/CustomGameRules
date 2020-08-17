@@ -3,12 +3,13 @@
 	"gamerule.disableBlockGravity":"Disable blocks falling from gravity (sand, gravel, ...)",
 	"gamerule.disableDecayLeaves":"Disable naturally decaying leaves",
 	"gamerule.disableDecayCoral":"Disable coral decaying grey",
+	"gamerule.disableFarmlandTrampling":"Disable farmland trampling",
 	"gamerule.disableGenerateStone":"Disable stone generation from liquid",
 	"gamerule.disableGenerateObsidian":"Disable obsidian generation from liquid",
 	"gamerule.disableLightMeltIce":"Disable ice melting from things like light levels",
 	"gamerule.disableMobItemPickup":"Disable item pickup when any Mob joins the world",
+	"gamerule.disablePetFriendlyFire":"Disable pet friendly fire (harming own tamed pets/horses)",
 	"gamerule.disableVillagerTrading":"Disable villager trading",
-	
 	
 	"gamerule.doArmorStandWeapons":"Allow equipping armor stand main & offhand",
 	"gamerule.doCactusGrowthUnlimited":"Cactus growth unlimited height",
@@ -18,15 +19,11 @@
 	"gamerule.doInstantExp":"No delay on XP pickup",
 	"gamerule.doSugarGrowthUnlimited":"Sugar cane growth unlimited height",
 	"gamerule.doLilypadsBreak":"Lily Pads break when player falls on them, preventing damage",
-	
 	"gamerule.doNetherVoidAbove":"Nether deals void damage above 128",
-
 	
 	"gamerule.keepInventoryArmor":"Keep armor after death (requires keepInventory=true)",
 	"gamerule.keepInventoryExperience":"Keep experience after death (requires keepInventory=true)",
 
-
-	
 	"gamerule.mobGriefingCreeper":"Destructive creepers (requires mobGriefing=true)",
 	"gamerule.mobGriefingEnderman":"Destructive enderman (requires mobGriefing=true)",
 	"gamerule.mobGriefingVillager":"Destructive villagers (requires mobGriefing=true)",
@@ -36,8 +33,6 @@
 	"gamerule.mobGriefingSilverfish":"Destructive silverfish (requires mobGriefing=true)",
 	"gamerule.mobGriefingGhast":"Destructive ghast (requires mobGriefing=true)",
 	"gamerule.mobGriefingBlaze":"Destructive blaze (requires mobGriefing=true)",
-
-
 
 	"gamerule.cactusDamage":"Cactus Damage",
 	"gamerule.berryDamage":"Berry Damage",
