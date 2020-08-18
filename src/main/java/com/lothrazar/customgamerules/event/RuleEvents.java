@@ -7,7 +7,6 @@ import com.lothrazar.customgamerules.util.UtilWorld;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.PistonBlock;
-import net.minecraft.block.PumpkinBlock;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.PlayerRenderer;
 import net.minecraft.entity.Entity;
@@ -23,6 +22,7 @@ import net.minecraft.entity.monster.RavagerEntity;
 import net.minecraft.entity.monster.ShulkerEntity;
 import net.minecraft.entity.monster.SilverfishEntity;
 import net.minecraft.entity.monster.ZombieEntity;
+import net.minecraft.entity.passive.IronGolemEntity;
 import net.minecraft.entity.passive.SnowGolemEntity;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.passive.horse.AbstractHorseEntity;
@@ -35,7 +35,6 @@ import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.FoodStats;
 import net.minecraft.util.Hand;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
@@ -74,10 +73,13 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 public class RuleEvents {
 
   void sandbox() {
-    //    ClientPlayer c;
+    //    WISHLISTc;
+    //Blocks.REDSTONE_WIRE invincible from water
+    // harvest level lockdown (axe only wood, doesnt work on dirt)
+    //
     PlayerRenderer re;//outlines in adventure mode? 
-    PumpkinBlock y;//placement
     PistonBlock z;//change push range
+    //fence gate? 
   }
 
   HarvestCheck alt;
@@ -325,8 +327,14 @@ public class RuleEvents {
   @SubscribeEvent
   public void onLivingUpdateEvent(LivingUpdateEvent event) {
     Entity entity = event.getEntity();
-    if (entity == null || entity.world == null) {
-      return;
+    if (RuleRegistry.isEnabled(entity.world, RuleRegistry.doFriendlyIronGolems)
+        && event.getEntityLiving() instanceof IronGolemEntity
+        && event.getEntityLiving().getAttackingEntity() instanceof PlayerEntity) {
+      //STAAAP 
+      IronGolemEntity golem = (IronGolemEntity) event.getEntityLiving();
+      golem.setAttackTarget(null);
+      golem.setRevengeTarget(null);
+      golem.setLastAttackedEntity(null);
     }
     if (entity.lastTickPosY > 128
         && UtilWorld.dimensionToString(entity.world).equalsIgnoreCase("minecraft:the_nether") //
@@ -335,12 +343,12 @@ public class RuleEvents {
       if (entity.isAlive())
         entity.attackEntityFrom(DamageSource.OUT_OF_WORLD, 0.5F);
     }
-    //
-    if (event.getEntityLiving() instanceof PlayerEntity) {
-      PlayerEntity player = (PlayerEntity) event.getEntityLiving();
-      FoodStats food = player.getFoodStats();
-    }
   }
+  //    //
+  //    if (event.getEntityLiving() instanceof PlayerEntity) {
+  //      PlayerEntity player = (PlayerEntity) event.getEntityLiving();
+  //      FoodStats food = player.getFoodStats();
+  //    }
 
   /***
    * doEyesAlwaysBreak

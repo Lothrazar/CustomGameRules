@@ -72,6 +72,7 @@ public class RuleRegistry {
   public static RuleKey<BooleanValue> disablePortalCreationNether;
   public static RuleKey<BooleanValue> disablePortalCreationEnd;
   public static RuleKey<BooleanValue> mobGriefingSnowgolem;
+  public static RuleKey<BooleanValue> doFriendlyIronGolems;
 
   /**
    * <pre>
@@ -134,6 +135,7 @@ public class RuleRegistry {
     //
     // do______ 
     //
+    doFriendlyIronGolems = RuleFactory.createBoolean("doFriendlyIronGolems", true, GameRules.Category.MOBS);
     doMapsAlwaysUpdate = RuleFactory.createBoolean("doMapsAlwaysUpdate", true, GameRules.Category.PLAYER);
     doLilypadsBreak = RuleFactory.createBoolean("doLilypadsBreak", true, GameRules.Category.PLAYER);
     doInstantEating = RuleFactory.createBoolean("doInstantEating", false, GameRules.Category.PLAYER);
@@ -179,6 +181,7 @@ public class RuleRegistry {
     mobGriefingSilverfish = RuleFactory.createBoolean("mobGriefingSilverfish", true, GameRules.Category.MOBS);
     mobGriefingGhast = RuleFactory.createBoolean("mobGriefingGhast", true, GameRules.Category.MOBS);
     mobGriefingBlaze = RuleFactory.createBoolean("mobGriefingBlaze", true, GameRules.Category.MOBS);
+    mobGriefingSnowgolem = RuleFactory.createBoolean("mobGriefingSnowgolem", true, GameRules.Category.MOBS);
     ////    disableHunger// ONLY if we can HIDE the hunger bar
     //    RenderGameOverlayEvent yz;//CLIENT ONLY
     //
