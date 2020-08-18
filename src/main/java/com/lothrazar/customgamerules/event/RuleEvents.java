@@ -23,6 +23,7 @@ import net.minecraft.entity.monster.RavagerEntity;
 import net.minecraft.entity.monster.ShulkerEntity;
 import net.minecraft.entity.monster.SilverfishEntity;
 import net.minecraft.entity.monster.ZombieEntity;
+import net.minecraft.entity.passive.SnowGolemEntity;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.passive.horse.AbstractHorseEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -74,9 +75,9 @@ public class RuleEvents {
 
   void sandbox() {
     //    ClientPlayer c;
-    PlayerRenderer re;
-    PumpkinBlock y;
-    PistonBlock z;
+    PlayerRenderer re;//outlines in adventure mode? 
+    PumpkinBlock y;//placement
+    PistonBlock z;//change push range
   }
 
   HarvestCheck alt;
@@ -457,7 +458,8 @@ public class RuleEvents {
       return;
     }
     PlayerEntity player = (PlayerEntity) event.getEntityLiving();
-    if (event.getSource() == DamageSource.FALL) {
+    if (event.getSource() == DamageSource.FALL
+        && RuleRegistry.isEnabled(world, RuleRegistry.doLilypadsBreak)) {
       if (world.getBlockState(player.getPosition()).getBlock() == Blocks.LILY_PAD) {
         world.destroyBlock(player.getPosition(), true, player);
         event.setAmount(0);
@@ -503,6 +505,10 @@ public class RuleEvents {
     // mobGriefing == true, meaning a DEFAULT result will fall back to that and allow the grief
     //check if we want to deny specific mobs
     //if that mobs rule is FALSE then deny it
+    if (!RuleRegistry.isEnabled(world, RuleRegistry.mobGriefingSnowgolem) && ent instanceof SnowGolemEntity) {
+      event.setResult(Result.DENY);
+      return;
+    }
     if (!RuleRegistry.isEnabled(world, RuleRegistry.mobGriefingCreeper) && ent instanceof CreeperEntity) {
       event.setResult(Result.DENY);
       return;

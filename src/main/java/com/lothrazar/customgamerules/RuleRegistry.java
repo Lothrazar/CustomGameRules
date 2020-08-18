@@ -71,6 +71,7 @@ public class RuleRegistry {
   public static RuleKey<BooleanValue> disableLightningTransform;
   public static RuleKey<BooleanValue> disablePortalCreationNether;
   public static RuleKey<BooleanValue> disablePortalCreationEnd;
+  public static RuleKey<BooleanValue> mobGriefingSnowgolem;
 
   /**
    * <pre>
