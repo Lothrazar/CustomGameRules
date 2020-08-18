@@ -125,7 +125,7 @@ public class RuleRegistry {
     //
     keepInventoryExperience = RuleFactory.createBoolean("keepInventoryExperience", false, GameRules.Category.PLAYER);
     keepInventoryArmor = RuleFactory.createBoolean("keepInventoryArmor", false, GameRules.Category.PLAYER);
-    //
+    //6
     // do______ 
     //
     doMapsAlwaysUpdate = RuleFactory.createBoolean("doMapsAlwaysUpdate", true, GameRules.Category.PLAYER);
@@ -138,7 +138,7 @@ public class RuleRegistry {
     doCactusGrowthUnlimited = RuleFactory.createBoolean("doCactusGrowthUnlimited", false, GameRules.Category.MISC);
     doSugarGrowthUnlimited = RuleFactory.createBoolean("doSugarGrowthUnlimited", false, GameRules.Category.MISC);
     //= RuleFactory.createBoolean("doInstantEating", true, GameRules.Category.PLAYER);
-    //
+    //+9
     //disable_____   
     //
     disableVillagerTrading = RuleFactory.createBoolean("disableVillagerTrading", false, GameRules.Category.MOBS);
@@ -175,6 +175,8 @@ public class RuleRegistry {
     //
     //tntExplodes
     //    tntDamage = RuleFactory.createBoolean("tntDamage", true, GameRules.Category.PLAYER);
+    GameRuleMod.LOGGER.info(GameRuleMod.MODID + " has added " + RuleFactory.count + " Game Rules");
+    int test = 1;
   }
 
   public static boolean isEnabled(World world, RuleKey<BooleanValue> key) {

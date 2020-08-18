@@ -11,6 +11,8 @@ import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 
 public class RuleFactory {
 
+  public static int count = 0;
+
   @SuppressWarnings("unchecked")
   public static RuleKey<BooleanValue> createBoolean(String id, boolean defaultVal, Category cat) {
     try {
@@ -20,6 +22,7 @@ public class RuleFactory {
       m.setAccessible(true);
       RuleType<BooleanValue> b = (RuleType<BooleanValue>) m.invoke(null, defaultVal);
       RuleKey<BooleanValue> rule = GameRules.func_234903_a_(id, cat, b);
+      count++;
       return rule;
     }
     catch (Exception e) {
