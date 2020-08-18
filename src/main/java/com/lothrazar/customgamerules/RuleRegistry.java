@@ -176,7 +176,6 @@ public class RuleRegistry {
     //tntExplodes
     //    tntDamage = RuleFactory.createBoolean("tntDamage", true, GameRules.Category.PLAYER);
     GameRuleMod.LOGGER.info(GameRuleMod.MODID + " has added " + RuleFactory.count + " Game Rules");
-    int test = 1;
   }
 
   public static boolean isEnabled(World world, RuleKey<BooleanValue> key) {
