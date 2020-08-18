@@ -11,6 +11,7 @@ import net.minecraft.block.PumpkinBlock;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.PlayerRenderer;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.boss.WitherEntity;
 import net.minecraft.entity.item.ArmorStandEntity;
@@ -31,6 +32,7 @@ import net.minecraft.entity.projectile.SmallFireballEntity;
 import net.minecraft.entity.projectile.WitherSkullEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.FoodStats;
 import net.minecraft.util.Hand;
@@ -44,20 +46,26 @@ import net.minecraftforge.event.TickEvent.PlayerTickEvent;
 import net.minecraftforge.event.entity.EntityEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.EntityMobGriefingEvent;
+import net.minecraftforge.event.entity.EntityStruckByLightningEvent;
 import net.minecraftforge.event.entity.living.EnderTeleportEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
+import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
 import net.minecraftforge.event.entity.player.CriticalHitEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent.BreakSpeed;
+import net.minecraftforge.event.entity.player.PlayerEvent.HarvestCheck;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.EntityInteract;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent.RightClickBlock;
 import net.minecraftforge.event.entity.player.PlayerXpEvent;
 import net.minecraftforge.event.world.BlockEvent.CropGrowEvent;
 import net.minecraftforge.event.world.BlockEvent.FarmlandTrampleEvent;
 import net.minecraftforge.event.world.BlockEvent.FluidPlaceBlockEvent;
+import net.minecraftforge.event.world.BlockEvent.PortalSpawnEvent;
 import net.minecraftforge.event.world.SaplingGrowTreeEvent;
 import net.minecraftforge.eventbus.api.Event.Result;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -71,10 +79,83 @@ public class RuleEvents {
     PistonBlock z;
   }
 
+  HarvestCheck alt;
+  BreakSpeed rawharvesttodo;
+  //  @SubscribeEvent
+  //  public void onBreakSpeed(BreakSpeed event) {
+  //    //main hand only
+  //    //    event.setNewSpeed(0);
+  //    ItemStack held = event.getPlayer().getHeldItem(Hand.MAIN_HAND);
+  //   for(ToolType t :  held.getToolTypes()) {
+  //    event.getState().har
+  //   }
+  //    System.out.println(held + "can harvest" + event.getState() + "? = " + held.canHarvestBlock(event.getState()));
+  //    if (!held.isEmpty()
+  //        && held.canHarvestBlock(event.getState())) {
+  //      //?
+  //    }
+  //  }
+
+  /**
+   * disablePortalCreationEnd
+   */
+  @SubscribeEvent
+  public void onRightClickBlock(RightClickBlock event) {
+    World world = event.getPlayer().world;
+    if (RuleRegistry.isEnabled(event.getWorld(), RuleRegistry.disablePortalCreationEnd)
+        && world.getBlockState(event.getPos()).getBlock() == Blocks.END_PORTAL_FRAME
+        && event.getPlayer().getHeldItem(event.getHand()).getItem() == Items.ENDER_EYE) {
+      event.setCanceled(true);
+    }
+  }
+
+  /**
+   * disablePortalCreationNether
+   */
+  @SubscribeEvent
+  public void onPortalSpawnEvent(PortalSpawnEvent event) {
+    if (RuleRegistry.isEnabled(event.getWorld(), RuleRegistry.disablePortalCreationNether)) {
+      event.setCanceled(true);
+    }
+  }
+
+  /**
+   * disableLightningTransform
+   */
+  @SubscribeEvent
+  public void onEntityStruckByLightningEvent(EntityStruckByLightningEvent event) {
+    Entity target = event.getEntity();
+    if (RuleRegistry.isEnabled(target.world, RuleRegistry.disableLightningTransform)) {
+      event.setCanceled(true);
+    }
+  }
+
+  /**
+   * disableTargetingPlayers
+   */
+  @SubscribeEvent
+  public void onLivingSetAttackTargetEvent(LivingSetAttackTargetEvent event) {
+    // 
+    LivingEntity attacker = event.getEntityLiving();
+    if (event.getTarget() instanceof PlayerEntity
+        && RuleRegistry.isEnabled(attacker.world, RuleRegistry.disableTargetingPlayers)) {
+      //      event.setCanceled(true);
+      //      event.setResult(Result.DENY);
+      attacker.setRevengeTarget(null);
+      attacker.setLastAttackedEntity(null);
+      if (attacker instanceof MobEntity) {
+        MobEntity mob = (MobEntity) attacker;
+        mob.setAttackTarget(null);
+      }
+    }
+  }
+
+  /**
+   * disableFarmlandTrampling
+   */
   @SubscribeEvent
   public void onFarmlandTrampleEvent(FarmlandTrampleEvent event) {
-    if (event.getWorld() instanceof World &&
-        RuleRegistry.isEnabled((World) event.getWorld(), RuleRegistry.disableFarmlandTrampling)) {
+    if (RuleRegistry.isEnabled(event.getWorld(), RuleRegistry.disableFarmlandTrampling)) {
       event.setCanceled(true);
     }
   }
@@ -284,8 +365,7 @@ public class RuleEvents {
    */
   @SubscribeEvent
   public void onCropGrowEvent(CropGrowEvent.Pre event) {
-    if (event.getWorld() instanceof World &&
-        RuleRegistry.isEnabled((World) event.getWorld(), RuleRegistry.disableCropGrowth)) {
+    if (RuleRegistry.isEnabled(event.getWorld(), RuleRegistry.disableCropGrowth)) {
       //      event.setCanceled(true);//not allowed
       event.setResult(Result.DENY);
     }

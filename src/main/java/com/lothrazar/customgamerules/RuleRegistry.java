@@ -7,6 +7,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.GameRules.BooleanValue;
 import net.minecraft.world.GameRules.RuleKey;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkDirection;
 import net.minecraftforge.fml.network.NetworkRegistry;
@@ -66,6 +67,10 @@ public class RuleRegistry {
   public static RuleKey<BooleanValue> disableSaplingGrowth;
   public static RuleKey<BooleanValue> disableCriticalHits;
   public static RuleKey<BooleanValue> disableHunger;
+  public static RuleKey<BooleanValue> disableTargetingPlayers;
+  public static RuleKey<BooleanValue> disableLightningTransform;
+  public static RuleKey<BooleanValue> disablePortalCreationNether;
+  public static RuleKey<BooleanValue> disablePortalCreationEnd;
 
   /**
    * <pre>
@@ -125,22 +130,25 @@ public class RuleRegistry {
     //
     keepInventoryExperience = RuleFactory.createBoolean("keepInventoryExperience", false, GameRules.Category.PLAYER);
     keepInventoryArmor = RuleFactory.createBoolean("keepInventoryArmor", false, GameRules.Category.PLAYER);
-    //6
+    //
     // do______ 
     //
     doMapsAlwaysUpdate = RuleFactory.createBoolean("doMapsAlwaysUpdate", true, GameRules.Category.PLAYER);
     doLilypadsBreak = RuleFactory.createBoolean("doLilypadsBreak", true, GameRules.Category.PLAYER);
     doInstantEating = RuleFactory.createBoolean("doInstantEating", false, GameRules.Category.PLAYER);
-    doInstantExp = RuleFactory.createBoolean("doInstantExp", true, GameRules.Category.PLAYER);
+    doInstantExp = RuleFactory.createBoolean("doInstantExp", false, GameRules.Category.PLAYER);
     doArmorStandWeapons = RuleFactory.createBoolean("doArmorStandWeapons", true, GameRules.Category.PLAYER);
-    doEyesAlwaysBreak = RuleFactory.createBoolean("doEyesAlwaysBreak", true, GameRules.Category.DROPS);
+    doEyesAlwaysBreak = RuleFactory.createBoolean("doEyesAlwaysBreak", false, GameRules.Category.DROPS);
     doNetherVoidAbove = RuleFactory.createBoolean("doNetherVoidAbove", false, GameRules.Category.MISC);
     doCactusGrowthUnlimited = RuleFactory.createBoolean("doCactusGrowthUnlimited", false, GameRules.Category.MISC);
     doSugarGrowthUnlimited = RuleFactory.createBoolean("doSugarGrowthUnlimited", false, GameRules.Category.MISC);
     //= RuleFactory.createBoolean("doInstantEating", true, GameRules.Category.PLAYER);
-    //+9
-    //disable_____   
     //
+    //disable_____   
+    disablePortalCreationEnd = RuleFactory.createBoolean("disablePortalCreationEnd", false, GameRules.Category.PLAYER);
+    disablePortalCreationNether = RuleFactory.createBoolean("disablePortalCreationNether", false, GameRules.Category.PLAYER);
+    disableLightningTransform = RuleFactory.createBoolean("disableLightningTransform", false, GameRules.Category.MOBS);
+    disableTargetingPlayers = RuleFactory.createBoolean("disableTargetingPlayers", false, GameRules.Category.MOBS);
     disableVillagerTrading = RuleFactory.createBoolean("disableVillagerTrading", false, GameRules.Category.MOBS);
     disableBlockGravity = RuleFactory.createBoolean("disableBlockGravity", false, GameRules.Category.UPDATES);
     disableBiomeFreezeIce = RuleFactory.createBoolean("disableBiomeFreezeIce", false, GameRules.Category.UPDATES);
@@ -162,7 +170,7 @@ public class RuleRegistry {
     //mobGriefing_______
     //
     mobGriefingCreeper = RuleFactory.createBoolean("mobGriefingCreeper", true, GameRules.Category.MOBS);
-    mobGriefingEnderman = RuleFactory.createBoolean("mobGriefingEnderman", false, GameRules.Category.MOBS);
+    mobGriefingEnderman = RuleFactory.createBoolean("mobGriefingEnderman", true, GameRules.Category.MOBS);
     mobGriefingVillager = RuleFactory.createBoolean("mobGriefingVillager", true, GameRules.Category.MOBS);
     mobGriefingZombie = RuleFactory.createBoolean("mobGriefingZombie", true, GameRules.Category.MOBS);
     mobGriefingWither = RuleFactory.createBoolean("mobGriefingWither", true, GameRules.Category.MOBS);
@@ -180,6 +188,13 @@ public class RuleRegistry {
 
   public static boolean isEnabled(World world, RuleKey<BooleanValue> key) {
     return world.getGameRules().getBoolean(key);
+  }
+
+  public static boolean isEnabled(IWorld world, RuleKey<BooleanValue> key) {
+    if (!(world instanceof World)) {
+      return false;
+    }
+    return ((World) world).getGameRules().getBoolean(key);
   }
 
   public static void sendToAllClients(World world, PacketHungerRuleSync packet) {

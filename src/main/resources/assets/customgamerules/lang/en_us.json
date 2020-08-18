@@ -1,5 +1,6 @@
 {
 	"gamerule.disableBiomeFreezeIce":"Disable water freezing due to biome temperature",
+	"gamerule.disableBiomeFreezeIce.description":"Dffffffffffffffffffffffffffffffffffffff",
 	"gamerule.disableBlockGravity":"Disable blocks falling from gravity (sand, gravel, ...)",
 	"gamerule.disableCriticalHits":"Disable all (normal) critical hits",
 	"gamerule.disableCropGrowth":"Disable crop growth",
@@ -16,6 +17,12 @@
 	"gamerule.disableMobItemPickup":"Disable item pickup when any Mob joins the world",
 	"gamerule.disablePetFriendlyFire":"Disable pet friendly fire (harming own tamed pets/horses)",
 	"gamerule.disableVillagerTrading":"Disable villager trading",
+	"gamerule.disableTargetingPlayers":"Disable mobs from targeting players; no spawning changes; any difficulty",
+	
+	"gamerule.disableLightningTransform":"Disable mobs from transforming when struck by lightning",
+	
+	"gamerule.disablePortalCreationNether":"Disable players from igniting nether portals",
+	"gamerule.disablePortalCreationEnd":"Disable players from igniting end portals",
 	
 	"gamerule.doArmorStandWeapons":"Allow equipping armor stand main & offhand",
 	"gamerule.doCactusGrowthUnlimited":"Cactus growth unlimited height",
