@@ -1,13 +1,27 @@
 package com.lothrazar.customgamerules;
 
 import com.lothrazar.customgamerules.util.RuleFactory;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.GameRules.BooleanValue;
 import net.minecraft.world.GameRules.RuleKey;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.network.NetworkDirection;
+import net.minecraftforge.fml.network.NetworkRegistry;
+import net.minecraftforge.fml.network.simple.SimpleChannel;
 
 public class RuleRegistry {
 
+  private static final String PROTOCOL_VERSION = Integer.toString(1);
+  public static final SimpleChannel INSTANCE = NetworkRegistry.ChannelBuilder
+      .named(new ResourceLocation(GameRuleMod.MODID, "main_channel"))
+      .clientAcceptedVersions(PROTOCOL_VERSION::equals)
+      .serverAcceptedVersions(PROTOCOL_VERSION::equals)
+      .networkProtocolVersion(() -> PROTOCOL_VERSION)
+      .simpleChannel();
+  //
   public static RuleKey<BooleanValue> disableBiomeFreezeIce;
   public static RuleKey<BooleanValue> disableBlockGravity;
   public static RuleKey<BooleanValue> disableDecayCoral;
@@ -46,6 +60,12 @@ public class RuleRegistry {
   public static RuleKey<BooleanValue> mobGriefingGhast;
   public static RuleKey<BooleanValue> mobGriefingSilverfish;
   public static RuleKey<BooleanValue> mobGriefingBlaze;
+  public static RuleKey<BooleanValue> disableEndermanTeleport;
+  public static RuleKey<BooleanValue> disableShulkerTeleport;
+  public static RuleKey<BooleanValue> disableCropGrowth;
+  public static RuleKey<BooleanValue> disableSaplingGrowth;
+  public static RuleKey<BooleanValue> disableCriticalHits;
+  public static RuleKey<BooleanValue> disableHunger;
 
   /**
    * <pre>
@@ -82,6 +102,8 @@ public class RuleRegistry {
    * </pre>
    */
   public static void setup() {
+    int id = 0;
+    INSTANCE.registerMessage(id++, PacketHungerRuleSync.class, PacketHungerRuleSync::encode, PacketHungerRuleSync::decode, PacketHungerRuleSync::handle);
     /**
      * NEW:
      * 
@@ -129,7 +151,13 @@ public class RuleRegistry {
     disableGenerateObsidian = RuleFactory.createBoolean("disableGenerateObsidian", false, GameRules.Category.UPDATES);
     disablePetFriendlyFire = RuleFactory.createBoolean("disablePetFriendlyFire", true, GameRules.Category.UPDATES);
     disableFarmlandTrampling = RuleFactory.createBoolean("disableFarmlandTrampling", false, GameRules.Category.UPDATES);
-    disableMobItemPickup = RuleFactory.createBoolean("disableMobItemPickup", true, GameRules.Category.MOBS);
+    disableMobItemPickup = RuleFactory.createBoolean("disableMobItemPickup", false, GameRules.Category.MOBS);
+    disableEndermanTeleport = RuleFactory.createBoolean("disableEndermanTeleport", false, GameRules.Category.MOBS);
+    disableShulkerTeleport = RuleFactory.createBoolean("disableShulkerTeleport", false, GameRules.Category.MOBS);
+    disableCropGrowth = RuleFactory.createBoolean("disableCropGrowth", false, GameRules.Category.UPDATES);
+    disableSaplingGrowth = RuleFactory.createBoolean("disableSaplingGrowth", false, GameRules.Category.UPDATES);
+    disableCriticalHits = RuleFactory.createBoolean("disableCriticalHits", false, GameRules.Category.UPDATES);
+    disableHunger = RuleFactory.createBoolean("disableHunger", false, GameRules.Category.PLAYER);
     //
     //mobGriefing_______
     //
@@ -142,21 +170,25 @@ public class RuleRegistry {
     mobGriefingSilverfish = RuleFactory.createBoolean("mobGriefingSilverfish", true, GameRules.Category.MOBS);
     mobGriefingGhast = RuleFactory.createBoolean("mobGriefingGhast", true, GameRules.Category.MOBS);
     mobGriefingBlaze = RuleFactory.createBoolean("mobGriefingBlaze", true, GameRules.Category.MOBS);
-    //misc
+    ////    disableHunger// ONLY if we can HIDE the hunger bar
+    //    RenderGameOverlayEvent yz;//CLIENT ONLY
     //
-    //
+    //tntExplodes
     //    tntDamage = RuleFactory.createBoolean("tntDamage", true, GameRules.Category.PLAYER);
-    // do____
-    //    RuleFactory.createBoolean("doBurnBabyZombies", false);
-    //    RuleFactory.createBoolean("doInstantEating", false);
-    //FROM BEDROCK
-    //    RuleFactory.createBoolean("showCoordinates", true);
-    //    tntExplodes
-    //commandBlocksEnabled
-    //    showTags
   }
 
   public static boolean isEnabled(World world, RuleKey<BooleanValue> key) {
     return world.getGameRules().getBoolean(key);
+  }
+
+  public static void sendToAllClients(World world, PacketHungerRuleSync packet) {
+    for (PlayerEntity player : world.getPlayers()) {
+      if (player instanceof ServerPlayerEntity) {
+        //test 
+        ServerPlayerEntity sp = ((ServerPlayerEntity) player);
+        INSTANCE.sendTo(packet,
+            sp.connection.netManager, NetworkDirection.PLAY_TO_CLIENT);
+      }
+    }
   }
 }

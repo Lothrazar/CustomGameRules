@@ -1,12 +1,14 @@
 package com.lothrazar.customgamerules.event;
 
 import java.util.Iterator;
+import com.lothrazar.customgamerules.PacketHungerRuleSync;
 import com.lothrazar.customgamerules.RuleRegistry;
 import com.lothrazar.customgamerules.util.UtilWorld;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.PistonBlock;
 import net.minecraft.block.PumpkinBlock;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.PlayerRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.MobEntity;
@@ -17,6 +19,7 @@ import net.minecraft.entity.merchant.villager.VillagerEntity;
 import net.minecraft.entity.monster.CreeperEntity;
 import net.minecraft.entity.monster.EndermanEntity;
 import net.minecraft.entity.monster.RavagerEntity;
+import net.minecraft.entity.monster.ShulkerEntity;
 import net.minecraft.entity.monster.SilverfishEntity;
 import net.minecraft.entity.monster.ZombieEntity;
 import net.minecraft.entity.passive.TameableEntity;
@@ -33,6 +36,11 @@ import net.minecraft.util.FoodStats;
 import net.minecraft.util.Hand;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
+import net.minecraftforge.event.TickEvent.PlayerTickEvent;
 import net.minecraftforge.event.entity.EntityEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.EntityMobGriefingEvent;
@@ -42,12 +50,15 @@ import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
+import net.minecraftforge.event.entity.player.CriticalHitEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.EntityInteract;
 import net.minecraftforge.event.entity.player.PlayerXpEvent;
+import net.minecraftforge.event.world.BlockEvent.CropGrowEvent;
 import net.minecraftforge.event.world.BlockEvent.FarmlandTrampleEvent;
 import net.minecraftforge.event.world.BlockEvent.FluidPlaceBlockEvent;
+import net.minecraftforge.event.world.SaplingGrowTreeEvent;
 import net.minecraftforge.eventbus.api.Event.Result;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
@@ -105,6 +116,39 @@ public class RuleEvents {
       //reset XP on pickup
       if (player.xpCooldown > 0)
         player.xpCooldown = 0;
+    }
+  }
+
+  @OnlyIn(Dist.CLIENT)
+  @SubscribeEvent
+  public void onRenderGameOverlayEvent(RenderGameOverlayEvent event) {
+    //hack because gamerule is false on client even if server is true
+    //    System.out.println("hide "
+    //        + Minecraft.getInstance().player.getPersistentData().getBoolean("disableHungerHACK"));
+    if (event.getType() == ElementType.FOOD) {
+      boolean hide = RuleRegistry.isEnabled(Minecraft.getInstance().player.world, RuleRegistry.disableHunger)
+          || Minecraft.getInstance().player.getPersistentData().getBoolean("disableHungerHACK");
+      if (hide) {
+        //
+        event.setCanceled(true);
+      }
+    }
+  }
+
+  /**
+   * disableHunger
+   */
+  @SubscribeEvent
+  public void onPlayerTickEvent(PlayerTickEvent event) {
+    PlayerEntity player = event.player;
+    boolean disableHunger = RuleRegistry.isEnabled(player.world, RuleRegistry.disableHunger);
+    if (System.currentTimeMillis() % 40 == 0
+        && player.world.isRemote == false) {
+      //hack to push gamerule to client to hide hunger bar
+      RuleRegistry.sendToAllClients(player.world, new PacketHungerRuleSync(disableHunger));
+    }
+    if (disableHunger && player.getFoodStats().needFood()) {
+      player.getFoodStats().addStats(1, 1);
     }
   }
 
@@ -235,19 +279,62 @@ public class RuleEvents {
     }
   }
 
+  /**
+   * disableCropGrowth
+   */
+  @SubscribeEvent
+  public void onCropGrowEvent(CropGrowEvent.Pre event) {
+    if (event.getWorld() instanceof World &&
+        RuleRegistry.isEnabled((World) event.getWorld(), RuleRegistry.disableCropGrowth)) {
+      //      event.setCanceled(true);//not allowed
+      event.setResult(Result.DENY);
+    }
+  }
+
+  /**
+   * disableSaplingGrowth
+   */
+  @SubscribeEvent
+  public void onSaplingGrowTreeEvent(SaplingGrowTreeEvent event) {
+    if (event.getWorld() instanceof World &&
+        RuleRegistry.isEnabled((World) event.getWorld(), RuleRegistry.disableSaplingGrowth)) {
+      //      event.setCanceled(true);//not allowed
+      event.setResult(Result.DENY);
+    }
+  }
+
+  /**
+   * disableCriticalHits
+   */
+  @SubscribeEvent
+  public void onCriticalHitEvent(CriticalHitEvent event) {
+    World world = event.getEntity().world;
+    if (event.isVanillaCritical() &&
+        RuleRegistry.isEnabled(world, RuleRegistry.disableCriticalHits)) {
+      event.setResult(Result.DENY);// event.setCanceled(true); 
+    }
+  }
+
   /***
-   * pearlDamage
+   * pearlDamage disableEndermanTeleport disableShulkerTeleport
    * 
    */
   @SubscribeEvent
   public void onEnderTeleportEvent(EnderTeleportEvent event) {
-    if ((event.getEntityLiving() instanceof PlayerEntity) == false) {
-      return;
+    World world = event.getEntity().world;
+    if (event.getEntityLiving() instanceof EndermanEntity
+        && RuleRegistry.isEnabled(world, RuleRegistry.disableEndermanTeleport)) {
+      event.setCanceled(true);
     }
-    PlayerEntity player = (PlayerEntity) event.getEntityLiving();
-    World world = player.world;
-    if (!RuleRegistry.isEnabled(world, RuleRegistry.pearlDamage)) {
-      event.setAttackDamage(0);
+    if (event.getEntityLiving() instanceof ShulkerEntity
+        && RuleRegistry.isEnabled(world, RuleRegistry.disableShulkerTeleport)) {
+      event.setCanceled(true);
+    }
+    if (event.getEntityLiving() instanceof PlayerEntity) {
+      //      PlayerEntity player = (PlayerEntity) event.getEntityLiving();
+      if (!RuleRegistry.isEnabled(world, RuleRegistry.pearlDamage)) {
+        event.setAttackDamage(0);
+      }
     }
   }
 
@@ -271,6 +358,7 @@ public class RuleEvents {
       }
       if (event.getEntityLiving() instanceof TameableEntity) {
         //can be tamed
+        //        ParrotEntity y;//yep parrot, cat, wolf all extend tameable
         TameableEntity pet = (TameableEntity) event.getEntityLiving();
         if (pet.isTamed() && pet.getOwnerId().equals(dmgOwner.getUniqueID())) {
           event.setCanceled(true);
