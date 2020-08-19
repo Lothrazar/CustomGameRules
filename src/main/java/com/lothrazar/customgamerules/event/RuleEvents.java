@@ -387,7 +387,7 @@ public class RuleEvents {
   public void onSaplingGrowTreeEvent(SaplingGrowTreeEvent event) {
     if (event.getWorld() instanceof World &&
         RuleRegistry.isEnabled((World) event.getWorld(), RuleRegistry.disableSaplingGrowth)) {
-      //      event.setCanceled(true);//not allowed
+      //      event.setCanceled(true);//not allowed 
       event.setResult(Result.DENY);
     }
   }
@@ -462,17 +462,6 @@ public class RuleEvents {
   @SubscribeEvent
   public void onLivingDamageEvent(LivingDamageEvent event) {
     World world = event.getEntityLiving().world;
-    if ((event.getEntityLiving() instanceof PlayerEntity) == false) {
-      return;
-    }
-    PlayerEntity player = (PlayerEntity) event.getEntityLiving();
-    if (event.getSource() == DamageSource.FALL
-        && RuleRegistry.isEnabled(world, RuleRegistry.doLilypadsBreak)) {
-      if (world.getBlockState(player.getPosition()).getBlock() == Blocks.LILY_PAD) {
-        world.destroyBlock(player.getPosition(), true, player);
-        event.setAmount(0);
-      }
-    }
     if (event.getSource() == DamageSource.IN_WALL &&
         !RuleRegistry.isEnabled(world, RuleRegistry.suffocationDamage)) {
       event.setCanceled(true);
@@ -486,6 +475,18 @@ public class RuleEvents {
     if (event.getSource() == DamageSource.SWEET_BERRY_BUSH &&
         !RuleRegistry.isEnabled(world, RuleRegistry.berryDamage)) {
       event.setCanceled(true);
+    }
+    // 
+    if ((event.getEntityLiving() instanceof PlayerEntity) == false) {
+      return;
+    }
+    PlayerEntity player = (PlayerEntity) event.getEntityLiving();
+    if (event.getSource() == DamageSource.FALL
+        && RuleRegistry.isEnabled(world, RuleRegistry.doLilypadsBreak)) {
+      if (world.getBlockState(player.getPosition()).getBlock() == Blocks.LILY_PAD) {
+        world.destroyBlock(player.getPosition(), true, player);
+        event.setAmount(0);
+      }
     }
     //    if (event.getSource().isExplosion() &&
     //        !RuleRegistry.isEnabled(world, RuleRegistry.tntDamage)) {
