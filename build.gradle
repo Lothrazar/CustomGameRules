@@ -38,7 +38,6 @@ minecraft {
     //makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
     
     accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
-    // accessTransformer = file('build/resources/main/META-INF/accesstransformer.cfg')
 
     // Default run configurations.
     // These can be tweaked, removed, or duplicated as needed.
@@ -107,7 +106,7 @@ dependencies {
     minecraft "net.minecraftforge:forge:${mc_version}-${forge_version}"
 
 
-    compile fg.deobf("mezz.jei:jei-${mc_version}:${jei_version}")
+    //compile fg.deobf("mezz.jei:jei-${mc_version}:${jei_version}")
     //compile fg.deobf("top.theillusivec4.curios:curios:FORGE-${mc_version}-${curios_version}")
     
     // You may put jars on which you depend on in ./libs or you may define them like so..
