@@ -16,13 +16,11 @@ public class IceAntiMeltMixin {
 
   @Inject(at = @At(value = "HEAD"), method = "turnIntoWater(Lnet/minecraft/block/BlockState;Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;)V", cancellable = true)
   public void tickMixin(BlockState bs, World worldIn, BlockPos pos, CallbackInfo info) {
-    //if disable == true, then      
-    System.out.println("ICE ???????????");
+    //if disable == true, then       
     IceBlock me = (IceBlock) (Object) this;
     if (RuleRegistry.isEnabled(worldIn, RuleRegistry.disableLightMeltIce)
         && bs.getBlock() == Blocks.ICE) {
       info.cancel();
-      System.out.println("ICE CANCEL");
     }
   }
 }
