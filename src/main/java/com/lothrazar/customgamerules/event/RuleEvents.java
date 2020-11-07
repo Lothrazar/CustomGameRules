@@ -6,9 +6,7 @@ import com.lothrazar.customgamerules.RuleRegistry;
 import com.lothrazar.customgamerules.util.UtilWorld;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
-import net.minecraft.block.PistonBlock;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.entity.PlayerRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
@@ -56,8 +54,6 @@ import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
 import net.minecraftforge.event.entity.player.CriticalHitEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
-import net.minecraftforge.event.entity.player.PlayerEvent.BreakSpeed;
-import net.minecraftforge.event.entity.player.PlayerEvent.HarvestCheck;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.EntityInteract;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.RightClickBlock;
@@ -71,33 +67,6 @@ import net.minecraftforge.eventbus.api.Event.Result;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 public class RuleEvents {
-
-  void sandbox() {
-    //    WISHLISTc;
-    //Blocks.REDSTONE_WIRE invincible from water
-    // harvest level lockdown (axe only wood, doesnt work on dirt)
-    //
-    PlayerRenderer re;//outlines in adventure mode? 
-    PistonBlock z;//change push range
-    //fence gate? 
-  }
-
-  HarvestCheck alt;
-  BreakSpeed rawharvesttodo;
-  //  @SubscribeEvent
-  //  public void onBreakSpeed(BreakSpeed event) {
-  //    //main hand only
-  //    //    event.setNewSpeed(0);
-  //    ItemStack held = event.getPlayer().getHeldItem(Hand.MAIN_HAND);
-  //   for(ToolType t :  held.getToolTypes()) {
-  //    event.getState().har
-  //   }
-  //    System.out.println(held + "can harvest" + event.getState() + "? = " + held.canHarvestBlock(event.getState()));
-  //    if (!held.isEmpty()
-  //        && held.canHarvestBlock(event.getState())) {
-  //      //?
-  //    }
-  //  }
 
   /**
    * disablePortalCreationEnd
