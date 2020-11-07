@@ -16,12 +16,14 @@ public class RuleFactory {
   @SuppressWarnings("unchecked")
   public static RuleKey<BooleanValue> createBoolean(String id, boolean defaultVal, Category cat) {
     //access transformers cfg SHULD make this create public
-    //      RuleType<BooleanValue> test =    GameRules.RuleType.func_223571_a(defaultVal);
+    //    RuleType<BooleanValue> test = GameRules.RuleType.func_223571_a(defaultVal);
     try {
+      //      test = new GameRules.BooleanValue.c 
       Method m = ObfuscationReflectionHelper.findMethod(GameRules.BooleanValue.class, "func_223571_a", boolean.class);
       m.setAccessible(true);
-      RuleType<BooleanValue> b = (RuleType<BooleanValue>) m.invoke(null, defaultVal);
-      RuleKey<BooleanValue> rule = GameRules.func_234903_a_(id, cat, b);
+      RuleType<BooleanValue> ruleTypeBoolean = (RuleType<BooleanValue>) m.invoke(null, defaultVal);
+      //func_234903_a_ == register
+      RuleKey<BooleanValue> rule = GameRules.register(id, cat, ruleTypeBoolean);
       count++;
       return rule;
     }

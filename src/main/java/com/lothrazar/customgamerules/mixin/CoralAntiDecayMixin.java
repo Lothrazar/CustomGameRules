@@ -16,8 +16,7 @@ public class CoralAntiDecayMixin {
 
   @Inject(at = @At("HEAD"), method = "tick(Lnet/minecraft/block/BlockState;Lnet/minecraft/world/server/ServerWorld;Lnet/minecraft/util/math/BlockPos;Ljava/util/Random;)V", cancellable = true)
   public void tickMixin(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand, CallbackInfo info) {
-    CoralBlock sand = (CoralBlock) (Object) this;
-    //if disable == true, then stop 
+    //    CoralBlock block = (CoralBlock) (Object) this; 
     if (RuleRegistry.isEnabled(worldIn, RuleRegistry.disableDecayCoral)) {
       info.cancel();
     }
