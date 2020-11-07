@@ -27,6 +27,8 @@ import java.util.function.Supplier;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.PacketBuffer;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 public class PacketHungerRuleSync {
@@ -39,10 +41,16 @@ public class PacketHungerRuleSync {
 
   public static void handle(PacketHungerRuleSync message, Supplier<NetworkEvent.Context> ctx) {
     ctx.get().enqueueWork(() -> {
-      PlayerEntity player = Minecraft.getInstance().player;
+      PlayerEntity player = getPlayer();
       player.getPersistentData().putBoolean("disableHungerHACK", message.theRule);
     });
     ctx.get().setPacketHandled(true);
+  }
+
+  @OnlyIn(Dist.CLIENT)
+  private static PlayerEntity getPlayer() {
+    PlayerEntity player = Minecraft.getInstance().player;
+    return player;
   }
 
   public static PacketHungerRuleSync decode(PacketBuffer buf) {
