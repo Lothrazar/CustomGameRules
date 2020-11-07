@@ -505,6 +505,9 @@ public class RuleEvents {
    */
   @SubscribeEvent
   public void onEntityMobGriefingEvent(EntityMobGriefingEvent event) {
+    if (event == null || event.getEntity() == null || event.getEntity().world == null) {
+      return;
+    }
     Entity ent = event.getEntity();
     World world = ent.world;
     if (!RuleRegistry.isEnabled(world, GameRules.MOB_GRIEFING)) {
