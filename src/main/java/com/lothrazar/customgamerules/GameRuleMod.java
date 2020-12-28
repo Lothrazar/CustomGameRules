@@ -22,4 +22,8 @@ public class GameRuleMod {
   private void setup(final FMLCommonSetupEvent event) {
     RuleRegistry.setup();
   }
+
+  public static void info(String s) {
+    LOGGER.info(s);
+  }
 }

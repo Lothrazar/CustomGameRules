@@ -21,7 +21,7 @@ public class CactusOverwriteMixin {
     //IF GAMERULE, H
     if (RuleRegistry.isEnabled(worldIn, RuleRegistry.doCactusGrowthUnlimited)) {
       MAXHEIGHT = 256;
-      GameRuleMod.LOGGER.info("CactusOverwriteMixin mixin success and doCactusGrowthUnlimited=true");
+      GameRuleMod.info("CactusOverwriteMixin mixin success and doCactusGrowthUnlimited=true");
     }
     //now the copy paste of the method
     BlockPos blockpos = pos.up();

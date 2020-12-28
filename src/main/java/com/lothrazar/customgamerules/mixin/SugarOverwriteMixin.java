@@ -21,7 +21,7 @@ public class SugarOverwriteMixin {
     //IF GAMERULE, H
     if (RuleRegistry.isEnabled(worldIn, RuleRegistry.doSugarGrowthUnlimited)) {
       MAXHEIGHT = 256;
-      GameRuleMod.LOGGER.info("SugarOverwriteMixin mixin success and doSugarGrowthUnlimited=true");
+      GameRuleMod.info("SugarOverwriteMixin mixin success and doSugarGrowthUnlimited=true");
     }
     //now the copy paste of the method
     BlockPos blockpos = pos.up();

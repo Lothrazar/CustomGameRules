@@ -25,7 +25,7 @@ public class CoralFanAntiDecayMixin {
     if (worldIn instanceof World &&
         RuleRegistry.isEnabled((World) worldIn, RuleRegistry.disableDecayCoral)) {
       info.cancel();
-      GameRuleMod.LOGGER.info("CoralFanAntiDecayMixin mixin success and disableDecayCoral=true");
+      GameRuleMod.info("CoralFanAntiDecayMixin mixin success and disableDecayCoral=true");
     }
   }
 }

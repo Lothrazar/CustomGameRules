@@ -21,7 +21,7 @@ public class FallingBlockGravityMixin {
     //if disable == true, then stop the grav
     if (RuleRegistry.isEnabled(worldIn, RuleRegistry.disableBlockGravity)) {
       info.cancel();
-      GameRuleMod.LOGGER.info("FallingBlockGravityMixin mixin success and disableBlockGravity=true");
+      GameRuleMod.info("FallingBlockGravityMixin mixin success and disableBlockGravity=true");
     }
   }
 }

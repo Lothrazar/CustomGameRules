@@ -22,7 +22,7 @@ public class IceAntiMeltMixin {
     if (RuleRegistry.isEnabled(worldIn, RuleRegistry.disableLightMeltIce)
         && bs.getBlock() == Blocks.ICE) {
       info.cancel();
-      GameRuleMod.LOGGER.info("IceAntiMeltMixin mixin success and disableLightMeltIce=true");
+      GameRuleMod.info("IceAntiMeltMixin mixin success and disableLightMeltIce=true");
     }
   }
 }

@@ -23,7 +23,7 @@ public class FilledMapItemRefreshMixin {
     //    Item test = map.asItem();
     if (!worldIn.isRemote &&
         RuleRegistry.isEnabled(worldIn, RuleRegistry.doMapsAlwaysUpdate)) {
-      GameRuleMod.LOGGER.info("FilledMapItemRefreshMixin mixin success and doMapsAlwaysUpdate=true");
+      GameRuleMod.info("FilledMapItemRefreshMixin mixin success and doMapsAlwaysUpdate=true");
       MapData mapdata = FilledMapItem.getMapData(stack, worldIn);
       if (mapdata != null) {
         if (entityIn instanceof PlayerEntity) {

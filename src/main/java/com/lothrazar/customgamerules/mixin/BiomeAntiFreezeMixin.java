@@ -14,13 +14,13 @@ import net.minecraft.world.biome.Biome;
 @Mixin(Biome.class)
 public class BiomeAntiFreezeMixin {
 
-  @Inject(at = @At("HEAD"), method = "doesWaterFreeze(Lnet/minecraft/world/IWorldReader;Lnet/minecraft/util/math/BlockPos;)Z", cancellable = true)
-  public void tickMixin(IWorldReader worldIn, BlockPos water, CallbackInfoReturnable<Boolean> info) {//boolean mustBeAtEdge,
+  @Inject(at = @At("HEAD"), method = "doesWaterFreeze(Lnet/minecraft/world/IWorldReader;Lnet/minecraft/util/math/BlockPos;Z)Z", cancellable = true)
+  public void doesWaterFreeze(IWorldReader worldIn, BlockPos water, boolean mustBeAtEdge, CallbackInfoReturnable<Boolean> info) {
     //if disable == true, then  
     if (worldIn instanceof World &&
         RuleRegistry.isEnabled((World) worldIn, RuleRegistry.disableBiomeFreezeIce)) {
       info.setReturnValue(false);
-      GameRuleMod.LOGGER.info("BiomeAntiFreezeMixin mixin success and disableBiomeFreezeIce=true");
+      GameRuleMod.info("BiomeAntiFreezeMixin mixin success and disableBiomeFreezeIce=true");
     }
   }
 }

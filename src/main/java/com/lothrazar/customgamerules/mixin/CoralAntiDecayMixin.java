@@ -20,7 +20,7 @@ public class CoralAntiDecayMixin {
     //    CoralBlock block = (CoralBlock) (Object) this; 
     if (RuleRegistry.isEnabled(worldIn, RuleRegistry.disableDecayCoral)) {
       info.cancel();
-      GameRuleMod.LOGGER.info("CoralAntiDecayMixin mixin success and disableDecayCoral=true");
+      GameRuleMod.info("CoralAntiDecayMixin mixin success and disableDecayCoral=true");
     }
   }
 }
