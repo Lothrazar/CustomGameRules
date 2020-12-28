@@ -4,6 +4,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import com.lothrazar.customgamerules.GameRuleMod;
 import com.lothrazar.customgamerules.RuleRegistry;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -22,6 +23,7 @@ public class FilledMapItemRefreshMixin {
     //    Item test = map.asItem();
     if (!worldIn.isRemote &&
         RuleRegistry.isEnabled(worldIn, RuleRegistry.doMapsAlwaysUpdate)) {
+      GameRuleMod.LOGGER.info("FilledMapItemRefreshMixin mixin success and doMapsAlwaysUpdate=true");
       MapData mapdata = FilledMapItem.getMapData(stack, worldIn);
       if (mapdata != null) {
         if (entityIn instanceof PlayerEntity) {

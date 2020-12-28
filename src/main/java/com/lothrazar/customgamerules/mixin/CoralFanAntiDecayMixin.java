@@ -4,6 +4,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import com.lothrazar.customgamerules.GameRuleMod;
 import com.lothrazar.customgamerules.RuleRegistry;
 import net.minecraft.block.AbstractCoralPlantBlock;
 import net.minecraft.block.BlockState;
@@ -24,6 +25,7 @@ public class CoralFanAntiDecayMixin {
     if (worldIn instanceof World &&
         RuleRegistry.isEnabled((World) worldIn, RuleRegistry.disableDecayCoral)) {
       info.cancel();
+      GameRuleMod.LOGGER.info("CoralFanAntiDecayMixin mixin success and disableDecayCoral=true");
     }
   }
 }

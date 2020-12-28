@@ -3,6 +3,7 @@ package com.lothrazar.customgamerules.mixin;
 import java.util.Random;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
+import com.lothrazar.customgamerules.GameRuleMod;
 import com.lothrazar.customgamerules.RuleRegistry;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.CactusBlock;
@@ -20,6 +21,7 @@ public class CactusOverwriteMixin {
     //IF GAMERULE, H
     if (RuleRegistry.isEnabled(worldIn, RuleRegistry.doCactusGrowthUnlimited)) {
       MAXHEIGHT = 256;
+      GameRuleMod.LOGGER.info("CactusOverwriteMixin mixin success and doCactusGrowthUnlimited=true");
     }
     //now the copy paste of the method
     BlockPos blockpos = pos.up();

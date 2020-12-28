@@ -5,6 +5,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import com.lothrazar.customgamerules.GameRuleMod;
 import com.lothrazar.customgamerules.RuleRegistry;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.LeavesBlock;
@@ -19,6 +20,7 @@ public class LeavesAntiDecayMixin {
     LeavesBlock me = (LeavesBlock) (Object) this;
     if (RuleRegistry.isEnabled(worldIn, RuleRegistry.disableDecayLeaves)) {
       info.cancel();
+      GameRuleMod.LOGGER.info("LeavesAntiDecayMixin mixin success and disableDecayLeaves=true");
     }
   }
 }

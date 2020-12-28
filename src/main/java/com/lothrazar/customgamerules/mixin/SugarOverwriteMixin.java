@@ -3,6 +3,7 @@ package com.lothrazar.customgamerules.mixin;
 import java.util.Random;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
+import com.lothrazar.customgamerules.GameRuleMod;
 import com.lothrazar.customgamerules.RuleRegistry;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SugarCaneBlock;
@@ -20,6 +21,7 @@ public class SugarOverwriteMixin {
     //IF GAMERULE, H
     if (RuleRegistry.isEnabled(worldIn, RuleRegistry.doSugarGrowthUnlimited)) {
       MAXHEIGHT = 256;
+      GameRuleMod.LOGGER.info("SugarOverwriteMixin mixin success and doSugarGrowthUnlimited=true");
     }
     //now the copy paste of the method
     BlockPos blockpos = pos.up();

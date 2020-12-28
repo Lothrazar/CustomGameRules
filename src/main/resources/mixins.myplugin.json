@@ -7,14 +7,14 @@
     "compatibilityLevel": "JAVA_8",
     "mixins": [
         "FilledMapItemRefreshMixin",
-        "LeavesAntiDecayMixin",
         "BiomeAntiFreezeMixin",
         "FallingBlockGravityMixin",
+        "CactusOverwriteMixin",
+        "SugarOverwriteMixin",
+        "LeavesAntiDecayMixin",
         "IceAntiMeltMixin",
         "CoralAntiDecayMixin",
-        "CoralFanAntiDecayMixin",
-        "CactusOverwriteMixin",
-        "SugarOverwriteMixin"
+        "CoralFanAntiDecayMixin"
     ],
     "injectors": {
       "defaultRequire": 1
