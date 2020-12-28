@@ -24,6 +24,6 @@ public class GameRuleMod {
   }
 
   public static void info(String s) {
-    LOGGER.info(s);
+    //    LOGGER.info(s);
   }
 }

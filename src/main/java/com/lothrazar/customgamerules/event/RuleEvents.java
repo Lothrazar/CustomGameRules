@@ -16,6 +16,7 @@ import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.merchant.villager.VillagerEntity;
 import net.minecraft.entity.monster.CreeperEntity;
 import net.minecraft.entity.monster.EndermanEntity;
+import net.minecraft.entity.monster.GhastEntity;
 import net.minecraft.entity.monster.RavagerEntity;
 import net.minecraft.entity.monster.ShulkerEntity;
 import net.minecraft.entity.monster.SilverfishEntity;
@@ -511,23 +512,29 @@ public class RuleEvents {
     if (!RuleRegistry.isEnabled(world, RuleRegistry.mobGriefingRavager) && ent instanceof RavagerEntity) {
       //break on collide
       event.setResult(Result.DENY);
+      return;
     }
     if (!RuleRegistry.isEnabled(world, RuleRegistry.mobGriefingSilverfish) && ent instanceof SilverfishEntity) {
       //entering the stone
       event.setResult(Result.DENY);
+      return;
     }
-    if (!RuleRegistry.isEnabled(world, RuleRegistry.mobGriefingGhast) && ent instanceof FireballEntity) {
-      // GHAST Fireball
+    if (!RuleRegistry.isEnabled(world, RuleRegistry.mobGriefingGhast) && (ent instanceof FireballEntity || ent instanceof GhastEntity)) {//
+      // GHAST Fireball 
       event.setResult(Result.DENY);
+      return;
     }
     if (!RuleRegistry.isEnabled(world, RuleRegistry.mobGriefingBlaze) && ent instanceof SmallFireballEntity) {
-      // GHAST Fireball
+      // blaze  Fireball
       event.setResult(Result.DENY);
+      return;
     }
     if (!RuleRegistry.isEnabled(world, RuleRegistry.mobGriefingVillager) && ent instanceof VillagerEntity) {
       // farming
       event.setResult(Result.DENY);
+      return;
     }
+    //    GameRuleMod.info(" deny trigger ALLOW  " + ent);
     //snow golem, silverfish, sheep not done
   }
 

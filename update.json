@@ -7,6 +7,6 @@
   "1.16.4": {
     "1.0.1":"Port to 1.16.3 and latest forge RB"
     ,"1.0.2":"Fixed server crash.  Fixed ghast fireballs bug.  "
-  	,"1.1.0":"Fixed mixins based on game-rules not firing (water freezing, coral dying)"
+  	,"1.1.0":"Fixed mogGriefingGhast gamerule.  Fixed mixins based on game-rules not firing (disableBiomeFreezeIce, disableDecayCoral, doCactusGrowthUnlimited, disableBlockGravity)"
   }
 }

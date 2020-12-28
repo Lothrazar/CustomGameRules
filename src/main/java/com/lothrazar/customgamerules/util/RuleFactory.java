@@ -28,7 +28,7 @@ public class RuleFactory {
       return rule;
     }
     catch (Exception e) {
-      GameRuleMod.LOGGER.error("Create rule fail", e);
+      GameRuleMod.LOGGER.error("Create gamerule error", e);
     }
     return null;
   }
