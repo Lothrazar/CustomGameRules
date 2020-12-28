@@ -95,7 +95,7 @@ minecraft {
 }
 mixin {
 // IMPORTANT: RUN CONFIGURATION PROGRAM ARGUMENTS   --mixin mixins.myplugin.json
-       add sourceSets.main, "main.refmap.json"
+       add sourceSets.main, "customgamerules.refmap.json"
 
        disableTargetValidator = false
 }

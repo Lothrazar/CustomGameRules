@@ -12,9 +12,10 @@ import net.minecraft.world.server.ServerWorld;
 
 @Mixin(SugarCaneBlock.class)
 public class SugarOverwriteMixin {
+  //(at = @At(value = "HEAD"), method = "randomTick(Lnet/minecraft/block/BlockState;Lnet/minecraft/world/server/ServerWorld;Lnet/minecraft/util/math/BlockPos;Ljava/util/Random;)V", cancellable = true)
 
-  @Overwrite //(at = @At(value = "HEAD"), method = "randomTick(Lnet/minecraft/block/BlockState;Lnet/minecraft/world/server/ServerWorld;Lnet/minecraft/util/math/BlockPos;Ljava/util/Random;)V", cancellable = true)
-  public void randomTick(BlockState state, ServerWorld worldIn, BlockPos pos, Random random) { //   if (RuleRegistry.isEnabled(worldIn, RuleRegistry.disableBiomeFreezeIce)) {
+  @Overwrite
+  public void randomTick(BlockState state, ServerWorld worldIn, BlockPos pos, Random random) {
     //      info.setReturnValue(false);
     SugarCaneBlock me = (SugarCaneBlock) (Object) this;
     int MAXHEIGHT = 3;//regular code has this as a bad magic number not a valid block property as it should be
