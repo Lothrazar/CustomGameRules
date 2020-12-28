@@ -1,19 +1,22 @@
 {
     "required": true,
-    "minVersion": "0.7.10",
+    "minVersion": "0.8",
     "package": "com.lothrazar.customgamerules.mixin",
     "refmap": "mixins.myplugin.refmap.json",
     "target": "@env(DEFAULT)",
     "compatibilityLevel": "JAVA_8",
     "mixins": [
         "FilledMapItemRefreshMixin",
-        "FallingBlockGravityMixin",
-        "BiomeAntiFreezeMixin",
-        "IceAntiMeltMixin",
         "LeavesAntiDecayMixin",
+        "BiomeAntiFreezeMixin",
+        "FallingBlockGravityMixin",
+        "IceAntiMeltMixin",
         "CoralAntiDecayMixin",
         "CoralFanAntiDecayMixin",
         "CactusOverwriteMixin",
         "SugarOverwriteMixin"
-    ]
+    ],
+    "injectors": {
+      "defaultRequire": 1
+    }
 }
