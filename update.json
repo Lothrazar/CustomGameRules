@@ -1,11 +1,12 @@
 {
   "homepage": "https://www.curseforge.com/minecraft/mc-mods/game-rules-config",
   "promos": {
-    "1.16.3-latest": "1.0.2",
-    "1.16.3-recommended": "1.0.2"
+    "1.16.4-latest": "1.1.0",
+    "1.16.4-recommended": "1.1.0"
   },
-  "1.16.3": {
-    "1.0.1":"Port to 1.16.3 and latest forge RB",
-    "1.0.2":"Fixed server crash.  Fixed ghast fireballs bug.  "
+  "1.16.4": {
+    "1.0.1":"Port to 1.16.3 and latest forge RB"
+    ,"1.0.2":"Fixed server crash.  Fixed ghast fireballs bug.  "
+  	,"1.1.0":"Fixed mixins based on game-rules not firing (water freezing, coral dying)"
   }
 }
