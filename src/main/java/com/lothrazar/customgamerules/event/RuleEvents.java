@@ -1,9 +1,9 @@
 package com.lothrazar.customgamerules.event;
 
-import java.util.Iterator;
 import com.lothrazar.customgamerules.PacketHungerRuleSync;
 import com.lothrazar.customgamerules.RuleRegistry;
 import com.lothrazar.customgamerules.util.UtilWorld;
+import java.util.Iterator;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.Minecraft;
@@ -410,16 +410,18 @@ public class RuleEvents {
       if (event.getEntityLiving() instanceof AbstractHorseEntity) {
         //can be tamed
         AbstractHorseEntity horse = (AbstractHorseEntity) event.getEntityLiving();
-        if (horse.isTame() && horse.getOwnerUniqueId().equals(dmgOwner.getUniqueID())) {
+        if (horse.isTame() && horse.getOwnerUniqueId() != null &&
+            horse.getOwnerUniqueId().equals(dmgOwner.getUniqueID())) {
+          // do the cancel
           event.setCanceled(true);
-          //          EntityDamageSource f;  
         }
       }
       if (event.getEntityLiving() instanceof TameableEntity) {
         //can be tamed
         //        ParrotEntity y;//yep parrot, cat, wolf all extend tameable
         TameableEntity pet = (TameableEntity) event.getEntityLiving();
-        if (pet.isTamed() && pet.getOwnerId().equals(dmgOwner.getUniqueID())) {
+        if (pet.isTamed() && pet.getOwnerId() != null &&
+            pet.getOwnerId().equals(dmgOwner.getUniqueID())) {
           event.setCanceled(true);
         }
       }

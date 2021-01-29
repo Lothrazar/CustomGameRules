@@ -1,14 +1,14 @@
 package com.lothrazar.customgamerules.mixin;
 
-import java.util.Random;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Overwrite;
 import com.lothrazar.customgamerules.GameRuleMod;
 import com.lothrazar.customgamerules.RuleRegistry;
+import java.util.Random;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SugarCaneBlock;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.server.ServerWorld;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Overwrite;
 
 @Mixin(SugarCaneBlock.class)
 public class SugarOverwriteMixin {
