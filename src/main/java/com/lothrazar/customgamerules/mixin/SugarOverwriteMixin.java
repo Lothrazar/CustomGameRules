@@ -30,16 +30,16 @@ public class SugarOverwriteMixin {
       int i;
       for (i = 1; worldIn.getBlockState(pos.down(i)).isIn(me); ++i) {}
       if (i < MAXHEIGHT) {
-        int j = state.get(me.AGE);
+        int j = state.get(SugarCaneBlock.AGE);
         if (net.minecraftforge.common.ForgeHooks.onCropsGrowPre(worldIn, blockpos, state, true)) {
           if (j == 15) {//should be AGE.getMax or something
             worldIn.setBlockState(blockpos, me.getDefaultState());
-            BlockState blockstate = state.with(me.AGE, Integer.valueOf(0));
+            BlockState blockstate = state.with(SugarCaneBlock.AGE, Integer.valueOf(0));
             worldIn.setBlockState(pos, blockstate, 4);
             blockstate.neighborChanged(worldIn, blockpos, me, pos, false);
           }
           else {
-            worldIn.setBlockState(pos, state.with(me.AGE, Integer.valueOf(j + 1)), 4);
+            worldIn.setBlockState(pos, state.with(SugarCaneBlock.AGE, Integer.valueOf(j + 1)), 4);
           }
           net.minecraftforge.common.ForgeHooks.onCropsGrowPost(worldIn, pos, state);
         }
