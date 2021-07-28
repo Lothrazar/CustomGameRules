@@ -1,17 +1,17 @@
 package com.lothrazar.customgamerules;
 
 import com.lothrazar.customgamerules.util.RuleFactory;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.GameRules;
-import net.minecraft.world.GameRules.BooleanValue;
-import net.minecraft.world.GameRules.RuleKey;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.network.NetworkDirection;
-import net.minecraftforge.fml.network.NetworkRegistry;
-import net.minecraftforge.fml.network.simple.SimpleChannel;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.GameRules;
+import net.minecraft.world.level.GameRules.BooleanValue;
+import net.minecraft.world.level.GameRules.Key;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.Level;
+import net.minecraftforge.fmllegacy.network.NetworkDirection;
+import net.minecraftforge.fmllegacy.network.NetworkRegistry;
+import net.minecraftforge.fmllegacy.network.simple.SimpleChannel;
 
 public class RuleRegistry {
 
@@ -23,56 +23,56 @@ public class RuleRegistry {
       .networkProtocolVersion(() -> PROTOCOL_VERSION)
       .simpleChannel();
   //
-  public static RuleKey<BooleanValue> disableBiomeFreezeIce;
-  public static RuleKey<BooleanValue> disableBlockGravity;
-  public static RuleKey<BooleanValue> disableDecayCoral;
-  public static RuleKey<BooleanValue> disableDecayLeaves;
-  public static RuleKey<BooleanValue> disableFarmlandTrampling;
-  public static RuleKey<BooleanValue> disableGenerateObsidian;
-  public static RuleKey<BooleanValue> disableGenerateStone;
-  public static RuleKey<BooleanValue> disableLightMeltIce;
-  public static RuleKey<BooleanValue> disableMobItemPickup;
-  public static RuleKey<BooleanValue> disablePetFriendlyFire;
-  public static RuleKey<BooleanValue> disableVillagerTrading;
+  public static Key<BooleanValue> disableBiomeFreezeIce;
+  public static Key<BooleanValue> disableBlockGravity;
+  public static Key<BooleanValue> disableDecayCoral;
+  public static Key<BooleanValue> disableDecayLeaves;
+  public static Key<BooleanValue> disableFarmlandTrampling;
+  public static Key<BooleanValue> disableGenerateObsidian;
+  public static Key<BooleanValue> disableGenerateStone;
+  public static Key<BooleanValue> disableLightMeltIce;
+  public static Key<BooleanValue> disableMobItemPickup;
+  public static Key<BooleanValue> disablePetFriendlyFire;
+  public static Key<BooleanValue> disableVillagerTrading;
   // that disable features
-  public static RuleKey<BooleanValue> doArmorStandWeapons;
-  public static RuleKey<BooleanValue> doLilypadsBreak;
-  public static RuleKey<BooleanValue> doEyesAlwaysBreak;
-  public static RuleKey<BooleanValue> doCactusGrowthUnlimited;
-  public static RuleKey<BooleanValue> doInstantEating;
-  public static RuleKey<BooleanValue> doInstantExp;
-  public static RuleKey<BooleanValue> doNetherVoidAbove;
-  public static RuleKey<BooleanValue> doMapsAlwaysUpdate;
-  public static RuleKey<BooleanValue> doSugarGrowthUnlimited;
+  public static Key<BooleanValue> doArmorStandWeapons;
+  public static Key<BooleanValue> doLilypadsBreak;
+  public static Key<BooleanValue> doEyesAlwaysBreak;
+  public static Key<BooleanValue> doCactusGrowthUnlimited;
+  public static Key<BooleanValue> doInstantEating;
+  public static Key<BooleanValue> doInstantExp;
+  public static Key<BooleanValue> doNetherVoidAbove;
+  public static Key<BooleanValue> doMapsAlwaysUpdate;
+  public static Key<BooleanValue> doSugarGrowthUnlimited;
   // Game rules related to player damage
-  public static RuleKey<BooleanValue> suffocationDamage;
-  public static RuleKey<BooleanValue> pearlDamage;
-  public static RuleKey<BooleanValue> cactusDamage;
-  public static RuleKey<BooleanValue> berryDamage;
+  public static Key<BooleanValue> suffocationDamage;
+  public static Key<BooleanValue> pearlDamage;
+  public static Key<BooleanValue> cactusDamage;
+  public static Key<BooleanValue> berryDamage;
   // game rules that depend on other existing rules for fine-tuned control
-  public static RuleKey<BooleanValue> keepInventoryExperience;
-  public static RuleKey<BooleanValue> keepInventoryArmor;
-  public static RuleKey<BooleanValue> mobGriefingCreeper;
-  public static RuleKey<BooleanValue> mobGriefingEnderman;
-  public static RuleKey<BooleanValue> mobGriefingVillager;
-  public static RuleKey<BooleanValue> mobGriefingZombie;
-  public static RuleKey<BooleanValue> mobGriefingWither;
-  public static RuleKey<BooleanValue> mobGriefingRavager;
-  public static RuleKey<BooleanValue> mobGriefingGhast;
-  public static RuleKey<BooleanValue> mobGriefingSilverfish;
-  public static RuleKey<BooleanValue> mobGriefingBlaze;
-  public static RuleKey<BooleanValue> disableEndermanTeleport;
-  public static RuleKey<BooleanValue> disableShulkerTeleport;
-  public static RuleKey<BooleanValue> disableCropGrowth;
-  public static RuleKey<BooleanValue> disableSaplingGrowth;
-  public static RuleKey<BooleanValue> disableCriticalHits;
-  public static RuleKey<BooleanValue> disableHunger;
-  public static RuleKey<BooleanValue> disableTargetingPlayers;
-  public static RuleKey<BooleanValue> disableLightningTransform;
-  public static RuleKey<BooleanValue> disablePortalCreationNether;
-  public static RuleKey<BooleanValue> disablePortalCreationEnd;
-  public static RuleKey<BooleanValue> mobGriefingSnowgolem;
-  public static RuleKey<BooleanValue> doFriendlyIronGolems;
+  public static Key<BooleanValue> keepInventoryExperience;
+  public static Key<BooleanValue> keepInventoryArmor;
+  public static Key<BooleanValue> mobGriefingCreeper;
+  public static Key<BooleanValue> mobGriefingEnderman;
+  public static Key<BooleanValue> mobGriefingVillager;
+  public static Key<BooleanValue> mobGriefingZombie;
+  public static Key<BooleanValue> mobGriefingWither;
+  public static Key<BooleanValue> mobGriefingRavager;
+  public static Key<BooleanValue> mobGriefingGhast;
+  public static Key<BooleanValue> mobGriefingSilverfish;
+  public static Key<BooleanValue> mobGriefingBlaze;
+  public static Key<BooleanValue> disableEndermanTeleport;
+  public static Key<BooleanValue> disableShulkerTeleport;
+  public static Key<BooleanValue> disableCropGrowth;
+  public static Key<BooleanValue> disableSaplingGrowth;
+  public static Key<BooleanValue> disableCriticalHits;
+  public static Key<BooleanValue> disableHunger;
+  public static Key<BooleanValue> disableTargetingPlayers;
+  public static Key<BooleanValue> disableLightningTransform;
+  public static Key<BooleanValue> disablePortalCreationNether;
+  public static Key<BooleanValue> disablePortalCreationEnd;
+  public static Key<BooleanValue> mobGriefingSnowgolem;
+  public static Key<BooleanValue> doFriendlyIronGolems;
 
   /**
    * <pre>
@@ -190,24 +190,24 @@ public class RuleRegistry {
     GameRuleMod.LOGGER.info(GameRuleMod.MODID + " has added " + RuleFactory.count + " gamerules");
   }
 
-  public static boolean isEnabled(World world, RuleKey<BooleanValue> key) {
+  public static boolean isEnabled(Level world, Key<BooleanValue> key) {
     return world.getGameRules().getBoolean(key);
   }
 
-  public static boolean isEnabled(IWorld world, RuleKey<BooleanValue> key) {
-    if (!(world instanceof World)) {
+  public static boolean isEnabled(LevelAccessor world, Key<BooleanValue> key) {
+    if (!(world instanceof Level)) {
       return false;
     }
-    return ((World) world).getGameRules().getBoolean(key);
+    return ((Level) world).getGameRules().getBoolean(key);
   }
 
-  public static void sendToAllClients(World world, PacketHungerRuleSync packet) {
-    for (PlayerEntity player : world.getPlayers()) {
-      if (player instanceof ServerPlayerEntity) {
+  public static void sendToAllClients(Level world, PacketHungerRuleSync packet) {
+    for (Player player : world.players()) {
+      if (player instanceof ServerPlayer) {
         //test 
-        ServerPlayerEntity sp = ((ServerPlayerEntity) player);
+        ServerPlayer sp = ((ServerPlayer) player);
         INSTANCE.sendTo(packet,
-            sp.connection.netManager, NetworkDirection.PLAY_TO_CLIENT);
+            sp.connection.connection, NetworkDirection.PLAY_TO_CLIENT);
       }
     }
   }

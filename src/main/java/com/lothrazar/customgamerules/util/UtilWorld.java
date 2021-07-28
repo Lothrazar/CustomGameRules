@@ -4,25 +4,25 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import javax.annotation.Nullable;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.LeverBlock;
-import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.LeverBlock;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.core.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
+import net.minecraft.world.level.Level;
 
 public class UtilWorld {
 
-  public static String dimensionToString(World w) {
+  public static String dimensionToString(Level w) {
     //example: returns "minecraft:overworld" resource location
-    return w.getDimensionKey().getRegistryName().toString();
-    //w.func_234923_W_().func_240901_a_().toString();.func_234923_W_().func_240901_a_().toString();
-    //RegistryKey.func_240903_a_(Registry.WORLD_KEY, new ResourceLocation("twilightforest", "twilightforest"));
+    return w.dimension().getRegistryName().toString();
+    //w.dimension().location().toString();.dimension().location().toString();
+    //RegistryKey.create(Registry.WORLD_KEY, new ResourceLocation("twilightforest", "twilightforest"));
   }
 
   public static double distanceBetweenHorizontal(BlockPos start, BlockPos end) {
@@ -32,7 +32,7 @@ public class UtilWorld {
     return Math.sqrt(xDistance * xDistance + zDistance * zDistance);
   }
 
-  public static BlockPos nextReplaceableInDirection(World world, BlockPos posIn, Direction facing, int max, @Nullable Block blockMatch) {
+  public static BlockPos nextReplaceableInDirection(Level world, BlockPos posIn, Direction facing, int max, @Nullable Block blockMatch) {
     BlockPos posToPlaceAt = new BlockPos(posIn);
     BlockPos posLoop = new BlockPos(posIn);
     //    world.getBlockState(posLoop).getBlock().isReplaceable(state, useContext)
@@ -45,19 +45,19 @@ public class UtilWorld {
         break;
       }
       else {
-        posLoop = posLoop.offset(facing);
+        posLoop = posLoop.relative(facing);
       }
     }
     return posToPlaceAt;
   }
 
-  public static ItemEntity dropItemStackInWorld(World world, BlockPos pos, ItemStack stack) {
+  public static ItemEntity dropItemStackInWorld(Level world, BlockPos pos, ItemStack stack) {
     if (pos == null || world == null || stack.isEmpty()) {
       return null;
     }
     ItemEntity entityItem = new ItemEntity(world, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, stack);
-    if (world.isRemote == false) {
-      world.addEntity(entityItem);
+    if (world.isClientSide == false) {
+      world.addFreshEntity(entityItem);
     }
     return entityItem;
   }
@@ -70,12 +70,12 @@ public class UtilWorld {
     int xMax = x + hRadius;
     int zMin = z - hRadius;
     int zMax = z + hRadius;
-    int posX = MathHelper.nextInt(rand, xMin, xMax);
-    int posZ = MathHelper.nextInt(rand, zMin, zMax);
+    int posX = Mth.nextInt(rand, xMin, xMax);
+    int posZ = Mth.nextInt(rand, zMin, zMax);
     return new BlockPos(posX, here.getY(), posZ);
   }
 
-  public static ArrayList<BlockPos> findBlocks(World world, BlockPos start, Block blockHunt, int RADIUS) {
+  public static ArrayList<BlockPos> findBlocks(Level world, BlockPos start, Block blockHunt, int RADIUS) {
     ArrayList<BlockPos> found = new ArrayList<BlockPos>();
     int xMin = start.getX() - RADIUS;
     int xMax = start.getX() + RADIUS;
@@ -97,14 +97,14 @@ public class UtilWorld {
     return found;
   }
 
-  public static void toggleLeverPowerState(World worldIn, BlockPos blockPos, BlockState blockState) {
-    boolean hasPowerHere = blockState.get(LeverBlock.POWERED).booleanValue();//this.block.getStrongPower(blockState, worldIn, pointer, EnumFacing.UP) > 0;
-    BlockState stateNew = blockState.with(LeverBlock.POWERED, !hasPowerHere);
-    boolean success = worldIn.setBlockState(blockPos, stateNew);
+  public static void toggleLeverPowerState(Level worldIn, BlockPos blockPos, BlockState blockState) {
+    boolean hasPowerHere = blockState.getValue(LeverBlock.POWERED).booleanValue();//this.block.getStrongPower(blockState, worldIn, pointer, EnumFacing.UP) > 0;
+    BlockState stateNew = blockState.setValue(LeverBlock.POWERED, !hasPowerHere);
+    boolean success = worldIn.setBlockAndUpdate(blockPos, stateNew);
     if (success) {
       flagUpdate(worldIn, blockPos, blockState, stateNew);
-      flagUpdate(worldIn, blockPos.down(), blockState, stateNew);
-      flagUpdate(worldIn, blockPos.up(), blockState, stateNew);
+      flagUpdate(worldIn, blockPos.below(), blockState, stateNew);
+      flagUpdate(worldIn, blockPos.above(), blockState, stateNew);
       flagUpdate(worldIn, blockPos.west(), blockState, stateNew);
       flagUpdate(worldIn, blockPos.east(), blockState, stateNew);
       flagUpdate(worldIn, blockPos.north(), blockState, stateNew);
@@ -112,25 +112,25 @@ public class UtilWorld {
     }
   }
 
-  public static void flagUpdate(World worldIn, BlockPos blockPos, BlockState blockState, BlockState stateNew) {
-    worldIn.notifyBlockUpdate(blockPos, blockState, stateNew, 3);
-    worldIn.notifyNeighborsOfStateChange(blockPos, stateNew.getBlock());
-    worldIn.notifyNeighborsOfStateChange(blockPos, blockState.getBlock());//THIS one works only with true
+  public static void flagUpdate(Level worldIn, BlockPos blockPos, BlockState blockState, BlockState stateNew) {
+    worldIn.sendBlockUpdated(blockPos, blockState, stateNew, 3);
+    worldIn.updateNeighborsAt(blockPos, stateNew.getBlock());
+    worldIn.updateNeighborsAt(blockPos, blockState.getBlock());//THIS one works only with true
     //        worldIn.scheduleBlockUpdate(blockPos, stateNew.getBlock(), 3, 3);
     //        worldIn.scheduleUpdate(blockPos, stateNew.getBlock(), 3);
   }
 
-  public static BlockPos findClosestBlock(PlayerEntity player, Block blockHunt, int RADIUS) {
+  public static BlockPos findClosestBlock(Player player, Block blockHunt, int RADIUS) {
     BlockPos found = null;
-    int xMin = (int) player.getPosX() - RADIUS;
-    int xMax = (int) player.getPosX() + RADIUS;
-    int yMin = (int) player.getPosY() - RADIUS;
-    int yMax = (int) player.getPosY() + RADIUS;
-    int zMin = (int) player.getPosZ() - RADIUS;
-    int zMax = (int) player.getPosZ() + RADIUS;
+    int xMin = (int) player.getX() - RADIUS;
+    int xMax = (int) player.getX() + RADIUS;
+    int yMin = (int) player.getY() - RADIUS;
+    int yMax = (int) player.getY() + RADIUS;
+    int zMin = (int) player.getZ() - RADIUS;
+    int zMax = (int) player.getZ() + RADIUS;
     int distance = 0, distanceClosest = RADIUS * RADIUS;
     BlockPos posCurrent = null;
-    World world = player.getEntityWorld();
+    Level world = player.getCommandSenderWorld();
     for (int xLoop = xMin; xLoop <= xMax; xLoop++) {
       for (int yLoop = yMin; yLoop <= yMax; yLoop++) {
         for (int zLoop = zMin; zLoop <= zMax; zLoop++) {
@@ -144,7 +144,7 @@ public class UtilWorld {
               found = posCurrent;
             }
             else {
-              distance = (int) distanceBetweenHorizontal(player.getPosition(), posCurrent);
+              distance = (int) distanceBetweenHorizontal(player.blockPosition(), posCurrent);
               if (distance < distanceClosest) {
                 found = posCurrent;
                 distanceClosest = distance;

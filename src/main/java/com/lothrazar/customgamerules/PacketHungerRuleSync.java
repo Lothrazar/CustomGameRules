@@ -25,11 +25,11 @@ package com.lothrazar.customgamerules;
 
 import java.util.function.Supplier;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.network.PacketBuffer;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraftforge.fmllegacy.network.NetworkEvent;
 
 public class PacketHungerRuleSync {
 
@@ -41,24 +41,24 @@ public class PacketHungerRuleSync {
 
   public static void handle(PacketHungerRuleSync message, Supplier<NetworkEvent.Context> ctx) {
     ctx.get().enqueueWork(() -> {
-      PlayerEntity player = getPlayer();
+      Player player = getPlayer();
       player.getPersistentData().putBoolean("disableHungerHACK", message.theRule);
     });
     ctx.get().setPacketHandled(true);
   }
 
   @OnlyIn(Dist.CLIENT)
-  private static PlayerEntity getPlayer() {
-    PlayerEntity player = Minecraft.getInstance().player;
+  private static Player getPlayer() {
+    Player player = Minecraft.getInstance().player;
     return player;
   }
 
-  public static PacketHungerRuleSync decode(PacketBuffer buf) {
+  public static PacketHungerRuleSync decode(FriendlyByteBuf buf) {
     PacketHungerRuleSync msg = new PacketHungerRuleSync(buf.readBoolean());
     return msg;
   }
 
-  public static void encode(PacketHungerRuleSync msg, PacketBuffer buf) {
+  public static void encode(PacketHungerRuleSync msg, FriendlyByteBuf buf) {
     buf.writeBoolean(msg.theRule);
   }
 }
