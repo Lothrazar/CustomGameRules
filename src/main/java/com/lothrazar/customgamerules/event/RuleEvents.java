@@ -35,6 +35,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.CactusBlock;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
@@ -141,16 +142,17 @@ public class RuleEvents {
     //      //      FluidMotionEvent abc;
     //      GameRuleMod.LOGGER.info("water redstone?");
     //    }
+    CactusBlock x;
     Block newBlock = event.getNewState().getBlock();
     if (newBlock == Blocks.OBSIDIAN &&
         RuleRegistry.isEnabled(world, RuleRegistry.disableGenerateObsidian)) {
-      //event.setCanceled(true);
+      event.setCanceled(true);
       event.setNewState(event.getOriginalState());
     }
     if ((newBlock == Blocks.COBBLESTONE || newBlock == Blocks.STONE) &&
         RuleRegistry.isEnabled(world, RuleRegistry.disableGenerateStone)) {
       //cancel should work but busted i guess IDK why
-      //      event.setCanceled(true);
+      event.setCanceled(true);
       event.setNewState(event.getOriginalState());
     }
   }

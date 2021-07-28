@@ -1,13 +1,10 @@
 {
   "homepage": "https://www.curseforge.com/minecraft/mc-mods/game-rules-config",
   "promos": {
-    "1.16.4-latest": "1.1.0",
-    "1.16.4-recommended": "1.1.0"
+    "1.17.1-latest": "1.1.2",
+    "1.17.1-recommended": "1.1.2"
   },
-  "1.16.4": {
-    "1.0.1":"Port to 1.16.3 and latest forge RB"
-    ,"1.0.2":"Fixed server crash.  Fixed ghast fireballs bug.  "
-  	,"1.1.0":"Fixed mogGriefingGhast gamerule.  Fixed mixins based on game-rules not firing (disableBiomeFreezeIce, disableDecayCoral, doCactusGrowthUnlimited, disableBlockGravity)"
-  	,"1.1.1":"Fix a crash when disablePetFriendlyFire = true, and an animal is Tamed by a NULL player, or a player with a NULL id. "
+  "1.17.1": {
+    "1.1.2":"Ported to 1.17.  Some rules such as cactus growth, gravity, ice melting, from 1.16 are broken/disabled in 1.17, (pending future updates from this mod, or mixins, or possibly forge PRs) "
   }
 }

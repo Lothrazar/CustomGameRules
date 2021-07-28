@@ -9,6 +9,8 @@ import net.minecraft.world.level.GameRules.BooleanValue;
 import net.minecraft.world.level.GameRules.Key;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.CactusBlock;
+import net.minecraft.world.level.block.IceBlock;
 import net.minecraftforge.fmllegacy.network.NetworkDirection;
 import net.minecraftforge.fmllegacy.network.NetworkRegistry;
 import net.minecraftforge.fmllegacy.network.simple.SimpleChannel;
@@ -23,14 +25,14 @@ public class RuleRegistry {
       .networkProtocolVersion(() -> PROTOCOL_VERSION)
       .simpleChannel();
   //
-  public static Key<BooleanValue> disableBiomeFreezeIce;
-  public static Key<BooleanValue> disableBlockGravity;
-  public static Key<BooleanValue> disableDecayCoral;
-  public static Key<BooleanValue> disableDecayLeaves;
+//  public static Key<BooleanValue> disableBiomeFreezeIce; // BiomeAntiFreezeMixin.java
+//  public static Key<BooleanValue> disableBlockGravity; //   FallingBlockGravityMixin.java
+//  public static Key<BooleanValue> disableDecayCoral; // CoralAntiDecayMixin.java CoralFanAntiDecayMixin.java
+//  public static Key<BooleanValue> disableDecayLeaves; //  LeavesAntiDecayMixin.java
   public static Key<BooleanValue> disableFarmlandTrampling;
   public static Key<BooleanValue> disableGenerateObsidian;
   public static Key<BooleanValue> disableGenerateStone;
-  public static Key<BooleanValue> disableLightMeltIce;
+//  public static Key<BooleanValue> disableLightMeltIce; //   IceAntiMeltMixin.java
   public static Key<BooleanValue> disableMobItemPickup;
   public static Key<BooleanValue> disablePetFriendlyFire;
   public static Key<BooleanValue> disableVillagerTrading;
@@ -38,12 +40,12 @@ public class RuleRegistry {
   public static Key<BooleanValue> doArmorStandWeapons;
   public static Key<BooleanValue> doLilypadsBreak;
   public static Key<BooleanValue> doEyesAlwaysBreak;
-  public static Key<BooleanValue> doCactusGrowthUnlimited;
+//  public static Key<BooleanValue> doCactusGrowthUnlimited; // CactusOverwriteMixin.java
   public static Key<BooleanValue> doInstantEating;
   public static Key<BooleanValue> doInstantExp;
   public static Key<BooleanValue> doNetherVoidAbove;
-  public static Key<BooleanValue> doMapsAlwaysUpdate;
-  public static Key<BooleanValue> doSugarGrowthUnlimited;
+//  public static Key<BooleanValue> doMapsAlwaysUpdate; // FilledMapItemRefreshMixin.java
+//  public static Key<BooleanValue> doSugarGrowthUnlimited; //SugarOverwriteMixin.java
   // Game rules related to player damage
   public static Key<BooleanValue> suffocationDamage;
   public static Key<BooleanValue> pearlDamage;
@@ -136,15 +138,15 @@ public class RuleRegistry {
     // do______ 
     //
     doFriendlyIronGolems = RuleFactory.createBoolean("doFriendlyIronGolems", true, GameRules.Category.MOBS);
-    doMapsAlwaysUpdate = RuleFactory.createBoolean("doMapsAlwaysUpdate", true, GameRules.Category.PLAYER);
+//    doMapsAlwaysUpdate = RuleFactory.createBoolean("doMapsAlwaysUpdate", true, GameRules.Category.PLAYER);
     doLilypadsBreak = RuleFactory.createBoolean("doLilypadsBreak", true, GameRules.Category.PLAYER);
     doInstantEating = RuleFactory.createBoolean("doInstantEating", false, GameRules.Category.PLAYER);
     doInstantExp = RuleFactory.createBoolean("doInstantExp", false, GameRules.Category.PLAYER);
     doArmorStandWeapons = RuleFactory.createBoolean("doArmorStandWeapons", true, GameRules.Category.PLAYER);
     doEyesAlwaysBreak = RuleFactory.createBoolean("doEyesAlwaysBreak", false, GameRules.Category.DROPS);
     doNetherVoidAbove = RuleFactory.createBoolean("doNetherVoidAbove", false, GameRules.Category.MISC);
-    doCactusGrowthUnlimited = RuleFactory.createBoolean("doCactusGrowthUnlimited", false, GameRules.Category.MISC);
-    doSugarGrowthUnlimited = RuleFactory.createBoolean("doSugarGrowthUnlimited", false, GameRules.Category.MISC);
+//    doCactusGrowthUnlimited = RuleFactory.createBoolean("doCactusGrowthUnlimited", false, GameRules.Category.MISC);
+//    doSugarGrowthUnlimited = RuleFactory.createBoolean("doSugarGrowthUnlimited", false, GameRules.Category.MISC);
     //= RuleFactory.createBoolean("doInstantEating", true, GameRules.Category.PLAYER);
     //
     //disable_____   
@@ -153,11 +155,14 @@ public class RuleRegistry {
     disableLightningTransform = RuleFactory.createBoolean("disableLightningTransform", false, GameRules.Category.MOBS);
     disableTargetingPlayers = RuleFactory.createBoolean("disableTargetingPlayers", false, GameRules.Category.MOBS);
     disableVillagerTrading = RuleFactory.createBoolean("disableVillagerTrading", false, GameRules.Category.MOBS);
-    disableBlockGravity = RuleFactory.createBoolean("disableBlockGravity", false, GameRules.Category.UPDATES);
-    disableBiomeFreezeIce = RuleFactory.createBoolean("disableBiomeFreezeIce", false, GameRules.Category.UPDATES);
-    disableLightMeltIce = RuleFactory.createBoolean("disableLightMeltIce", false, GameRules.Category.UPDATES);
-    disableDecayLeaves = RuleFactory.createBoolean("disableDecayLeaves", false, GameRules.Category.UPDATES);
-    disableDecayCoral = RuleFactory.createBoolean("disableDecayCoral", false, GameRules.Category.UPDATES);
+    CactusBlock cac;
+    IceBlock y;
+
+//    disableBlockGravity = RuleFactory.createBoolean("disableBlockGravity", false, GameRules.Category.UPDATES);
+//    disableBiomeFreezeIce = RuleFactory.createBoolean("disableBiomeFreezeIce", false, GameRules.Category.UPDATES);
+//    disableLightMeltIce = RuleFactory.createBoolean("disableLightMeltIce", false, GameRules.Category.UPDATES);
+//    disableDecayLeaves = RuleFactory.createBoolean("disableDecayLeaves", false, GameRules.Category.UPDATES);
+//    disableDecayCoral = RuleFactory.createBoolean("disableDecayCoral", false, GameRules.Category.UPDATES);
     disableGenerateStone = RuleFactory.createBoolean("disableGenerateStone", false, GameRules.Category.UPDATES);
     disableGenerateObsidian = RuleFactory.createBoolean("disableGenerateObsidian", false, GameRules.Category.UPDATES);
     disablePetFriendlyFire = RuleFactory.createBoolean("disablePetFriendlyFire", true, GameRules.Category.UPDATES);
