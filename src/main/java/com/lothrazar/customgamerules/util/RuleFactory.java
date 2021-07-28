@@ -9,6 +9,7 @@ import net.minecraft.world.level.GameRules.Category;
 import net.minecraft.world.level.GameRules.Key;
 import net.minecraft.world.level.GameRules.Type;
 //import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
+import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 import org.apache.commons.codec.language.bm.RuleType;
 
 public class RuleFactory {
@@ -18,14 +19,12 @@ public class RuleFactory {
   @SuppressWarnings("unchecked")
   public static Key<BooleanValue> createBoolean(String id, boolean defaultVal, Category cat) {
     //access transformers cfg SHULD make this create public
-//    RuleType<BooleanValue> test = GameRules.RuleType.access$000(defaultVal);
+//      Type<BooleanValue> ruleTypeBoolean2 = GameRules.BooleanValue.create(true); // this works if AT works
     try {
-      //      test = new GameRules.BooleanValue.c 
-//      Method m = ObfuscationReflectionHelper.findMethod(GameRules.BooleanValue.class, "access$000", boolean.class);
+      Method m = ObfuscationReflectionHelper.findMethod(GameRules.BooleanValue.class, "m_46250_", boolean.class);
 //      m.setAccessible(true);
-//      Type<BooleanValue> ruleTypeBoolean = (Type<BooleanValue>) m.invoke(null, defaultVal);
-      //register == register
-      Key<BooleanValue> rule = GameRules.register(id, cat, GameRules.BooleanValue.create(true));
+      Type<BooleanValue> ruleTypeBoolean = (Type<BooleanValue>) m.invoke(null, defaultVal);
+      Key<BooleanValue> rule = GameRules.register(id, cat, ruleTypeBoolean);
       count++;
       return rule;
     }
