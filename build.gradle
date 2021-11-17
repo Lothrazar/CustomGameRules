@@ -144,9 +144,9 @@ jar {
             "Implementation-Vendor" :"customgamerulessareus",
             "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
             
-            'TweakClass': 'org.spongepowered.asm.launch.MixinTweaker',
-	        'MixinConfigs': 'mixins.myplugin.json',
-	        'FMLCorePluginContainsFMLMod': 'true'
+       //     'TweakClass': 'org.spongepowered.asm.launch.MixinTweaker',
+	     //   'MixinConfigs': 'mixins.myplugin.json',
+	     //   'FMLCorePluginContainsFMLMod': 'true'
         ])
     }
 }
@@ -190,8 +190,7 @@ task copyJar(type: Copy) {
     into "${dist_folder}"
 }
 
-build.finalizedBy copyJar
 
-cleanJar {
+task cleanJar {
   delete 'build/libs'
 }
