@@ -1,10 +1,10 @@
 {
   "homepage": "https://www.curseforge.com/minecraft/mc-mods/game-rules-config",
   "promos": {
-    "1.17.1-latest": "1.1.2",
-    "1.17.1-recommended": "1.1.2"
+    "1.18-latest": "1.1.2",
+    "1.18-recommended": "1.1.2"
   },
-  "1.17.1": {
-    "1.1.2":"Ported to 1.17.  Some rules such as cactus growth, gravity, ice melting, from 1.16 are broken/disabled in 1.17, (pending future updates from this mod, or mixins, or possibly forge PRs) "
+  "1.18": {
+    "1.1.2":"Ported .  Some rules such as cactus growth, gravity, ice melting, from 1.16 are broken/disabled in 1.17, (pending future updates from this mod, or mixins, or possibly forge PRs) "
   }
 }

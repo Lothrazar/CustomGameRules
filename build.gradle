@@ -22,10 +22,10 @@ version = "${mc_version}-${mod_version}"
 group = 'com.lothrazar.customgamerules' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'customgamerules'
 
-java.toolchain.languageVersion = JavaLanguageVersion.of(16)
+java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
 minecraft {
-    mappings channel: 'official', version: '1.17.1' 
+    mappings channel: 'official', version: '1.18' 
 
     //makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
     
@@ -190,6 +190,7 @@ task copyJar(type: Copy) {
     into "${dist_folder}"
 }
 
+build.finalizedBy copyJar
 
 task cleanJar {
   delete 'build/libs'
