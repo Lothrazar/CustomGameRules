@@ -1,7 +1,6 @@
 package com.lothrazar.customgamerules.util;
 
 import java.lang.reflect.Method;
-
 import com.lothrazar.customgamerules.GameRuleMod;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.GameRules.BooleanValue;
@@ -10,7 +9,6 @@ import net.minecraft.world.level.GameRules.Key;
 import net.minecraft.world.level.GameRules.Type;
 //import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
-import org.apache.commons.codec.language.bm.RuleType;
 
 public class RuleFactory {
 

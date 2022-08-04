@@ -2,27 +2,26 @@ package com.lothrazar.customgamerules.util;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import javax.annotation.Nullable;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.LeverBlock;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.core.Direction;
-import net.minecraft.core.BlockPos;
-import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.LeverBlock;
+import net.minecraft.world.level.block.state.BlockState;
 
 public class UtilWorld {
 
   public static String dimensionToString(Level w) {
     //example: returns "minecraft:overworld" resource location
-    return w.dimension().getRegistryName().toString();
-    //w.dimension().location().toString();.dimension().location().toString();
-    //RegistryKey.create(Registry.WORLD_KEY, new ResourceLocation("twilightforest", "twilightforest"));
+    //    getRegistryName became location in 1.19
+    return w.dimension().location().toString();
   }
 
   public static double distanceBetweenHorizontal(BlockPos start, BlockPos end) {
@@ -62,7 +61,7 @@ public class UtilWorld {
     return entityItem;
   }
 
-  public static BlockPos getRandomPos(Random rand, BlockPos here, int hRadius) {
+  public static BlockPos getRandomPos(RandomSource rand, BlockPos here, int hRadius) {
     int x = here.getX();
     int z = here.getZ();
     // search in a square
@@ -120,6 +119,7 @@ public class UtilWorld {
     //        worldIn.scheduleUpdate(blockPos, stateNew.getBlock(), 3);
   }
 
+  @SuppressWarnings("deprecation")
   public static BlockPos findClosestBlock(Player player, Block blockHunt, int RADIUS) {
     BlockPos found = null;
     int xMin = (int) player.getX() - RADIUS;
