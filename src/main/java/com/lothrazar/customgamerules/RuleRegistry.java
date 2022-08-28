@@ -1,6 +1,6 @@
 package com.lothrazar.customgamerules;
 
-import com.lothrazar.customgamerules.util.RuleFactory;
+import com.lothrazar.library.reflect.RuleFactory;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
@@ -25,9 +25,12 @@ public class RuleRegistry {
       .networkProtocolVersion(() -> PROTOCOL_VERSION)
       .simpleChannel();
   //
-  //  public static Key<BooleanValue> disableBiomeFreezeIce; // BiomeAntiFreezeMixin.java
+  static {
+    System.out.println("TODO");
+  }
+  public static Key<BooleanValue> disableBiomeFreezeIce; // BiomeAntiFreezeMixin.java
   //  public static Key<BooleanValue> disableBlockGravity; //   FallingBlockGravityMixin.java
-  //  public static Key<BooleanValue> disableDecayCoral; // CoralAntiDecayMixin.java CoralFanAntiDecayMixin.java
+  public static Key<BooleanValue> disableDecayCoral; // CoralAntiDecayMixin.java CoralFanAntiDecayMixin.java
   //  public static Key<BooleanValue> disableDecayLeaves; //  LeavesAntiDecayMixin.java
   public static Key<BooleanValue> disableFarmlandTrampling;
   public static Key<BooleanValue> disableGenerateObsidian;
@@ -40,11 +43,11 @@ public class RuleRegistry {
   public static Key<BooleanValue> doArmorStandWeapons;
   public static Key<BooleanValue> doLilypadsBreak;
   public static Key<BooleanValue> doEyesAlwaysBreak;
-  //  public static Key<BooleanValue> doCactusGrowthUnlimited; // CactusOverwriteMixin.java
+  public static Key<BooleanValue> doCactusGrowthUnlimited; // CactusOverwriteMixin.java
   public static Key<BooleanValue> doInstantEating;
   public static Key<BooleanValue> doInstantExp;
   public static Key<BooleanValue> doNetherVoidAbove;
-  //  public static Key<BooleanValue> doMapsAlwaysUpdate; // FilledMapItemRefreshMixin.java
+  public static Key<BooleanValue> doMapsAlwaysUpdate; // FilledMapItemRefreshMixin.java
   //  public static Key<BooleanValue> doSugarGrowthUnlimited; //SugarOverwriteMixin.java
   // Game rules related to player damage
   public static Key<BooleanValue> suffocationDamage;
@@ -191,7 +194,6 @@ public class RuleRegistry {
     //
     //tntExplodes
     //    tntDamage = RuleFactory.createBoolean("tntDamage", true, GameRules.Category.PLAYER);
-    GameRuleMod.LOGGER.info(GameRuleMod.MODID + " has added " + RuleFactory.count + " gamerules");
   }
 
   public static boolean isEnabled(Level world, Key<BooleanValue> key) {

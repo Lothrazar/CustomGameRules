@@ -1,0 +1,19 @@
+{
+    "required": true,
+    "minVersion": "0.8",
+    "package": "com.lothrazar.customgamerules.mixin",
+    "refmap": "customgamerules.refmap.json",
+    "target": "@env(DEFAULT)",
+    "compatibilityLevel": "JAVA_8",
+    "mixins": [
+        "BiomeAntiFreezeMixinFlib",
+        "CactusOverwriteMixinFlib",
+        "CoralAntiDecayMixinFlib",
+        "FilledMapItemRefreshMixinFlib"
+    ],
+	"client": [
+	],
+    "injectors": {
+      "defaultRequire": 1
+    }
+}

@@ -51,3 +51,9 @@ Adds a ton of extra game rules
     versionRange="[1.18,)"
     ordering="NONE"
     side="BOTH"
+[[dependencies.customgamerules]]
+    modId="flib"
+    mandatory=true
+    versionRange="[0.0.0,)"
+    ordering="NONE"
+    side="BOTH"

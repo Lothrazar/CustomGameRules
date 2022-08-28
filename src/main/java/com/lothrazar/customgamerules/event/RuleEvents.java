@@ -1,17 +1,21 @@
 package com.lothrazar.customgamerules.event;
 
+import java.util.Iterator;
 import com.lothrazar.customgamerules.PacketHungerRuleSync;
 import com.lothrazar.customgamerules.RuleRegistry;
-import java.util.Iterator;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.TamableAnimal;
+import net.minecraft.world.entity.animal.IronGolem;
+import net.minecraft.world.entity.animal.SnowGolem;
+import net.minecraft.world.entity.animal.horse.AbstractHorse;
 import net.minecraft.world.entity.boss.wither.WitherBoss;
 import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.monster.EnderMan;
 import net.minecraft.world.entity.monster.Ghast;
@@ -19,30 +23,25 @@ import net.minecraft.world.entity.monster.Ravager;
 import net.minecraft.world.entity.monster.Shulker;
 import net.minecraft.world.entity.monster.Silverfish;
 import net.minecraft.world.entity.monster.Zombie;
-import net.minecraft.world.entity.animal.IronGolem;
-import net.minecraft.world.entity.animal.SnowGolem;
-import net.minecraft.world.entity.TamableAnimal;
-import net.minecraft.world.entity.animal.horse.AbstractHorse;
+import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.EyeOfEnder;
 import net.minecraft.world.entity.projectile.LargeFireball;
 import net.minecraft.world.entity.projectile.SmallFireball;
 import net.minecraft.world.entity.projectile.WitherSkull;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.CactusBlock;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
-import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
-import com.lothrazar.customgamerules.util.UtilWorld;
 import net.minecraftforge.event.TickEvent.PlayerTickEvent;
-import net.minecraftforge.event.entity.*;
+import net.minecraftforge.event.entity.EntityEvent;
+import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.event.entity.EntityMobGriefingEvent;
+import net.minecraftforge.event.entity.EntityStruckByLightningEvent;
+import net.minecraftforge.event.entity.EntityTeleportEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
@@ -169,22 +168,21 @@ public class RuleEvents {
         player.takeXpDelay = 0;
     }
   }
-
-//  @OnlyIn(Dist.CLIENT)
-//  @SubscribeEvent
-//  public void onRenderGameOverlayEvent(RenderGameOverlayEvent event) {
-//    //hack because gamerule is false on client even if server is true
-//    //    System.out.println("hide "
-//    //        + Minecraft.getInstance().player.getPersistentData().getBoolean("disableHungerHACK"));
-//    if (event.getType() == ElementType.CHAT) {
-//      boolean hide = RuleRegistry.isEnabled(Minecraft.getInstance().player.level, RuleRegistry.disableHunger)
-//          || Minecraft.getInstance().player.getPersistentData().getBoolean("disableHungerHACK");
-//      if (hide) {
-//        //
-//        event.setCanceled(true);
-//      }
-//    }
-//  }
+  //  @OnlyIn(Dist.CLIENT)
+  //  @SubscribeEvent
+  //  public void onRenderGameOverlayEvent(RenderGameOverlayEvent event) {
+  //    //hack because gamerule is false on client even if server is true
+  //    //    System.out.println("hide "
+  //    //        + Minecraft.getInstance().player.getPersistentData().getBoolean("disableHungerHACK"));
+  //    if (event.getType() == ElementType.CHAT) {
+  //      boolean hide = RuleRegistry.isEnabled(Minecraft.getInstance().player.level, RuleRegistry.disableHunger)
+  //          || Minecraft.getInstance().player.getPersistentData().getBoolean("disableHungerHACK");
+  //      if (hide) {
+  //        //
+  //        event.setCanceled(true);
+  //      }
+  //    }
+  //  }
 
   /**
    * disableHunger
@@ -276,19 +274,19 @@ public class RuleEvents {
         !stand.getItemBySlot(EquipmentSlot.OFFHAND).isEmpty();
     //oh at least one arm is holding a thing? ok
     stand.getEntityData().set(ArmorStand.DATA_CLIENT_FLAGS, setBit(stand.getEntityData().get(ArmorStand.DATA_CLIENT_FLAGS), 4, showArms));
-//    stand.setShowArms(showArms);
-
+    //    stand.setShowArms(showArms);
   }
 
   private byte setBit(byte p_31570_, int p_31571_, boolean p_31572_) {
     if (p_31572_) {
-      p_31570_ = (byte)(p_31570_ | p_31571_);
-    } else {
-      p_31570_ = (byte)(p_31570_ & ~p_31571_);
+      p_31570_ = (byte) (p_31570_ | p_31571_);
     }
-
+    else {
+      p_31570_ = (byte) (p_31570_ & ~p_31571_);
+    }
     return p_31570_;
   }
+
   private void swapArmorStand(ArmorStand stand, Player player, InteractionHand hand) {
     ItemStack heldPlayer = player.getItemInHand(hand).copy();
     ItemStack heldStand = stand.getItemInHand(hand).copy();
@@ -315,7 +313,7 @@ public class RuleEvents {
       golem.setLastHurtMob(null);
     }
     if (entity.yOld > 128
-        && com.lothrazar.customgamerules.util.UtilWorld.dimensionToString(entity.level).equalsIgnoreCase("minecraft:the_nether") //
+        && com.lothrazar.library.util.LevelWorldUtil.dimensionToString(entity.level).equalsIgnoreCase("minecraft:the_nether") //
         && RuleRegistry.isEnabled(entity.level, RuleRegistry.doNetherVoidAbove)) {
       //WTF is null about this
       if (entity.isAlive())
@@ -340,7 +338,7 @@ public class RuleEvents {
     }
     if (entity instanceof EyeOfEnder) {
       EyeOfEnder eye = (EyeOfEnder) event.getEntity();
-      if (eye.surviveAfterDeath &&
+      if (eye.surviveAfterDeath && // was shatterOrDrop ?? 
           RuleRegistry.isEnabled(eye.level, RuleRegistry.doEyesAlwaysBreak)) {
         eye.surviveAfterDeath = false;
       }
@@ -397,12 +395,12 @@ public class RuleEvents {
         && RuleRegistry.isEnabled(world, RuleRegistry.disableShulkerTeleport)) {
       event.setCanceled(true);
     }
-
   }
+
   @SubscribeEvent
   public void onEnderTeleportEvent(EntityTeleportEvent.EnderPearl event) {
     Level world = event.getEntity().level;
-      //      PlayerEntity player = (PlayerEntity) event.getEntityLiving();
+    //      PlayerEntity player = (PlayerEntity) event.getEntityLiving();
     if (!RuleRegistry.isEnabled(world, RuleRegistry.pearlDamage)) {
       event.setAttackDamage(0);
     }
