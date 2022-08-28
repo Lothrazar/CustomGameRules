@@ -9,7 +9,12 @@
         "BiomeAntiFreezeMixinFlib",
         "CactusOverwriteMixinFlib",
         "CoralAntiDecayMixinFlib",
-        "FilledMapItemRefreshMixinFlib"
+        "CoralFanAntiDecayMixin",
+        "FallingBlockGravityMixin",
+        "FilledMapItemRefreshMixinFlib",
+        "IceAntiMeltMixin",
+        "LeavesAntiDecayMixin",
+        "SugarOverwriteMixin"
     ],
 	"client": [
 	],

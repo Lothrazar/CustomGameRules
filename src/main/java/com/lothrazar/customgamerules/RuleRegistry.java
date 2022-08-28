@@ -29,13 +29,13 @@ public class RuleRegistry {
     System.out.println("TODO");
   }
   public static Key<BooleanValue> disableBiomeFreezeIce; // BiomeAntiFreezeMixin.java
-  //  public static Key<BooleanValue> disableBlockGravity; //   FallingBlockGravityMixin.java
+  public static Key<BooleanValue> disableBlockGravity; //   FallingBlockGravityMixin.java
   public static Key<BooleanValue> disableDecayCoral; // CoralAntiDecayMixin.java CoralFanAntiDecayMixin.java
-  //  public static Key<BooleanValue> disableDecayLeaves; //  LeavesAntiDecayMixin.java
+  public static Key<BooleanValue> disableDecayLeaves; //  LeavesAntiDecayMixin.java
   public static Key<BooleanValue> disableFarmlandTrampling;
   public static Key<BooleanValue> disableGenerateObsidian;
   public static Key<BooleanValue> disableGenerateStone;
-  //  public static Key<BooleanValue> disableLightMeltIce; //   IceAntiMeltMixin.java
+  public static Key<BooleanValue> disableLightMeltIce; //   IceAntiMeltMixin.java
   public static Key<BooleanValue> disableMobItemPickup;
   public static Key<BooleanValue> disablePetFriendlyFire;
   public static Key<BooleanValue> disableVillagerTrading;
@@ -48,7 +48,7 @@ public class RuleRegistry {
   public static Key<BooleanValue> doInstantExp;
   public static Key<BooleanValue> doNetherVoidAbove;
   public static Key<BooleanValue> doMapsAlwaysUpdate; // FilledMapItemRefreshMixin.java
-  //  public static Key<BooleanValue> doSugarGrowthUnlimited; //SugarOverwriteMixin.java
+  public static Key<BooleanValue> doSugarGrowthUnlimited; //SugarOverwriteMixin.java
   // Game rules related to player damage
   public static Key<BooleanValue> suffocationDamage;
   public static Key<BooleanValue> pearlDamage;
