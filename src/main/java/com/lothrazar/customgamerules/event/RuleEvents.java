@@ -35,7 +35,6 @@ import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.CactusBlock;
 import net.minecraftforge.event.TickEvent.PlayerTickEvent;
 import net.minecraftforge.event.entity.EntityEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
@@ -137,11 +136,6 @@ public class RuleEvents {
       return;
     }
     Level world = (Level) event.getWorld();
-    //    if (event.getOriginalState().getBlock() == Blocks.REDSTONE_WIRE) {
-    //      //      FluidMotionEvent abc;
-    //      GameRuleMod.LOGGER.info("water redstone?");
-    //    }
-    CactusBlock x;
     Block newBlock = event.getNewState().getBlock();
     if (newBlock == Blocks.OBSIDIAN &&
         RuleRegistry.isEnabled(world, RuleRegistry.disableGenerateObsidian)) {
