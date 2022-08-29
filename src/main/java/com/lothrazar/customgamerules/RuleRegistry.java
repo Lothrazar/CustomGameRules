@@ -6,11 +6,8 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.GameRules.BooleanValue;
-import net.minecraft.world.level.GameRules.Key;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.block.CactusBlock;
-import net.minecraft.world.level.block.IceBlock;
 import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.simple.SimpleChannel;
@@ -24,60 +21,56 @@ public class RuleRegistry {
       .serverAcceptedVersions(PROTOCOL_VERSION::equals)
       .networkProtocolVersion(() -> PROTOCOL_VERSION)
       .simpleChannel();
-  //
-  static {
-    System.out.println("TODO");
-  }
-  public static Key<BooleanValue> disableBiomeFreezeIce; // BiomeAntiFreezeMixin.java
-  public static Key<BooleanValue> disableBlockGravity; //   FallingBlockGravityMixin.java
-  public static Key<BooleanValue> disableDecayCoral; // CoralAntiDecayMixin.java CoralFanAntiDecayMixin.java
-  public static Key<BooleanValue> disableDecayLeaves; //  LeavesAntiDecayMixin.java
-  public static Key<BooleanValue> disableFarmlandTrampling;
-  public static Key<BooleanValue> disableGenerateObsidian;
-  public static Key<BooleanValue> disableGenerateStone;
-  public static Key<BooleanValue> disableLightMeltIce; //   IceAntiMeltMixin.java
-  public static Key<BooleanValue> disableMobItemPickup;
-  public static Key<BooleanValue> disablePetFriendlyFire;
-  public static Key<BooleanValue> disableVillagerTrading;
+  public static GameRules.Key<BooleanValue> disableBiomeFreezeIce; // BiomeAntiFreezeMixin.java
+  public static GameRules.Key<BooleanValue> disableBlockGravity; //   FallingBlockGravityMixin.java
+  public static GameRules.Key<BooleanValue> disableDecayCoral; // CoralAntiDecayMixin.java CoralFanAntiDecayMixin.java
+  public static GameRules.Key<BooleanValue> disableDecayLeaves; //  LeavesAntiDecayMixin.java
+  public static GameRules.Key<BooleanValue> disableFarmlandTrampling;
+  public static GameRules.Key<BooleanValue> disableGenerateObsidian;
+  public static GameRules.Key<BooleanValue> disableGenerateStone;
+  public static GameRules.Key<BooleanValue> disableLightMeltIce; //   IceAntiMeltMixin.java
+  public static GameRules.Key<BooleanValue> disableMobItemPickup;
+  public static GameRules.Key<BooleanValue> disablePetFriendlyFire;
+  public static GameRules.Key<BooleanValue> disableVillagerTrading;
   // that disable features
-  public static Key<BooleanValue> doArmorStandWeapons;
-  public static Key<BooleanValue> doLilypadsBreak;
-  public static Key<BooleanValue> doEyesAlwaysBreak;
-  public static Key<BooleanValue> doCactusGrowthUnlimited; // CactusOverwriteMixin.java
-  public static Key<BooleanValue> doInstantEating;
-  public static Key<BooleanValue> doInstantExp;
-  public static Key<BooleanValue> doNetherVoidAbove;
-  public static Key<BooleanValue> doMapsAlwaysUpdate; // FilledMapItemRefreshMixin.java
-  public static Key<BooleanValue> doSugarGrowthUnlimited; //SugarOverwriteMixin.java
+  public static GameRules.Key<BooleanValue> doArmorStandWeapons;
+  public static GameRules.Key<BooleanValue> doLilypadsBreak;
+  public static GameRules.Key<BooleanValue> doEyesAlwaysBreak;
+  public static GameRules.Key<BooleanValue> doCactusGrowthUnlimited; // CactusOverwriteMixin.java
+  public static GameRules.Key<BooleanValue> doInstantEating;
+  public static GameRules.Key<BooleanValue> doInstantExp;
+  public static GameRules.Key<BooleanValue> doNetherVoidAbove;
+  public static GameRules.Key<BooleanValue> doMapsAlwaysUpdate; // FilledMapItemRefreshMixin.java
+  public static GameRules.Key<BooleanValue> doSugarGrowthUnlimited; //SugarOverwriteMixin.java
   // Game rules related to player damage
-  public static Key<BooleanValue> suffocationDamage;
-  public static Key<BooleanValue> pearlDamage;
-  public static Key<BooleanValue> cactusDamage;
-  public static Key<BooleanValue> berryDamage;
+  public static GameRules.Key<BooleanValue> suffocationDamage;
+  public static GameRules.Key<BooleanValue> pearlDamage;
+  public static GameRules.Key<BooleanValue> cactusDamage;
+  public static GameRules.Key<BooleanValue> berryDamage;
   // game rules that depend on other existing rules for fine-tuned control
-  public static Key<BooleanValue> keepInventoryExperience;
-  public static Key<BooleanValue> keepInventoryArmor;
-  public static Key<BooleanValue> mobGriefingCreeper;
-  public static Key<BooleanValue> mobGriefingEnderman;
-  public static Key<BooleanValue> mobGriefingVillager;
-  public static Key<BooleanValue> mobGriefingZombie;
-  public static Key<BooleanValue> mobGriefingWither;
-  public static Key<BooleanValue> mobGriefingRavager;
-  public static Key<BooleanValue> mobGriefingGhast;
-  public static Key<BooleanValue> mobGriefingSilverfish;
-  public static Key<BooleanValue> mobGriefingBlaze;
-  public static Key<BooleanValue> disableEndermanTeleport;
-  public static Key<BooleanValue> disableShulkerTeleport;
-  public static Key<BooleanValue> disableCropGrowth;
-  public static Key<BooleanValue> disableSaplingGrowth;
-  public static Key<BooleanValue> disableCriticalHits;
-  public static Key<BooleanValue> disableHunger;
-  public static Key<BooleanValue> disableTargetingPlayers;
-  public static Key<BooleanValue> disableLightningTransform;
-  public static Key<BooleanValue> disablePortalCreationNether;
-  public static Key<BooleanValue> disablePortalCreationEnd;
-  public static Key<BooleanValue> mobGriefingSnowgolem;
-  public static Key<BooleanValue> doFriendlyIronGolems;
+  public static GameRules.Key<BooleanValue> keepInventoryExperience;
+  public static GameRules.Key<BooleanValue> keepInventoryArmor;
+  public static GameRules.Key<BooleanValue> mobGriefingCreeper;
+  public static GameRules.Key<BooleanValue> mobGriefingEnderman;
+  public static GameRules.Key<BooleanValue> mobGriefingVillager;
+  public static GameRules.Key<BooleanValue> mobGriefingZombie;
+  public static GameRules.Key<BooleanValue> mobGriefingWither;
+  public static GameRules.Key<BooleanValue> mobGriefingRavager;
+  public static GameRules.Key<BooleanValue> mobGriefingGhast;
+  public static GameRules.Key<BooleanValue> mobGriefingSilverfish;
+  public static GameRules.Key<BooleanValue> mobGriefingBlaze;
+  public static GameRules.Key<BooleanValue> disableEndermanTeleport;
+  public static GameRules.Key<BooleanValue> disableShulkerTeleport;
+  public static GameRules.Key<BooleanValue> disableCropGrowth;
+  public static GameRules.Key<BooleanValue> disableSaplingGrowth;
+  public static GameRules.Key<BooleanValue> disableCriticalHits;
+  public static GameRules.Key<BooleanValue> disableHunger;
+  public static GameRules.Key<BooleanValue> disableTargetingPlayers;
+  public static GameRules.Key<BooleanValue> disableLightningTransform;
+  public static GameRules.Key<BooleanValue> disablePortalCreationNether;
+  public static GameRules.Key<BooleanValue> disablePortalCreationEnd;
+  public static GameRules.Key<BooleanValue> mobGriefingSnowgolem;
+  public static GameRules.Key<BooleanValue> doFriendlyIronGolems;
 
   /**
    * <pre>
@@ -141,15 +134,15 @@ public class RuleRegistry {
     // do______ 
     //
     doFriendlyIronGolems = RuleFactory.createBoolean("doFriendlyIronGolems", true, GameRules.Category.MOBS);
-    //    doMapsAlwaysUpdate = RuleFactory.createBoolean("doMapsAlwaysUpdate", true, GameRules.Category.PLAYER);
+    doMapsAlwaysUpdate = RuleFactory.createBoolean("doMapsAlwaysUpdate", true, GameRules.Category.PLAYER);
     doLilypadsBreak = RuleFactory.createBoolean("doLilypadsBreak", true, GameRules.Category.PLAYER);
     doInstantEating = RuleFactory.createBoolean("doInstantEating", false, GameRules.Category.PLAYER);
     doInstantExp = RuleFactory.createBoolean("doInstantExp", false, GameRules.Category.PLAYER);
     doArmorStandWeapons = RuleFactory.createBoolean("doArmorStandWeapons", true, GameRules.Category.PLAYER);
     doEyesAlwaysBreak = RuleFactory.createBoolean("doEyesAlwaysBreak", false, GameRules.Category.DROPS);
     doNetherVoidAbove = RuleFactory.createBoolean("doNetherVoidAbove", false, GameRules.Category.MISC);
-    //    doCactusGrowthUnlimited = RuleFactory.createBoolean("doCactusGrowthUnlimited", false, GameRules.Category.MISC);
-    //    doSugarGrowthUnlimited = RuleFactory.createBoolean("doSugarGrowthUnlimited", false, GameRules.Category.MISC);
+    doCactusGrowthUnlimited = RuleFactory.createBoolean("doCactusGrowthUnlimited", false, GameRules.Category.MISC);
+    doSugarGrowthUnlimited = RuleFactory.createBoolean("doSugarGrowthUnlimited", false, GameRules.Category.MISC);
     //= RuleFactory.createBoolean("doInstantEating", true, GameRules.Category.PLAYER);
     //
     //disable_____   
@@ -158,13 +151,11 @@ public class RuleRegistry {
     disableLightningTransform = RuleFactory.createBoolean("disableLightningTransform", false, GameRules.Category.MOBS);
     disableTargetingPlayers = RuleFactory.createBoolean("disableTargetingPlayers", false, GameRules.Category.MOBS);
     disableVillagerTrading = RuleFactory.createBoolean("disableVillagerTrading", false, GameRules.Category.MOBS);
-    CactusBlock cac;
-    IceBlock y;
-    //    disableBlockGravity = RuleFactory.createBoolean("disableBlockGravity", false, GameRules.Category.UPDATES);
-    //    disableBiomeFreezeIce = RuleFactory.createBoolean("disableBiomeFreezeIce", false, GameRules.Category.UPDATES);
-    //    disableLightMeltIce = RuleFactory.createBoolean("disableLightMeltIce", false, GameRules.Category.UPDATES);
-    //    disableDecayLeaves = RuleFactory.createBoolean("disableDecayLeaves", false, GameRules.Category.UPDATES);
-    //    disableDecayCoral = RuleFactory.createBoolean("disableDecayCoral", false, GameRules.Category.UPDATES);
+    disableBlockGravity = RuleFactory.createBoolean("disableBlockGravity", false, GameRules.Category.UPDATES);
+    disableBiomeFreezeIce = RuleFactory.createBoolean("disableBiomeFreezeIce", false, GameRules.Category.UPDATES);
+    disableLightMeltIce = RuleFactory.createBoolean("disableLightMeltIce", false, GameRules.Category.UPDATES);
+    disableDecayLeaves = RuleFactory.createBoolean("disableDecayLeaves", false, GameRules.Category.UPDATES);
+    disableDecayCoral = RuleFactory.createBoolean("disableDecayCoral", false, GameRules.Category.UPDATES);
     disableGenerateStone = RuleFactory.createBoolean("disableGenerateStone", false, GameRules.Category.UPDATES);
     disableGenerateObsidian = RuleFactory.createBoolean("disableGenerateObsidian", false, GameRules.Category.UPDATES);
     disablePetFriendlyFire = RuleFactory.createBoolean("disablePetFriendlyFire", true, GameRules.Category.UPDATES);
@@ -196,11 +187,11 @@ public class RuleRegistry {
     //    tntDamage = RuleFactory.createBoolean("tntDamage", true, GameRules.Category.PLAYER);
   }
 
-  public static boolean isEnabled(Level world, Key<BooleanValue> key) {
+  public static boolean isEnabled(Level world, GameRules.Key<BooleanValue> key) {
     return world.getGameRules().getBoolean(key);
   }
 
-  public static boolean isEnabled(LevelAccessor world, Key<BooleanValue> key) {
+  public static boolean isEnabled(LevelAccessor world, GameRules.Key<BooleanValue> key) {
     if (!(world instanceof Level)) {
       return false;
     }

@@ -2,9 +2,10 @@
   "homepage": "https://www.curseforge.com/minecraft/mc-mods/game-rules-config",
   "promos": {
     "1.18-latest": "1.1.2",
-    "1.18-recommended": "1.1.2"
+    "1.18.2-latest": "2.0.0"
   },
-  "1.18": {
-    "1.1.2":"Ported .  Some rules such as cactus growth, gravity, ice melting, from 1.16 are broken/disabled in 1.17, (pending future updates from this mod, or mixins, or possibly forge PRs) "
+  "1.18.2": {
+    "1.1.2":"Ported to 1.18.0 .  Some rules such as cactus growth, gravity, ice melting, from 1.16 are broken/disabled in 1.17, (pending future updates from this mod, or mixins, or possibly forge PRs) ",
+    "2.0.0":"Port to 1.18.2.  Mod built now to depend on a library mod (flib).  Fixed mixin dependent gamerules: disableBiomeFreezeIce; disableBlockGravity; disableDecayCoral; disableDecayLeaves; disableLightMeltIce; doCactusGrowthUnlimited; doMapsAlwaysUpdate; doSugarGrowthUnlimited  "
   }
 }

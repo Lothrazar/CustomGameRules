@@ -15,13 +15,12 @@ import net.minecraft.world.level.block.state.BlockState;
 @Mixin(FallingBlock.class)
 public class FallingBlockGravityMixin {
 
-  @Inject(at = @At("HEAD"), method = "tick(Lnet/minecraft/block/state/BlockState;Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/core/BlockPos;Ljava/util/Random;)V", cancellable = true)
+  @Inject(at = @At("HEAD"), method = "tick(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/core/BlockPos;Ljava/util/Random;)V", cancellable = true)
   public void tickMixin(BlockState state, ServerLevel worldIn, BlockPos pos, Random rand, CallbackInfo info) {
     //    FallingBlock sand = (FallingBlock) (Object) this;
-    //if disable == true, then stop the grav
     if (RuleRegistry.isEnabled(worldIn, RuleRegistry.disableBlockGravity)) {
       info.cancel();
-      GameRuleMod.info("FallingBlockGravityMixin mixin success and disableBlockGravity=true");
+      GameRuleMod.info("FallingBlockGravityMixin rule disableBlockGravity=true");
     }
   }
 }

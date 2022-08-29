@@ -16,13 +16,12 @@ public class SugarOverwriteMixin {
 
   @Overwrite
   public void randomTick(BlockState state, ServerLevel worldIn, BlockPos pos, Random random) {
-    //      info.setReturnValue(false);
     SugarCaneBlock me = (SugarCaneBlock) (Object) this;
     int MAXHEIGHT = 3;//regular code has this as a bad magic number not a valid block property as it should be
     //IF GAMERULE, H
     if (RuleRegistry.isEnabled(worldIn, RuleRegistry.doSugarGrowthUnlimited)) {
       MAXHEIGHT = 256;
-      GameRuleMod.info("SugarOverwriteMixin mixin success and doSugarGrowthUnlimited=true");
+      GameRuleMod.info("SugarOverwriteMixin rule doSugarGrowthUnlimited=true");
     }
     //now the copy paste of the method
     BlockPos blockpos = pos.above();

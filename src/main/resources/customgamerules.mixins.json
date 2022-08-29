@@ -6,17 +6,19 @@
     "target": "@env(DEFAULT)",
     "compatibilityLevel": "JAVA_8",
     "mixins": [
-        "BiomeAntiFreezeMixinFlib",
-        "CactusOverwriteMixinFlib",
-        "CoralAntiDecayMixinFlib",
+        "BiomeAntiFreezeMixin",
+        "CactusOverwriteMixin",
+        "CoralAntiDecayMixin",
         "CoralFanAntiDecayMixin",
         "FallingBlockGravityMixin",
-        "FilledMapItemRefreshMixinFlib",
+        "FilledMapItemRefreshMixin",
         "IceAntiMeltMixin",
         "LeavesAntiDecayMixin",
         "SugarOverwriteMixin"
     ],
 	"client": [
+	],
+	"server": [
 	],
     "injectors": {
       "defaultRequire": 1

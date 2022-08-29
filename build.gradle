@@ -43,7 +43,7 @@ minecraft {
 
             // Recommended logging level for the console
             property 'forge.logging.console.level', 'debug'
-			"-mixin.config=customgamerules.mixins.json"
+			arg "-mixin.config=customgamerules.mixins.json"
             mods {
                 gameruleconfig {
                     source sourceSets.main
@@ -59,7 +59,7 @@ minecraft {
 
             // Recommended logging level for the console
             property 'forge.logging.console.level', 'debug'
-			"-mixin.config=customgamerules.mixins.json"
+			arg "-mixin.config=customgamerules.mixins.json"
             mods {
                 gameruleconfig {
                     source sourceSets.main
@@ -67,23 +67,6 @@ minecraft {
             }
         }
 
-        data {
-            workingDirectory project.file('run')
-
-            // Recommended logging data for a userdev environment
-            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
-
-            // Recommended logging level for the console
-            property 'forge.logging.console.level', 'debug'
-
-            args '--mod', 'gameruleconfig', '--all', '--output', file('src/generated/resources/')
-
-            mods {
-                gameruleconfig {
-                    source sourceSets.main
-                }
-            }
-        }
     }
 }
 

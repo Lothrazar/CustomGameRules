@@ -15,12 +15,12 @@ import net.minecraft.world.level.block.state.BlockState;
 @Mixin(LeavesBlock.class)
 public class LeavesAntiDecayMixin {
 
-  @Inject(at = @At("HEAD"), method = "randomTick(Lnet/minecraft/block/state/BlockState;Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/core/BlockPos;Ljava/util/Random;)V", cancellable = true)
+  @Inject(at = @At("HEAD"), method = "randomTick(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/core/BlockPos;Ljava/util/Random;)V", cancellable = true)
   public void randomTick(BlockState bs, ServerLevel worldIn, BlockPos pos, Random rand, CallbackInfo info) {
     //    LeavesBlock me = (LeavesBlock) (Object) this;
     if (RuleRegistry.isEnabled(worldIn, RuleRegistry.disableDecayLeaves)) {
       info.cancel();
-      GameRuleMod.info("LeavesAntiDecayMixin mixin success and disableDecayLeaves=true");
+      GameRuleMod.info("LeavesAntiDecayMixin rule disableDecayLeaves=true");
     }
   }
 }
