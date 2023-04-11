@@ -1,6 +1,8 @@
-package com.lothrazar.customgamerules;
+package com.lothrazar.customgamerules.rules;
 
-import com.lothrazar.customgamerules.util.RuleFactory;
+import com.lothrazar.customgamerules.GameRuleMod;
+import com.lothrazar.customgamerules.net.PacketHungerRuleSync;
+import com.lothrazar.library.registry.GameRuleFactory;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
@@ -123,71 +125,70 @@ public class RuleRegistry {
     //
     //____Damage
     //
-    suffocationDamage = RuleFactory.createBoolean("suffocationDamage", true, GameRules.Category.PLAYER);
-    pearlDamage = RuleFactory.createBoolean("pearlDamage", true, GameRules.Category.PLAYER);
-    cactusDamage = RuleFactory.createBoolean("cactusDamage", true, GameRules.Category.PLAYER);
-    berryDamage = RuleFactory.createBoolean("berryDamage", true, GameRules.Category.PLAYER);
+    suffocationDamage = GameRuleFactory.createBoolean("suffocationDamage", true, GameRules.Category.PLAYER);
+    pearlDamage = GameRuleFactory.createBoolean("pearlDamage", true, GameRules.Category.PLAYER);
+    cactusDamage = GameRuleFactory.createBoolean("cactusDamage", true, GameRules.Category.PLAYER);
+    berryDamage = GameRuleFactory.createBoolean("berryDamage", true, GameRules.Category.PLAYER);
     //
     //   keepInventory _______
     //
-    keepInventoryExperience = RuleFactory.createBoolean("keepInventoryExperience", false, GameRules.Category.PLAYER);
-    keepInventoryArmor = RuleFactory.createBoolean("keepInventoryArmor", false, GameRules.Category.PLAYER);
+    keepInventoryExperience = GameRuleFactory.createBoolean("keepInventoryExperience", false, GameRules.Category.PLAYER);
+    keepInventoryArmor = GameRuleFactory.createBoolean("keepInventoryArmor", false, GameRules.Category.PLAYER);
     //
     // do______ 
     //
-    doFriendlyIronGolems = RuleFactory.createBoolean("doFriendlyIronGolems", true, GameRules.Category.MOBS);
+    doFriendlyIronGolems = GameRuleFactory.createBoolean("doFriendlyIronGolems", true, GameRules.Category.MOBS);
     //    doMapsAlwaysUpdate = RuleFactory.createBoolean("doMapsAlwaysUpdate", true, GameRules.Category.PLAYER);
-    doLilypadsBreak = RuleFactory.createBoolean("doLilypadsBreak", true, GameRules.Category.PLAYER);
-    doInstantEating = RuleFactory.createBoolean("doInstantEating", false, GameRules.Category.PLAYER);
-    doInstantExp = RuleFactory.createBoolean("doInstantExp", false, GameRules.Category.PLAYER);
-    doArmorStandWeapons = RuleFactory.createBoolean("doArmorStandWeapons", true, GameRules.Category.PLAYER);
-    doEyesAlwaysBreak = RuleFactory.createBoolean("doEyesAlwaysBreak", false, GameRules.Category.DROPS);
-    doNetherVoidAbove = RuleFactory.createBoolean("doNetherVoidAbove", false, GameRules.Category.MISC);
+    doLilypadsBreak = GameRuleFactory.createBoolean("doLilypadsBreak", true, GameRules.Category.PLAYER);
+    doInstantEating = GameRuleFactory.createBoolean("doInstantEating", false, GameRules.Category.PLAYER);
+    doInstantExp = GameRuleFactory.createBoolean("doInstantExp", false, GameRules.Category.PLAYER);
+    doArmorStandWeapons = GameRuleFactory.createBoolean("doArmorStandWeapons", true, GameRules.Category.PLAYER);
+    doEyesAlwaysBreak = GameRuleFactory.createBoolean("doEyesAlwaysBreak", false, GameRules.Category.DROPS);
+    doNetherVoidAbove = GameRuleFactory.createBoolean("doNetherVoidAbove", false, GameRules.Category.MISC);
     //    doCactusGrowthUnlimited = RuleFactory.createBoolean("doCactusGrowthUnlimited", false, GameRules.Category.MISC);
     //    doSugarGrowthUnlimited = RuleFactory.createBoolean("doSugarGrowthUnlimited", false, GameRules.Category.MISC);
     //= RuleFactory.createBoolean("doInstantEating", true, GameRules.Category.PLAYER);
     //
     //disable_____   
-    disablePortalCreationEnd = RuleFactory.createBoolean("disablePortalCreationEnd", false, GameRules.Category.PLAYER);
-    disablePortalCreationNether = RuleFactory.createBoolean("disablePortalCreationNether", false, GameRules.Category.PLAYER);
-    disableLightningTransform = RuleFactory.createBoolean("disableLightningTransform", false, GameRules.Category.MOBS);
-    disableTargetingPlayers = RuleFactory.createBoolean("disableTargetingPlayers", false, GameRules.Category.MOBS);
-    disableVillagerTrading = RuleFactory.createBoolean("disableVillagerTrading", false, GameRules.Category.MOBS);
+    disablePortalCreationEnd = GameRuleFactory.createBoolean("disablePortalCreationEnd", false, GameRules.Category.PLAYER);
+    disablePortalCreationNether = GameRuleFactory.createBoolean("disablePortalCreationNether", false, GameRules.Category.PLAYER);
+    disableLightningTransform = GameRuleFactory.createBoolean("disableLightningTransform", false, GameRules.Category.MOBS);
+    disableTargetingPlayers = GameRuleFactory.createBoolean("disableTargetingPlayers", false, GameRules.Category.MOBS);
+    disableVillagerTrading = GameRuleFactory.createBoolean("disableVillagerTrading", false, GameRules.Category.MOBS);
     //    disableBlockGravity = RuleFactory.createBoolean("disableBlockGravity", false, GameRules.Category.UPDATES);
     //    disableBiomeFreezeIce = RuleFactory.createBoolean("disableBiomeFreezeIce", false, GameRules.Category.UPDATES);
     //    disableLightMeltIce = RuleFactory.createBoolean("disableLightMeltIce", false, GameRules.Category.UPDATES);
     //    disableDecayLeaves = RuleFactory.createBoolean("disableDecayLeaves", false, GameRules.Category.UPDATES);
     //    disableDecayCoral = RuleFactory.createBoolean("disableDecayCoral", false, GameRules.Category.UPDATES);
-    disableGenerateStone = RuleFactory.createBoolean("disableGenerateStone", false, GameRules.Category.UPDATES);
-    disableGenerateObsidian = RuleFactory.createBoolean("disableGenerateObsidian", false, GameRules.Category.UPDATES);
-    disablePetFriendlyFire = RuleFactory.createBoolean("disablePetFriendlyFire", true, GameRules.Category.UPDATES);
-    disableFarmlandTrampling = RuleFactory.createBoolean("disableFarmlandTrampling", false, GameRules.Category.UPDATES);
-    disableMobItemPickup = RuleFactory.createBoolean("disableMobItemPickup", false, GameRules.Category.MOBS);
-    disableEndermanTeleport = RuleFactory.createBoolean("disableEndermanTeleport", false, GameRules.Category.MOBS);
-    disableShulkerTeleport = RuleFactory.createBoolean("disableShulkerTeleport", false, GameRules.Category.MOBS);
-    disableCropGrowth = RuleFactory.createBoolean("disableCropGrowth", false, GameRules.Category.UPDATES);
-    disableSaplingGrowth = RuleFactory.createBoolean("disableSaplingGrowth", false, GameRules.Category.UPDATES);
-    disableCriticalHits = RuleFactory.createBoolean("disableCriticalHits", false, GameRules.Category.UPDATES);
-    disableHunger = RuleFactory.createBoolean("disableHunger", false, GameRules.Category.PLAYER);
+    disableGenerateStone = GameRuleFactory.createBoolean("disableGenerateStone", false, GameRules.Category.UPDATES);
+    disableGenerateObsidian = GameRuleFactory.createBoolean("disableGenerateObsidian", false, GameRules.Category.UPDATES);
+    disablePetFriendlyFire = GameRuleFactory.createBoolean("disablePetFriendlyFire", true, GameRules.Category.UPDATES);
+    disableFarmlandTrampling = GameRuleFactory.createBoolean("disableFarmlandTrampling", false, GameRules.Category.UPDATES);
+    disableMobItemPickup = GameRuleFactory.createBoolean("disableMobItemPickup", false, GameRules.Category.MOBS);
+    disableEndermanTeleport = GameRuleFactory.createBoolean("disableEndermanTeleport", false, GameRules.Category.MOBS);
+    disableShulkerTeleport = GameRuleFactory.createBoolean("disableShulkerTeleport", false, GameRules.Category.MOBS);
+    disableCropGrowth = GameRuleFactory.createBoolean("disableCropGrowth", false, GameRules.Category.UPDATES);
+    disableSaplingGrowth = GameRuleFactory.createBoolean("disableSaplingGrowth", false, GameRules.Category.UPDATES);
+    disableCriticalHits = GameRuleFactory.createBoolean("disableCriticalHits", false, GameRules.Category.UPDATES);
+    disableHunger = GameRuleFactory.createBoolean("disableHunger", false, GameRules.Category.PLAYER);
     //
     //mobGriefing_______
     //
-    mobGriefingCreeper = RuleFactory.createBoolean("mobGriefingCreeper", true, GameRules.Category.MOBS);
-    mobGriefingEnderman = RuleFactory.createBoolean("mobGriefingEnderman", true, GameRules.Category.MOBS);
-    mobGriefingVillager = RuleFactory.createBoolean("mobGriefingVillager", true, GameRules.Category.MOBS);
-    mobGriefingZombie = RuleFactory.createBoolean("mobGriefingZombie", true, GameRules.Category.MOBS);
-    mobGriefingWither = RuleFactory.createBoolean("mobGriefingWither", true, GameRules.Category.MOBS);
-    mobGriefingRavager = RuleFactory.createBoolean("mobGriefingRavager", true, GameRules.Category.MOBS);
-    mobGriefingSilverfish = RuleFactory.createBoolean("mobGriefingSilverfish", true, GameRules.Category.MOBS);
-    mobGriefingGhast = RuleFactory.createBoolean("mobGriefingGhast", true, GameRules.Category.MOBS);
-    mobGriefingBlaze = RuleFactory.createBoolean("mobGriefingBlaze", true, GameRules.Category.MOBS);
-    mobGriefingSnowgolem = RuleFactory.createBoolean("mobGriefingSnowgolem", true, GameRules.Category.MOBS);
+    mobGriefingCreeper = GameRuleFactory.createBoolean("mobGriefingCreeper", true, GameRules.Category.MOBS);
+    mobGriefingEnderman = GameRuleFactory.createBoolean("mobGriefingEnderman", true, GameRules.Category.MOBS);
+    mobGriefingVillager = GameRuleFactory.createBoolean("mobGriefingVillager", true, GameRules.Category.MOBS);
+    mobGriefingZombie = GameRuleFactory.createBoolean("mobGriefingZombie", true, GameRules.Category.MOBS);
+    mobGriefingWither = GameRuleFactory.createBoolean("mobGriefingWither", true, GameRules.Category.MOBS);
+    mobGriefingRavager = GameRuleFactory.createBoolean("mobGriefingRavager", true, GameRules.Category.MOBS);
+    mobGriefingSilverfish = GameRuleFactory.createBoolean("mobGriefingSilverfish", true, GameRules.Category.MOBS);
+    mobGriefingGhast = GameRuleFactory.createBoolean("mobGriefingGhast", true, GameRules.Category.MOBS);
+    mobGriefingBlaze = GameRuleFactory.createBoolean("mobGriefingBlaze", true, GameRules.Category.MOBS);
+    mobGriefingSnowgolem = GameRuleFactory.createBoolean("mobGriefingSnowgolem", true, GameRules.Category.MOBS);
     ////    disableHunger// ONLY if we can HIDE the hunger bar
     //    RenderGameOverlayEvent yz;//CLIENT ONLY
     //
     //tntExplodes
-    //    tntDamage = RuleFactory.createBoolean("tntDamage", true, GameRules.Category.PLAYER);
-    GameRuleMod.LOGGER.info(GameRuleMod.MODID + " has added " + RuleFactory.count + " gamerules");
+    //    tntDamage = RuleFactory.createBoolean("tntDamage", true, GameRules.Category.PLAYER); 
   }
 
   public static boolean isEnabled(Level world, Key<BooleanValue> key) {

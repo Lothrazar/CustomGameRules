@@ -1,10 +1,11 @@
 package com.lothrazar.customgamerules.event;
 
 import java.util.Iterator;
-import com.lothrazar.customgamerules.PacketHungerRuleSync;
-import com.lothrazar.customgamerules.RuleRegistry;
+import com.lothrazar.customgamerules.net.PacketHungerRuleSync;
+import com.lothrazar.customgamerules.rules.RuleRegistry;
+import com.lothrazar.library.util.LevelWorldUtil;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -42,11 +43,11 @@ import net.minecraftforge.event.entity.EntityMobGriefingEvent;
 import net.minecraftforge.event.entity.EntityStruckByLightningEvent;
 import net.minecraftforge.event.entity.EntityTeleportEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
+import net.minecraftforge.event.entity.living.LivingChangeTargetEvent;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingTickEvent;
-import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
 import net.minecraftforge.event.entity.player.CriticalHitEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
@@ -101,10 +102,10 @@ public class RuleEvents {
    * disableTargetingPlayers
    */
   @SubscribeEvent
-  public void onLivingSetAttackTargetEvent(LivingSetAttackTargetEvent event) {
-    // 
+  public void onLivingSetAttackTargetEvent(LivingChangeTargetEvent event) {
+    //previosly was using net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent
     LivingEntity attacker = event.getEntity();
-    if (event.getTarget() instanceof Player
+    if (event.getNewTarget() instanceof Player
         && RuleRegistry.isEnabled(attacker.level, RuleRegistry.disableTargetingPlayers)) {
       //      event.setCanceled(true);
       //      event.setResult(Result.DENY);
@@ -311,11 +312,11 @@ public class RuleEvents {
       golem.setLastHurtMob(null);
     }
     if (entity.yOld > 128
-        && com.lothrazar.customgamerules.util.UtilWorld.dimensionToString(entity.level).equalsIgnoreCase("minecraft:the_nether") //
+        && LevelWorldUtil.dimensionToString(entity.level).equalsIgnoreCase("minecraft:the_nether") //
         && RuleRegistry.isEnabled(entity.level, RuleRegistry.doNetherVoidAbove)) {
       //WTF is null about this
       if (entity.isAlive())
-        entity.hurt(DamageSource.OUT_OF_WORLD, 0.5F);
+        entity.hurt(entity.damageSources().outOfWorld(), 0.5F);
     }
   }
   //    //
@@ -441,17 +442,17 @@ public class RuleEvents {
   @SubscribeEvent
   public void onLivingDamageEvent(LivingDamageEvent event) {
     Level world = event.getEntity().level;
-    if (event.getSource() == DamageSource.IN_WALL &&
+    if (event.getSource().is(DamageTypes.IN_WALL) &&
         !RuleRegistry.isEnabled(world, RuleRegistry.suffocationDamage)) {
       event.setCanceled(true);
     }
-    if (event.getSource() == DamageSource.CACTUS &&
+    if (event.getSource().is(DamageTypes.CACTUS) &&
         !RuleRegistry.isEnabled(world, RuleRegistry.cactusDamage)) {
       //     
       event.setCanceled(true);
       //      event.setAmount(0); 
     }
-    if (event.getSource() == DamageSource.SWEET_BERRY_BUSH &&
+    if (event.getSource().is(DamageTypes.SWEET_BERRY_BUSH) &&
         !RuleRegistry.isEnabled(world, RuleRegistry.berryDamage)) {
       event.setCanceled(true);
     }
@@ -460,7 +461,7 @@ public class RuleEvents {
       return;
     }
     Player player = (Player) event.getEntity();
-    if (event.getSource() == DamageSource.FALL
+    if (event.getSource().is(DamageTypes.FALL)
         && RuleRegistry.isEnabled(world, RuleRegistry.doLilypadsBreak)) {
       if (world.getBlockState(player.blockPosition()).getBlock() == Blocks.LILY_PAD) {
         world.destroyBlock(player.blockPosition(), true, player);

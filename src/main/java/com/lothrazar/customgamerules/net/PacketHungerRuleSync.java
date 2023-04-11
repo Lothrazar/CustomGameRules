@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  ******************************************************************************/
-package com.lothrazar.customgamerules;
+package com.lothrazar.customgamerules.net;
 
 import java.util.function.Supplier;
 import net.minecraft.client.Minecraft;

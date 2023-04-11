@@ -14,7 +14,7 @@ archivesBaseName = 'customgamerules'
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
 minecraft {
-    mappings channel: 'official', version: '1.19' 
+    mappings channel: 'official', version: "${mc_version}"
 
     //makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
     
@@ -82,8 +82,9 @@ dependencies {
     minecraft "net.minecraftforge:forge:${mc_version}-${forge_version}"
 
 
-    //compile fg.deobf("mezz.jei:jei-${mc_version}:${jei_version}")
-    //compile fg.deobf("top.theillusivec4.curios:curios:FORGE-${mc_version}-${curios_version}")
+    implementation fg.deobf("blank:flib-${mc_version}:${flib_version}")
+    // OPTIONAL
+//	runtimeOnly fg.deobf("mezz.jei:jei-${mc_version}-forge:${jei_version}")
     
     // You may put jars on which you depend on in ./libs or you may define them like so..
     // compile "some.group:artifact:version:classifier"
@@ -105,6 +106,9 @@ dependencies {
 
 }
 repositories {
+  flatDir {
+      dir 'libs'
+  }
   maven {
     // location of the maven that hosts JEI files
     name = "Progwml6 maven"
@@ -153,6 +157,11 @@ publishing {
             url "file:///${project.projectDir}/mcmodsrepo"
         }
     }
+}
+
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8' // Use the UTF-8 charset for Java compilation
 }
 
 task signJar(type: SignJar, dependsOn: jar) {
