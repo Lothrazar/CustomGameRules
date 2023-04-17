@@ -1,6 +1,6 @@
 package com.lothrazar.customgamerules.rules;
 
-import com.lothrazar.customgamerules.GameRuleMod;
+import com.lothrazar.customgamerules.ModGameRule;
 import com.lothrazar.customgamerules.net.PacketHungerRuleSync;
 import com.lothrazar.library.registry.GameRuleFactory;
 import net.minecraft.resources.ResourceLocation;
@@ -19,7 +19,7 @@ public class RuleRegistry {
 
   private static final String PROTOCOL_VERSION = Integer.toString(1);
   public static final SimpleChannel INSTANCE = NetworkRegistry.ChannelBuilder
-      .named(new ResourceLocation(GameRuleMod.MODID, "main_channel"))
+      .named(new ResourceLocation(ModGameRule.MODID, "main_channel"))
       .clientAcceptedVersions(PROTOCOL_VERSION::equals)
       .serverAcceptedVersions(PROTOCOL_VERSION::equals)
       .networkProtocolVersion(() -> PROTOCOL_VERSION)

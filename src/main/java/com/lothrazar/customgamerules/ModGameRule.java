@@ -8,13 +8,13 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
-@Mod(GameRuleMod.MODID)
-public class GameRuleMod {
+@Mod(ModGameRule.MODID)
+public class ModGameRule {
 
   public static final String MODID = "customgamerules";
   public static final Logger LOGGER = LogManager.getLogger();
 
-  public GameRuleMod() {
+  public ModGameRule() {
     MinecraftForge.EVENT_BUS.register(new com.lothrazar.customgamerules.event.RuleEvents());
     FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
   }
