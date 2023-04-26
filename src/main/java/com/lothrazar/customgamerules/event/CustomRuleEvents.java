@@ -1,9 +1,14 @@
 package com.lothrazar.customgamerules.event;
 
 import java.util.Iterator;
+import com.lothrazar.customgamerules.ModGameRule;
 import com.lothrazar.customgamerules.net.PacketHungerRuleSync;
 import com.lothrazar.customgamerules.rules.RuleRegistry;
+import com.lothrazar.library.events.EventFlib;
 import com.lothrazar.library.util.LevelWorldUtil;
+import com.lothrazar.library.util.MobUtil;
+import com.lothrazar.library.util.PacketUtil;
+import com.lothrazar.library.util.PlayerUtil;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
@@ -62,7 +67,7 @@ import net.minecraftforge.event.level.SaplingGrowTreeEvent;
 import net.minecraftforge.eventbus.api.Event.Result;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
-public class RuleEvents {
+public class CustomRuleEvents extends EventFlib {
 
   /**
    * disablePortalCreationEnd
@@ -73,6 +78,7 @@ public class RuleEvents {
     if (RuleRegistry.isEnabled(event.getLevel(), RuleRegistry.disablePortalCreationEnd)
         && world.getBlockState(event.getPos()).getBlock() == Blocks.END_PORTAL_FRAME
         && event.getEntity().getItemInHand(event.getHand()).getItem() == Items.ENDER_EYE) {
+      ModGameRule.LOGGER.info("portal creation disabled by gamerule");
       event.setCanceled(true);
     }
   }
@@ -83,6 +89,7 @@ public class RuleEvents {
   @SubscribeEvent
   public void onPortalSpawnEvent(PortalSpawnEvent event) {
     if (RuleRegistry.isEnabled(event.getLevel(), RuleRegistry.disablePortalCreationNether)) {
+      ModGameRule.LOGGER.info("portal creation disabled by gamerule");
       event.setCanceled(true);
     }
   }
@@ -107,14 +114,7 @@ public class RuleEvents {
     LivingEntity attacker = event.getEntity();
     if (event.getNewTarget() instanceof Player
         && RuleRegistry.isEnabled(attacker.level, RuleRegistry.disableTargetingPlayers)) {
-      //      event.setCanceled(true);
-      //      event.setResult(Result.DENY);
-      attacker.setLastHurtByMob(null);
-      attacker.setLastHurtMob(null);
-      if (attacker instanceof Mob) {
-        Mob mob = (Mob) attacker;
-        mob.setTarget(null);
-      }
+      MobUtil.removeAttackTargets(attacker);
     }
   }
 
@@ -162,26 +162,12 @@ public class RuleEvents {
   public void onPlayerXpEvent(PlayerXpEvent event) {
     Player player = event.getEntity();
     if (RuleRegistry.isEnabled(player.level, RuleRegistry.doInstantExp)) {
-      //reset XP on pickup
-      if (player.takeXpDelay > 0)
+      //reset XP on pickup 
+      if (player.takeXpDelay > 0) {
         player.takeXpDelay = 0;
+      }
     }
   }
-  //  @OnlyIn(Dist.CLIENT)
-  //  @SubscribeEvent
-  //  public void onRenderGameOverlayEvent(RenderGameOverlayEvent event) {
-  //    //hack because gamerule is false on client even if server is true
-  //    //    System.out.println("hide "
-  //    //        + Minecraft.getInstance().player.getPersistentData().getBoolean("disableHungerHACK"));
-  //    if (event.getType() == ElementType.CHAT) {
-  //      boolean hide = RuleRegistry.isEnabled(Minecraft.getInstance().player.level, RuleRegistry.disableHunger)
-  //          || Minecraft.getInstance().player.getPersistentData().getBoolean("disableHungerHACK");
-  //      if (hide) {
-  //        //
-  //        event.setCanceled(true);
-  //      }
-  //    }
-  //  }
 
   /**
    * disableHunger
@@ -193,7 +179,7 @@ public class RuleEvents {
     if (System.currentTimeMillis() % 40 == 0
         && player.level.isClientSide == false) {
       //hack to push gamerule to client to hide hunger bar
-      RuleRegistry.sendToAllClients(player.level, new PacketHungerRuleSync(disableHunger));
+      PacketUtil.sendToAllClients(RuleRegistry.INSTANCE, player.level, new PacketHungerRuleSync(disableHunger));
     }
     if (disableHunger && player.getFoodData().needsFood()) {
       player.getFoodData().eat(1, 1);
@@ -220,7 +206,6 @@ public class RuleEvents {
     if (RuleRegistry.isEnabled(event.getLevel(), RuleRegistry.disableVillagerTrading)
         && event.getEntity() instanceof Player
         && event.getTarget() instanceof Villager) {
-      //  
       event.setCanceled(true);
       event.setResult(Result.DENY);
     }
@@ -233,12 +218,8 @@ public class RuleEvents {
   @SubscribeEvent
   public void onEntityJoinWorldEvent(EntityJoinLevelEvent event) {
     if (RuleRegistry.isEnabled(event.getLevel(), RuleRegistry.disableMobItemPickup)
-        && event.getEntity() instanceof Mob) {
-      Mob mob = (Mob) event.getEntity();
-      if (mob.canPickUpLoot()) {
-        mob.setCanPickUpLoot(false);
-        //   GameRuleMod.LOGGER.info("After edit mob with pickup " + mob.canPickUpLoot());
-      }
+        && event.getEntity() instanceof Mob mob) {
+      MobUtil.disablePickupLoot(mob);
     }
   }
 
@@ -266,33 +247,11 @@ public class RuleEvents {
     //bc when not sneaking, we do the normal single item version
     //we just need to swap what we are holding
     event.setCanceled(true);
-    swapArmorStand(stand, player, InteractionHand.MAIN_HAND);
-    swapArmorStand(stand, player, InteractionHand.OFF_HAND);
+    PlayerUtil.swapArmorStand(stand, player, InteractionHand.MAIN_HAND);
+    PlayerUtil.swapArmorStand(stand, player, InteractionHand.OFF_HAND);
     boolean showArms = !stand.getItemBySlot(EquipmentSlot.MAINHAND).isEmpty()
-        ||
-        !stand.getItemBySlot(EquipmentSlot.OFFHAND).isEmpty();
-    //oh at least one arm is holding a thing? ok
-    stand.getEntityData().set(ArmorStand.DATA_CLIENT_FLAGS, setBit(stand.getEntityData().get(ArmorStand.DATA_CLIENT_FLAGS), 4, showArms));
-    //    stand.setShowArms(showArms);
-  }
-
-  private byte setBit(byte p_31570_, int p_31571_, boolean p_31572_) {
-    if (p_31572_) {
-      p_31570_ = (byte) (p_31570_ | p_31571_);
-    }
-    else {
-      p_31570_ = (byte) (p_31570_ & ~p_31571_);
-    }
-    return p_31570_;
-  }
-
-  private void swapArmorStand(ArmorStand stand, Player player, InteractionHand hand) {
-    ItemStack heldPlayer = player.getItemInHand(hand).copy();
-    ItemStack heldStand = stand.getItemInHand(hand).copy();
-    EquipmentSlot slot = (hand == InteractionHand.MAIN_HAND) ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND;
-    stand.setItemSlot(slot, heldPlayer);
-    player.setItemSlot(slot, heldStand);
-    //    stand.getShowArms()
+        || !stand.getItemBySlot(EquipmentSlot.OFFHAND).isEmpty();
+    stand.setShowArms(showArms);
   }
 
   /***
@@ -306,24 +265,16 @@ public class RuleEvents {
         && event.getEntity() instanceof IronGolem
         && event.getEntity().getKillCredit() instanceof Player) {
       //STAAAP 
-      IronGolem golem = (IronGolem) event.getEntity();
-      golem.setTarget(null);
-      golem.setLastHurtByMob(null);
-      golem.setLastHurtMob(null);
+      MobUtil.removeAttackTargets(event.getEntity());
     }
-    if (entity.yOld > 128
-        && LevelWorldUtil.dimensionToString(entity.level).equalsIgnoreCase("minecraft:the_nether") //
+    if (entity.yOld > 128 // yas gbaked into rule for now
+        && LevelWorldUtil.dimensionToString(entity.level).equalsIgnoreCase("minecraft:the_nether")
         && RuleRegistry.isEnabled(entity.level, RuleRegistry.doNetherVoidAbove)) {
-      //WTF is null about this
-      if (entity.isAlive())
+      if (entity.isAlive()) {
         entity.hurt(entity.damageSources().outOfWorld(), 0.5F);
+      }
     }
   }
-  //    //
-  //    if (event.getEntity() instanceof PlayerEntity) {
-  //      PlayerEntity player = (PlayerEntity) event.getEntity();
-  //      FoodStats food = player.getFoodStats();
-  //    }
 
   /***
    * doEyesAlwaysBreak
@@ -335,8 +286,7 @@ public class RuleEvents {
     if (entity == null || entity.level == null) {
       return;
     }
-    if (entity instanceof EyeOfEnder) {
-      EyeOfEnder eye = (EyeOfEnder) event.getEntity();
+    if (entity instanceof EyeOfEnder eye) {
       if (eye.surviveAfterDeath &&
           RuleRegistry.isEnabled(eye.level, RuleRegistry.doEyesAlwaysBreak)) {
         eye.surviveAfterDeath = false;
@@ -375,7 +325,8 @@ public class RuleEvents {
     Level world = event.getEntity().level;
     if (event.isVanillaCritical() &&
         RuleRegistry.isEnabled(world, RuleRegistry.disableCriticalHits)) {
-      event.setResult(Result.DENY);// event.setCanceled(true); 
+      event.setResult(Result.DENY);
+      // event.setCanceled(true); 
     }
   }
 
@@ -399,7 +350,6 @@ public class RuleEvents {
   @SubscribeEvent
   public void onEnderTeleportEvent(EntityTeleportEvent.EnderPearl event) {
     Level world = event.getEntity().level;
-    //      PlayerEntity player = (PlayerEntity) event.getEntity();
     if (!RuleRegistry.isEnabled(world, RuleRegistry.pearlDamage)) {
       event.setAttackDamage(0);
     }
@@ -412,24 +362,19 @@ public class RuleEvents {
   public void onLivingAttackEvent(LivingAttackEvent event) {
     Level world = event.getEntity().level;
     if (RuleRegistry.isEnabled(world, RuleRegistry.disablePetFriendlyFire)
-        && event.getSource().getEntity() instanceof Player) {
-      Player dmgOwner = (Player) event.getSource().getEntity();
+        && event.getSource().getEntity() instanceof Player dmgOwner) {
       //pets!
-      if (event.getEntity() instanceof AbstractHorse) {
+      if (event.getEntity() instanceof AbstractHorse horse) {
         //can be tamed
-        AbstractHorse horse = (AbstractHorse) event.getEntity();
-        if (horse.isTamed() && horse.getOwnerUUID() != null &&
-            horse.getOwnerUUID().equals(dmgOwner.getUUID())) {
+        if (PlayerUtil.isTamedByPlayer(horse, dmgOwner)) {
           // do the cancel
           event.setCanceled(true);
         }
       }
-      if (event.getEntity() instanceof TamableAnimal) {
+      if (event.getEntity() instanceof TamableAnimal pet) {
         //can be tamed
         //        ParrotEntity y;//yep parrot, cat, wolf all extend tameable
-        TamableAnimal pet = (TamableAnimal) event.getEntity();
-        if (pet.isTame() && pet.getOwnerUUID() != null &&
-            pet.getOwnerUUID().equals(dmgOwner.getUUID())) {
+        if (PlayerUtil.isTamedByPlayer(pet, dmgOwner)) {
           event.setCanceled(true);
         }
       }
@@ -567,9 +512,7 @@ public class RuleEvents {
     if (RuleRegistry.isEnabled(world, GameRules.RULE_KEEPINVENTORY)) {
       //sub- rules of keep inventory
       if (RuleRegistry.isEnabled(world, RuleRegistry.keepInventoryExperience)) {
-        player.experienceProgress = 0;
-        player.experienceLevel = 0;
-        player.totalExperience = 0;
+        PlayerUtil.clearAllExp(player);
       }
     }
   }
@@ -579,12 +522,9 @@ public class RuleEvents {
    */
   @SubscribeEvent
   public void onPlayerDrops(LivingDropsEvent event) {
-    if (event.getEntity() instanceof Player == false) {
-      return;
-    }
-    Player player = (Player) event.getEntity();
-    Level world = player.level;
-    if (RuleRegistry.isEnabled(world, GameRules.RULE_KEEPINVENTORY)) {
+    Level world = event.getEntity().level;
+    if (RuleRegistry.isEnabled(world, GameRules.RULE_KEEPINVENTORY)
+        && event.getEntity() instanceof Player player) {
       //sub- rules of keep inventory
       if (RuleRegistry.isEnabled(world, RuleRegistry.keepInventoryArmor)) {
         Iterator<ItemStack> i = player.getArmorSlots().iterator();

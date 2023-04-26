@@ -4,14 +4,11 @@ import com.lothrazar.customgamerules.ModGameRule;
 import com.lothrazar.customgamerules.net.PacketHungerRuleSync;
 import com.lothrazar.library.registry.GameRuleFactory;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.GameRules.BooleanValue;
 import net.minecraft.world.level.GameRules.Key;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
-import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.simple.SimpleChannel;
 
@@ -200,16 +197,5 @@ public class RuleRegistry {
       return false;
     }
     return ((Level) world).getGameRules().getBoolean(key);
-  }
-
-  public static void sendToAllClients(Level world, PacketHungerRuleSync packet) {
-    for (Player player : world.players()) {
-      if (player instanceof ServerPlayer) {
-        //test 
-        ServerPlayer sp = ((ServerPlayer) player);
-        INSTANCE.sendTo(packet,
-            sp.connection.connection, NetworkDirection.PLAY_TO_CLIENT);
-      }
-    }
   }
 }

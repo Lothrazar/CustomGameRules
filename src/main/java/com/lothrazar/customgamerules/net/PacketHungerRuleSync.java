@@ -24,6 +24,7 @@
 package com.lothrazar.customgamerules.net;
 
 import java.util.function.Supplier;
+import com.lothrazar.library.packet.PacketFlib;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
@@ -31,7 +32,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.network.NetworkEvent;
 
-public class PacketHungerRuleSync {
+public class PacketHungerRuleSync extends PacketFlib {
 
   private boolean theRule;
 
@@ -44,7 +45,7 @@ public class PacketHungerRuleSync {
       Player player = getPlayer();
       player.getPersistentData().putBoolean("disableHungerHACK", message.theRule);
     });
-    ctx.get().setPacketHandled(true);
+    message.done(ctx);
   }
 
   @OnlyIn(Dist.CLIENT)
