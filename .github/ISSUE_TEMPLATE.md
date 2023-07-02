@@ -1,23 +1,16 @@
-Minecraft Version: 
-
-Forge Version: 
-
-Mod Version: 
-
-Single Player or Server:
-
-Describe problem (what you were doing; what happened; what should have happened):
+Minecraft version & Mod Version:
 
 
-
-Log file link:
-
-
-Video/images/gifs (direct upload or link): 
-
-If your bug is related to anything causing LAG you need to measure the lag by taking a sample https://minecraft.curseforge.com/projects/sampler
+Single player or Server:
 
 
+Describe problem (what you were doing / what happened):
+
+
+Crash log (if any):
+
+
+(If this is a suggestion and not a bug report, delete all this and just write your suggestion!)
 
 
 

@@ -5,7 +5,7 @@ bin
 .metadata
 .classpath
 .project
-logs/
+
 # idea
 out
 *.ipr
@@ -16,11 +16,10 @@ out
 # gradle
 build
 .gradle
-libs
 
 # other
-eclipse
 run
+logs
 libs
 
 # Files from Forge MDK
