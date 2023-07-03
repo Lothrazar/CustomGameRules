@@ -48,12 +48,12 @@ Adds a ton of extra game rules
 [[dependencies.customgamerules]]
     modId="minecraft"
     mandatory=true
-    versionRange="[1.19.4,)"
+    versionRange="[1.20.1,)"
     ordering="NONE"
     side="BOTH"
 [[dependencies.customgamerules]]
     modId="flib"
     mandatory=true
-    versionRange="[0.0.4,)"
+    versionRange="[0.0.5,)"
     ordering="NONE"
     side="BOTH"

@@ -74,7 +74,7 @@ public class CustomRuleEvents extends EventFlib {
    */
   @SubscribeEvent
   public void onRightClickBlock(RightClickBlock event) {
-    Level world = event.getEntity().level;
+    Level world = event.getEntity().level();
     if (RuleRegistry.isEnabled(event.getLevel(), RuleRegistry.disablePortalCreationEnd)
         && world.getBlockState(event.getPos()).getBlock() == Blocks.END_PORTAL_FRAME
         && event.getEntity().getItemInHand(event.getHand()).getItem() == Items.ENDER_EYE) {
@@ -100,7 +100,7 @@ public class CustomRuleEvents extends EventFlib {
   @SubscribeEvent
   public void onEntityStruckByLightningEvent(EntityStruckByLightningEvent event) {
     Entity target = event.getEntity();
-    if (RuleRegistry.isEnabled(target.level, RuleRegistry.disableLightningTransform)) {
+    if (RuleRegistry.isEnabled(target.level(), RuleRegistry.disableLightningTransform)) {
       event.setCanceled(true);
     }
   }
@@ -113,7 +113,7 @@ public class CustomRuleEvents extends EventFlib {
     //previosly was using net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent
     LivingEntity attacker = event.getEntity();
     if (event.getNewTarget() instanceof Player
-        && RuleRegistry.isEnabled(attacker.level, RuleRegistry.disableTargetingPlayers)) {
+        && RuleRegistry.isEnabled(attacker.level(), RuleRegistry.disableTargetingPlayers)) {
       MobUtil.removeAttackTargets(attacker);
     }
   }
@@ -161,7 +161,7 @@ public class CustomRuleEvents extends EventFlib {
   @SubscribeEvent
   public void onPlayerXpEvent(PlayerXpEvent event) {
     Player player = event.getEntity();
-    if (RuleRegistry.isEnabled(player.level, RuleRegistry.doInstantExp)) {
+    if (RuleRegistry.isEnabled(player.level(), RuleRegistry.doInstantExp)) {
       //reset XP on pickup 
       if (player.takeXpDelay > 0) {
         player.takeXpDelay = 0;
@@ -175,11 +175,11 @@ public class CustomRuleEvents extends EventFlib {
   @SubscribeEvent
   public void onPlayerTickEvent(PlayerTickEvent event) {
     Player player = event.player;
-    boolean disableHunger = RuleRegistry.isEnabled(player.level, RuleRegistry.disableHunger);
+    boolean disableHunger = RuleRegistry.isEnabled(player.level(), RuleRegistry.disableHunger);
     if (System.currentTimeMillis() % 40 == 0
-        && player.level.isClientSide == false) {
+        && player.level().isClientSide == false) {
       //hack to push gamerule to client to hide hunger bar
-      PacketUtil.sendToAllClients(RuleRegistry.INSTANCE, player.level, new PacketHungerRuleSync(disableHunger));
+      PacketUtil.sendToAllClients(RuleRegistry.INSTANCE, player.level(), new PacketHungerRuleSync(disableHunger));
     }
     if (disableHunger && player.getFoodData().needsFood()) {
       player.getFoodData().eat(1, 1);
@@ -192,7 +192,7 @@ public class CustomRuleEvents extends EventFlib {
   @SubscribeEvent
   public void onLivingEntityUseItemEvent(LivingEntityUseItemEvent.Tick event) {
     Entity entity = event.getEntity();
-    if (event.getItem().isEdible() && RuleRegistry.isEnabled(entity.level, RuleRegistry.doInstantEating)
+    if (event.getItem().isEdible() && RuleRegistry.isEnabled(entity.level(), RuleRegistry.doInstantEating)
         && event.getDuration() > 0) {
       event.setDuration(1);//dont set to zero, then it goes -1 and breks
     }
@@ -261,17 +261,17 @@ public class CustomRuleEvents extends EventFlib {
   @SubscribeEvent
   public void onLivingUpdateEvent(LivingTickEvent event) {
     Entity entity = event.getEntity();
-    if (RuleRegistry.isEnabled(entity.level, RuleRegistry.doFriendlyIronGolems)
+    if (RuleRegistry.isEnabled(entity.level(), RuleRegistry.doFriendlyIronGolems)
         && event.getEntity() instanceof IronGolem
         && event.getEntity().getKillCredit() instanceof Player) {
       //STAAAP 
       MobUtil.removeAttackTargets(event.getEntity());
     }
     if (entity.yOld > 128 // yas gbaked into rule for now
-        && LevelWorldUtil.dimensionToString(entity.level).equalsIgnoreCase("minecraft:the_nether")
-        && RuleRegistry.isEnabled(entity.level, RuleRegistry.doNetherVoidAbove)) {
+        && LevelWorldUtil.dimensionToString(entity.level()).equalsIgnoreCase("minecraft:the_nether")
+        && RuleRegistry.isEnabled(entity.level(), RuleRegistry.doNetherVoidAbove)) {
       if (entity.isAlive()) {
-        entity.hurt(entity.damageSources().outOfWorld(), 0.5F);
+        entity.hurt(entity.damageSources().fellOutOfWorld(), 0.5F);
       }
     }
   }
@@ -283,12 +283,12 @@ public class CustomRuleEvents extends EventFlib {
   @SubscribeEvent
   public void onNonLivingEntityTick(EntityEvent event) {
     Entity entity = event.getEntity();
-    if (entity == null || entity.level == null) {
+    if (entity == null || entity.level() == null) {
       return;
     }
     if (entity instanceof EyeOfEnder eye) {
       if (eye.surviveAfterDeath &&
-          RuleRegistry.isEnabled(eye.level, RuleRegistry.doEyesAlwaysBreak)) {
+          RuleRegistry.isEnabled(eye.level(), RuleRegistry.doEyesAlwaysBreak)) {
         eye.surviveAfterDeath = false;
       }
     }
@@ -322,7 +322,7 @@ public class CustomRuleEvents extends EventFlib {
    */
   @SubscribeEvent
   public void onCriticalHitEvent(CriticalHitEvent event) {
-    Level world = event.getEntity().level;
+    Level world = event.getEntity().level();
     if (event.isVanillaCritical() &&
         RuleRegistry.isEnabled(world, RuleRegistry.disableCriticalHits)) {
       event.setResult(Result.DENY);
@@ -336,7 +336,7 @@ public class CustomRuleEvents extends EventFlib {
    */
   @SubscribeEvent
   public void onEnderTeleportEvent(EntityTeleportEvent.EnderEntity event) {
-    Level world = event.getEntity().level;
+    Level world = event.getEntity().level();
     if (event.getEntity() instanceof EnderMan
         && RuleRegistry.isEnabled(world, RuleRegistry.disableEndermanTeleport)) {
       event.setCanceled(true);
@@ -349,7 +349,7 @@ public class CustomRuleEvents extends EventFlib {
 
   @SubscribeEvent
   public void onEnderTeleportEvent(EntityTeleportEvent.EnderPearl event) {
-    Level world = event.getEntity().level;
+    Level world = event.getEntity().level();
     if (!RuleRegistry.isEnabled(world, RuleRegistry.pearlDamage)) {
       event.setAttackDamage(0);
     }
@@ -360,7 +360,7 @@ public class CustomRuleEvents extends EventFlib {
    */
   @SubscribeEvent
   public void onLivingAttackEvent(LivingAttackEvent event) {
-    Level world = event.getEntity().level;
+    Level world = event.getEntity().level();
     if (RuleRegistry.isEnabled(world, RuleRegistry.disablePetFriendlyFire)
         && event.getSource().getEntity() instanceof Player dmgOwner) {
       //pets!
@@ -386,7 +386,7 @@ public class CustomRuleEvents extends EventFlib {
    */
   @SubscribeEvent
   public void onLivingDamageEvent(LivingDamageEvent event) {
-    Level world = event.getEntity().level;
+    Level world = event.getEntity().level();
     if (event.getSource().is(DamageTypes.IN_WALL) &&
         !RuleRegistry.isEnabled(world, RuleRegistry.suffocationDamage)) {
       event.setCanceled(true);
@@ -430,11 +430,11 @@ public class CustomRuleEvents extends EventFlib {
    */
   @SubscribeEvent
   public void onEntityMobGriefingEvent(EntityMobGriefingEvent event) {
-    if (event == null || event.getEntity() == null || event.getEntity().level == null) {
+    if (event == null || event.getEntity() == null || event.getEntity().level() == null) {
       return;
     }
     Entity ent = event.getEntity();
-    Level world = ent.level;
+    Level world = ent.level();
     if (!RuleRegistry.isEnabled(world, GameRules.RULE_MOBGRIEFING)) {
       //mob griefing not allowed, do nothing
       return;
@@ -503,7 +503,7 @@ public class CustomRuleEvents extends EventFlib {
     }
     //BlockPos deathPos = event.getOriginal().getPosition();
     Player player = event.getEntity();
-    Level world = player.level;
+    Level world = player.level();
     //    if (RuleRegistry.isEnabled(world, RuleRegistry.doReduceHeartsOnDeath)
     //        && !player.isCreative()
     //        && player.getMaxHealth() > 2) {
@@ -522,7 +522,7 @@ public class CustomRuleEvents extends EventFlib {
    */
   @SubscribeEvent
   public void onPlayerDrops(LivingDropsEvent event) {
-    Level world = event.getEntity().level;
+    Level world = event.getEntity().level();
     if (RuleRegistry.isEnabled(world, GameRules.RULE_KEEPINVENTORY)
         && event.getEntity() instanceof Player player) {
       //sub- rules of keep inventory
