@@ -5,6 +5,6 @@
   },
   "1.20.1": {
     "1.1.4":"Ported to MC 1.20"
-    ,"1.1.5": "Merged language from EvanHsieh0415:i18n/zh_tw"
+    ,"1.1.5": "Merged language from EvanHsieh0415:i18n/zh_tw.  Fixed and ported some gamerules that existed in mc1.18.2 and below: \ndisableBiomeFreezeIce\ndisableBlockGravity\ndisableDecayCoral\ndisableDecayLeaves\ndisableLightMeltIce\ndoCactusGrowthUnlimited\ndoMapsAlwaysUpdate\ndoSugarGrowthUnlimited"
   }
 }

@@ -7,20 +7,19 @@
 modLoader="javafml" #mandatory
 license="MIT"
 # A version range to match for said mod loader - for regular FML @Mod it will be the forge version
-loaderVersion="[26,)" #mandatory (26 is current forge version)
+loaderVersion="${loader_version_range}" #mandatory
 # A URL to refer people to when problems occur with this mod
 issueTrackerURL="https://github.com/Lothrazar/GameRuleConfig/issues" #optional
 # A list of mods - how many allowed here is determined by the individual mod loader
 [[mods]] #mandatory
 # The modid of the mod
 modId="customgamerules" #mandatory
-mixinConfigs="mixins.customgamerules.json"
 # The version number of the mod - there's a few well known ${} variables useable here or just hardcode it
 version="${mod_version}" #mandatory
  # A display name for the mod
 displayName="Powerful Game Rules" #mandatory
 # A URL to query for updates for this mod. See the JSON update specification <here>
-updateJSONURL="https://raw.githubusercontent.com/Lothrazar/CustomGameRules/trunk/1.19/update.json" #optional
+#updateJSONURL="https://raw.githubusercontent.com/Lothrazar/CustomGameRules/trunk/1.20.1/update.json" #optional
 # A URL for the "homepage" for this mod, displayed in the mod UI
 displayURL="https://www.curseforge.com/minecraft/mc-mods/custom-game-rules" #optional
 # A file name (in the root of the mod JAR) containing a logo for display
@@ -33,7 +32,8 @@ authors="Lothrazar" #optional
 description='''
 Adds a ton of extra game rules
 '''
-# A dependency - use the . to indicate dependency for a specific modid. Dependencies are optional.
+mixinConfigs="mixins.customgamerules.json"
+
 [[dependencies.customgamerules]] #optional
     # the modid of the dependency
     modId="forge" #mandatory

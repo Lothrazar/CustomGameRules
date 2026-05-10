@@ -1,5 +1,6 @@
 package com.lothrazar.customgamerules;
 
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import com.lothrazar.customgamerules.event.CustomRuleEvents;
@@ -15,8 +16,8 @@ public class ModGameRule {
   public static final String MODID = "customgamerules";
   public static final Logger LOGGER = LogManager.getLogger();
 
-  public ModGameRule(IEventBus bus) {
-//    IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
+  public ModGameRule() {
+     IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
     new CustomRuleEvents();
     bus.addListener(this::setup);
   }
@@ -25,7 +26,4 @@ public class ModGameRule {
     RuleRegistry.setup();
   }
 
-  public static void info(String s) {
-    //    LOGGER.info(s);
-  }
 }

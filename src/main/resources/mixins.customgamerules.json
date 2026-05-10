@@ -5,7 +5,17 @@
   "refmap": "customgamerules.refmap.json",
   "target": "@env(DEFAULT)",
   "compatibilityLevel": "JAVA_17",
-  "mixins": [],
+  "mixins": [
+    "BiomeAntiFreezeMixin",
+    "CactusOverwriteMixin",
+    "CoralAntiDecayMixin",
+    "CoralFanAntiDecayMixin",
+    "FallingBlockGravityMixin",
+    "FilledMapItemRefreshMixin",
+    "IceAntiMeltMixin",
+    "LeavesAntiDecayMixin",
+    "SugarOverwriteMixin"
+  ],
   "client": [],
   "server": [],
   "injectors": {
