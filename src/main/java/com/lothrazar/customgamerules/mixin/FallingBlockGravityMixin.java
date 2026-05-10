@@ -21,7 +21,7 @@ public class FallingBlockGravityMixin {
 
     if (RuleRegistry.isEnabled(worldIn, RuleRegistry.disableBlockGravity)) {
       info.cancel();
-      ModGameRule.LOGGER.info("FallingBlockGravityMixin rule disableBlockGravity=true");
+      ModGameRule.LOGGER.debug("FallingBlockGravityMixin rule disableBlockGravity=true");
     }
   }
 }

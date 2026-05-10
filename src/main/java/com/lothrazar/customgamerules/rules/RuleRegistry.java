@@ -2,6 +2,7 @@ package com.lothrazar.customgamerules.rules;
 
 import com.lothrazar.customgamerules.ModGameRule;
 import com.lothrazar.customgamerules.net.PacketHungerRuleSync;
+import com.lothrazar.library.registry.GameRuleFactory;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.GameRules.BooleanValue;
@@ -107,7 +108,7 @@ public class RuleRegistry {
    * </pre>
    */
   private static Key<BooleanValue> createBoolean(String id, boolean defaultVal, GameRules.Category cat) {
-    return GameRules.register(id, cat, BooleanValue.create(defaultVal));
+    return GameRuleFactory.createBoolean(id, defaultVal, cat);
   }
 
   public static void setup() {

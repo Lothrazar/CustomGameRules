@@ -55,6 +55,6 @@ mixinConfigs="mixins.customgamerules.json"
 [[dependencies.customgamerules]]
     modId="flib"
     mandatory=true
-    versionRange="[0.0.5,)"
+    versionRange="[0.0.16,)"
     ordering="NONE"
     side="BOTH"

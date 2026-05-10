@@ -78,7 +78,7 @@ public class CustomRuleEvents extends EventFlib {
     if (RuleRegistry.isEnabled(event.getLevel(), RuleRegistry.disablePortalCreationEnd)
         && world.getBlockState(event.getPos()).getBlock() == Blocks.END_PORTAL_FRAME
         && event.getEntity().getItemInHand(event.getHand()).getItem() == Items.ENDER_EYE) {
-      ModGameRule.LOGGER.info("portal creation disabled by gamerule");
+      ModGameRule.LOGGER.debug("portal creation disabled by gamerule");
       event.setCanceled(true);
     }
   }
@@ -89,7 +89,7 @@ public class CustomRuleEvents extends EventFlib {
   @SubscribeEvent
   public void onPortalSpawnEvent(PortalSpawnEvent event) {
     if (RuleRegistry.isEnabled(event.getLevel(), RuleRegistry.disablePortalCreationNether)) {
-      ModGameRule.LOGGER.info("portal creation disabled by gamerule");
+      ModGameRule.LOGGER.debug("portal creation disabled by gamerule");
       event.setCanceled(true);
     }
   }
