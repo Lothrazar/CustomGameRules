@@ -16,7 +16,7 @@ public class RuleRegistry {
 
   private static final String PROTOCOL_VERSION = Integer.toString(1);
   public static final SimpleChannel INSTANCE = NetworkRegistry.ChannelBuilder
-      .named(new ResourceLocation(ModGameRule.MODID, "main_channel"))
+      .named(new ResourceLocation(ModGameRule.MODID + ":main_channel"))
       .clientAcceptedVersions(PROTOCOL_VERSION::equals)
       .serverAcceptedVersions(PROTOCOL_VERSION::equals)
       .networkProtocolVersion(() -> PROTOCOL_VERSION)
