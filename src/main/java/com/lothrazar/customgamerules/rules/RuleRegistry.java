@@ -73,6 +73,9 @@ public class RuleRegistry {
   public static Key<BooleanValue> mobGriefingSnowgolem;
   public static Key<BooleanValue> doFriendlyIronGolems;
 
+  public static Key<BooleanValue> tntExplodes;
+  public static Key<BooleanValue> respawnBlocksExplode;
+
   /**
    * <pre>
    *    * PREFIXES
@@ -188,8 +191,13 @@ public class RuleRegistry {
     ////    disableHunger// ONLY if we can HIDE the hunger bar
     //    RenderGameOverlayEvent yz;//CLIENT ONLY
     //
-    //tntExplodes
-    //    tntDamage = RuleFactory.createBoolean("tntDamage", true, GameRules.Category.PLAYER); 
+    //
+    // bedrock feature parity
+    //
+    tntExplodes = createBoolean("tntExplodes", true, GameRules.Category.PLAYER);
+    respawnBlocksExplode = createBoolean("respawnBlocksExplode", true, GameRules.Category.PLAYER);
+    // TODO:  showCoordinates, showDaysPlayed, pvp, recipesUnlock, showTags
+
   }
 
   public static boolean isEnabled(Level world, Key<BooleanValue> key) {

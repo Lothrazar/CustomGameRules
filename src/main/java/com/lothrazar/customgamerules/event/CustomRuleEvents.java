@@ -22,6 +22,7 @@ import net.minecraft.world.entity.animal.horse.AbstractHorse;
 import net.minecraft.world.entity.boss.wither.WitherBoss;
 import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.item.PrimedTnt;
 import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.monster.EnderMan;
 import net.minecraft.world.entity.monster.Ghast;
@@ -60,6 +61,7 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent.EntityInteract
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.RightClickBlock;
 import net.minecraftforge.event.entity.player.PlayerXpEvent;
 import net.minecraftforge.event.level.BlockEvent.CropGrowEvent;
+import net.minecraftforge.event.level.ExplosionEvent;
 import net.minecraftforge.event.level.BlockEvent.FarmlandTrampleEvent;
 import net.minecraftforge.event.level.BlockEvent.FluidPlaceBlockEvent;
 import net.minecraftforge.event.level.BlockEvent.PortalSpawnEvent;
@@ -382,6 +384,26 @@ public class CustomRuleEvents extends EventFlib {
   }
 
   /**
+   * tntExplodes respawnBlocksExplode
+   */
+  @SubscribeEvent
+  public void onExplosionStart(ExplosionEvent.Start event) {
+    Entity source = event.getExplosion().getDirectSourceEntity();
+    if (source instanceof PrimedTnt
+        && !RuleRegistry.isEnabled(event.getLevel(), RuleRegistry.tntExplodes)) {
+      ModGameRule.LOGGER.debug("tntExplodes == false; cancelling explosion");
+      event.setCanceled(true);
+      return;
+    }
+    if (source == null && !RuleRegistry.isEnabled(event.getLevel(), RuleRegistry.respawnBlocksExplode)) {
+      if (event.getExplosion().getDamageSource().is(DamageTypes.BAD_RESPAWN_POINT)) {
+        ModGameRule.LOGGER.debug("respawnBlocksExplode=false, cancelling explosion");
+        event.setCanceled(true);
+      }
+    }
+  }
+
+  /**
    * berryDamage cactusDamage doLilypadsBreak suffocationDamage
    */
   @SubscribeEvent
@@ -413,16 +435,6 @@ public class CustomRuleEvents extends EventFlib {
         event.setAmount(0);
       }
     }
-    //    if (event.getSource().isExplosion() &&
-    //        !RuleRegistry.isEnabled(world, RuleRegistry.tntDamage)) {
-    //      //immediate is tnt entity, true is the player that lit the thing if any
-    //      //both will be PLAYER if its set by flint and steel
-    //      //both null if TNT set by automated method
-    //    //      //BUT ALSO this triggers for Creeper entities, etc
-    //    GameRuleMod.LOGGER.info("explosion immd source " + event.getSource().getImmediateSource());
-    //      GameRuleMod.LOGGER.info("explosion true source " + event.getSource().getTrueSource());
-    //      event.setCanceled(true);
-    //    }
   }
 
   /***

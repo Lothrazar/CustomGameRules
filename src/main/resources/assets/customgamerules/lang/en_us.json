@@ -1,4 +1,9 @@
 {
+	"gamerule.tntExplodes": "Whether TNT explodes after activation",
+	"gamerule.tntExplodes.description": "If false, the TNT explosion does no damage to the world",
+	"gamerule.respawnBlocksExplode": "Prevents beds/respawn anchors from exploding in other dimensions",
+	"gamerule.respawnBlocksExplode.description": "If false, these explosions do no damage to the world",
+
 	"gamerule.disableBiomeFreezeIce":"Disable water freezing due to biome temperature",
 	"gamerule.disableBiomeFreezeIce.description":"If true, water placed in the world will not freze by natural means, either biome, temperature, or elevation",
 	"gamerule.disableBlockGravity":"Disable blocks falling from gravity",
