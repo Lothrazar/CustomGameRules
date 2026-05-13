@@ -28,7 +28,7 @@ public class CactusOverwriteMixin {
       for (i = 1; level.getBlockState(pos.below(i)).is(me); ++i) {}
       if (i < 256) { // THIS is where we override the hardcoded 3
         int j = state.getValue(CactusBlock.AGE);
-        if (net.minecraftforge.common.ForgeHooks.onCropsGrowPre(level, blockpos, state, true)) {
+        if (net.neoforged.neoforge.common.CommonHooks.canCropGrow(level, blockpos, state, true)) {
           if (j == 15) {
             level.setBlockAndUpdate(blockpos, me.defaultBlockState());
             BlockState blockstate = state.setValue(CactusBlock.AGE, 0);
@@ -37,7 +37,7 @@ public class CactusOverwriteMixin {
           } else {
             level.setBlock(pos, state.setValue(CactusBlock.AGE, j + 1), 4);
           }
-          net.minecraftforge.common.ForgeHooks.onCropsGrowPost(level, pos, state);
+          net.neoforged.neoforge.common.CommonHooks.fireCropGrowPost(level, pos, state);
         }
       }
     }

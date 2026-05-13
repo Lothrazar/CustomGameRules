@@ -1,6 +1,7 @@
 package com.lothrazar.customgamerules.mixin;
 
 import net.minecraft.util.RandomSource;
+import net.neoforged.neoforge.common.CommonHooks;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -22,22 +23,22 @@ public class SugarOverwriteMixin {
     }
     ModGameRule.LOGGER.debug("SugarOverwriteMixin rule doSugarGrowthUnlimited=true");
     SugarCaneBlock me = (SugarCaneBlock) (Object) this;
-    BlockPos blockpos = pos.above();
-    if (level.isEmptyBlock(blockpos)) {
+
+    if (level.isEmptyBlock(pos.above())) {
       int i;
       for (i = 1; level.getBlockState(pos.below(i)).is(me); ++i) {}
       if (i < 256) { // THIS is where we override the hardcoded 3 !
         int j = state.getValue(SugarCaneBlock.AGE);
-        if (net.minecraftforge.common.ForgeHooks.onCropsGrowPre(level, blockpos, state, true)) {
+        if (net.neoforged.neoforge.common.CommonHooks.canCropGrow(level, pos, state, true)) {
           if (j == 15) {
-            level.setBlockAndUpdate(blockpos, me.defaultBlockState());
-            BlockState blockstate = state.setValue(SugarCaneBlock.AGE, 0);
-            level.setBlock(pos, blockstate, 4);
-            level.neighborChanged(blockstate, blockpos, me, pos, false);
+            level.setBlockAndUpdate(pos.above(), me.defaultBlockState());
+            CommonHooks.fireCropGrowPost(level, pos.above(), me.defaultBlockState());
+            level.setBlock(pos, state.setValue(SugarCaneBlock.AGE, 0), 4);
           } else {
             level.setBlock(pos, state.setValue(SugarCaneBlock.AGE, j + 1), 4);
           }
-          net.minecraftforge.common.ForgeHooks.onCropsGrowPost(level, pos, state);
+          //removed to match current vanilla/neoforge status exactly
+//          net.neoforged.neoforge.common.CommonHooks.onCropsGrowPost(level, pos, state);
         }
       }
     }
