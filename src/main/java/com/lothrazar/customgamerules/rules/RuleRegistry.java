@@ -3,24 +3,15 @@ package com.lothrazar.customgamerules.rules;
 import com.lothrazar.customgamerules.ModGameRule;
 import com.lothrazar.customgamerules.net.PacketHungerRuleSync;
 import com.lothrazar.library.registry.GameRuleFactory;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.GameRules.BooleanValue;
 import net.minecraft.world.level.GameRules.Key;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
-import net.minecraftforge.network.NetworkRegistry;
-import net.minecraftforge.network.simple.SimpleChannel;
+import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 
 public class RuleRegistry {
 
-  private static final String PROTOCOL_VERSION = Integer.toString(1);
-  public static final SimpleChannel INSTANCE = NetworkRegistry.ChannelBuilder
-      .named(new ResourceLocation(ModGameRule.MODID + ":main_channel"))
-      .clientAcceptedVersions(PROTOCOL_VERSION::equals)
-      .serverAcceptedVersions(PROTOCOL_VERSION::equals)
-      .networkProtocolVersion(() -> PROTOCOL_VERSION)
-      .simpleChannel();
   //
   public static Key<BooleanValue> disableBiomeFreezeIce; // BiomeAntiFreezeMixin.java
   public static Key<BooleanValue> disableBlockGravity; //   FallingBlockGravityMixin.java
@@ -83,17 +74,17 @@ public class RuleRegistry {
    * disable___
    * do___
    * max___
-   * natural___ 
+   * natural___
    * random___
    * reduced__
    * send__
    * show__
-   * 
-   * 
+   *
+   *
    * SUFFIXES
    * ___Damage
-   * 
-   * 
+   *
+   *
    * SINGLE USE ONLY / DONT FIT
    *  forgiveDeadPlayers
    *  announceAdvancements
@@ -114,16 +105,23 @@ public class RuleRegistry {
     return GameRuleFactory.createBoolean(id, defaultVal, cat);
   }
 
+  public static void onRegisterPayloads(RegisterPayloadHandlersEvent event) {
+    var registrar = event.registrar(ModGameRule.MODID);
+    registrar.playToClient(
+        PacketHungerRuleSync.TYPE,
+        PacketHungerRuleSync.CODEC,
+        PacketHungerRuleSync::handle
+    );
+  }
+
   public static void setup() {
-    int id = 0;
-    INSTANCE.registerMessage(id++, PacketHungerRuleSync.class, PacketHungerRuleSync::encode, PacketHungerRuleSync::decode, PacketHungerRuleSync::handle);
     /**
      * NEW:
-     * 
-     * 
+     *
+     *
      * DO: this is ADDING something new to the game (usually def-true unless crazy)
-     * 
-     * 
+     *
+     *
      * DISABLE: This is removing a feature in the game
      */
     //
@@ -139,7 +137,7 @@ public class RuleRegistry {
     keepInventoryExperience = createBoolean("keepInventoryExperience", false, GameRules.Category.PLAYER);
     keepInventoryArmor = createBoolean("keepInventoryArmor", false, GameRules.Category.PLAYER);
     //
-    // do______ 
+    // do______
     //
     doFriendlyIronGolems = createBoolean("doFriendlyIronGolems", true, GameRules.Category.MOBS);
     doMapsAlwaysUpdate = createBoolean("doMapsAlwaysUpdate", true, GameRules.Category.PLAYER);
@@ -153,7 +151,7 @@ public class RuleRegistry {
     doSugarGrowthUnlimited = createBoolean("doSugarGrowthUnlimited", false, GameRules.Category.MISC);
     //= RuleFactory.createBoolean("doInstantEating", true, GameRules.Category.PLAYER);
     //
-    //disable_____   
+    //disable_____
     disablePortalCreationEnd = createBoolean("disablePortalCreationEnd", false, GameRules.Category.PLAYER);
     disablePortalCreationNether = createBoolean("disablePortalCreationNether", false, GameRules.Category.PLAYER);
     disableLightningTransform = createBoolean("disableLightningTransform", false, GameRules.Category.MOBS);

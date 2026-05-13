@@ -7,9 +7,13 @@ import com.lothrazar.customgamerules.rules.RuleRegistry;
 import com.lothrazar.library.events.EventFlib;
 import com.lothrazar.library.util.LevelWorldUtil;
 import com.lothrazar.library.util.MobUtil;
-import com.lothrazar.library.util.PacketUtil;
 import com.lothrazar.library.util.PlayerUtil;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -38,36 +42,41 @@ import net.minecraft.world.entity.projectile.SmallFireball;
 import net.minecraft.world.entity.projectile.WitherSkull;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.ExplosionDamageCalculator;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.SimpleExplosionDamageCalculator;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraftforge.event.TickEvent.PlayerTickEvent;
-import net.minecraftforge.event.entity.EntityEvent;
-import net.minecraftforge.event.entity.EntityJoinLevelEvent;
-import net.minecraftforge.event.entity.EntityMobGriefingEvent;
-import net.minecraftforge.event.entity.EntityStruckByLightningEvent;
-import net.minecraftforge.event.entity.EntityTeleportEvent;
-import net.minecraftforge.event.entity.living.LivingAttackEvent;
-import net.minecraftforge.event.entity.living.LivingChangeTargetEvent;
-import net.minecraftforge.event.entity.living.LivingDamageEvent;
-import net.minecraftforge.event.entity.living.LivingDropsEvent;
-import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
-import net.minecraftforge.event.entity.living.LivingEvent.LivingTickEvent;
-import net.minecraftforge.event.entity.player.CriticalHitEvent;
-import net.minecraftforge.event.entity.player.PlayerEvent;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent.EntityInteract;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent.RightClickBlock;
-import net.minecraftforge.event.entity.player.PlayerXpEvent;
-import net.minecraftforge.event.level.BlockEvent.CropGrowEvent;
-import net.minecraftforge.event.level.ExplosionEvent;
-import net.minecraftforge.event.level.BlockEvent.FarmlandTrampleEvent;
-import net.minecraftforge.event.level.BlockEvent.FluidPlaceBlockEvent;
-import net.minecraftforge.event.level.BlockEvent.PortalSpawnEvent;
-import net.minecraftforge.event.level.SaplingGrowTreeEvent;
-import net.minecraftforge.eventbus.api.Event.Result;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraft.world.level.block.SaplingBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.neoforge.event.entity.EntityEvent;
+import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
+import net.neoforged.neoforge.event.entity.EntityMobGriefingEvent;
+import net.neoforged.neoforge.event.entity.EntityStruckByLightningEvent;
+import net.neoforged.neoforge.event.entity.EntityTeleportEvent;
+import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
+import net.neoforged.neoforge.event.entity.living.LivingChangeTargetEvent;
+import net.neoforged.neoforge.event.entity.living.LivingDropsEvent;
+import net.neoforged.neoforge.event.entity.living.LivingEntityUseItemEvent;
+//import net.neoforged.neoforge.event.entity.living.LivingEvent.LivingTickEvent;
+import net.neoforged.neoforge.event.entity.player.CriticalHitEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent.EntityInteract;
+import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent.RightClickBlock;
+import net.neoforged.neoforge.event.entity.player.PlayerXpEvent;
+//import net.neoforged.neoforge.event.level.BlockEvent.CropGrowEvent;
+import net.neoforged.neoforge.event.level.BlockEvent.FarmlandTrampleEvent;
+import net.neoforged.neoforge.event.level.BlockEvent.FluidPlaceBlockEvent;
+import net.neoforged.neoforge.event.level.BlockEvent.PortalSpawnEvent;
+import net.neoforged.neoforge.event.level.BlockGrowFeatureEvent;
+import net.neoforged.neoforge.event.level.ExplosionEvent;
+import net.neoforged.neoforge.event.level.block.CropGrowEvent;
+import net.neoforged.neoforge.event.tick.EntityTickEvent;
+import net.neoforged.neoforge.event.tick.PlayerTickEvent;
+import net.neoforged.neoforge.network.PacketDistributor;
 
 public class CustomRuleEvents extends EventFlib {
 
@@ -114,7 +123,7 @@ public class CustomRuleEvents extends EventFlib {
   public void onLivingSetAttackTargetEvent(LivingChangeTargetEvent event) {
     //previosly was using net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent
     LivingEntity attacker = event.getEntity();
-    if (event.getNewTarget() instanceof Player
+    if (event.getNewAboutToBeSetTarget() instanceof Player
         && RuleRegistry.isEnabled(attacker.level(), RuleRegistry.disableTargetingPlayers)) {
       MobUtil.removeAttackTargets(attacker);
     }
@@ -161,10 +170,10 @@ public class CustomRuleEvents extends EventFlib {
    * doInstantExp
    */
   @SubscribeEvent
-  public void onPlayerXpEvent(PlayerXpEvent event) {
+  public void onPlayerXpEvent(PlayerXpEvent.PickupXp event) {
     Player player = event.getEntity();
     if (RuleRegistry.isEnabled(player.level(), RuleRegistry.doInstantExp)) {
-      //reset XP on pickup 
+      //reset XP on pickup
       if (player.takeXpDelay > 0) {
         player.takeXpDelay = 0;
       }
@@ -175,13 +184,14 @@ public class CustomRuleEvents extends EventFlib {
    * disableHunger
    */
   @SubscribeEvent
-  public void onPlayerTickEvent(PlayerTickEvent event) {
-    Player player = event.player;
+  public void onPlayerTickEvent(PlayerTickEvent.Pre event) {
+    Player player = event.getEntity();
     boolean disableHunger = RuleRegistry.isEnabled(player.level(), RuleRegistry.disableHunger);
     if (System.currentTimeMillis() % 40 == 0
-        && player.level().isClientSide == false) {
+        && !player.level().isClientSide
+        && player instanceof ServerPlayer serverPlayer) {
       //hack to push gamerule to client to hide hunger bar
-      PacketUtil.sendToAllClients(RuleRegistry.INSTANCE, player.level(), new PacketHungerRuleSync(disableHunger));
+      PacketDistributor.sendToPlayer(serverPlayer, new PacketHungerRuleSync(disableHunger));
     }
     if (disableHunger && player.getFoodData().needsFood()) {
       player.getFoodData().eat(1, 1);
@@ -194,7 +204,8 @@ public class CustomRuleEvents extends EventFlib {
   @SubscribeEvent
   public void onLivingEntityUseItemEvent(LivingEntityUseItemEvent.Tick event) {
     Entity entity = event.getEntity();
-    if (event.getItem().isEdible() && RuleRegistry.isEnabled(entity.level(), RuleRegistry.doInstantEating)
+    if (event.getItem().has(DataComponents.FOOD)
+        && RuleRegistry.isEnabled(entity.level(), RuleRegistry.doInstantEating)
         && event.getDuration() > 0) {
       event.setDuration(1);//dont set to zero, then it goes -1 and breks
     }
@@ -209,13 +220,13 @@ public class CustomRuleEvents extends EventFlib {
         && event.getEntity() instanceof Player
         && event.getTarget() instanceof Villager) {
       event.setCanceled(true);
-      event.setResult(Result.DENY);
+      event.setCancellationResult(InteractionResult.FAIL);
     }
   }
 
   /**
    * disableMobItemPickup
-   * 
+   *
    */
   @SubscribeEvent
   public void onEntityJoinWorldEvent(EntityJoinLevelEvent event) {
@@ -258,16 +269,16 @@ public class CustomRuleEvents extends EventFlib {
 
   /***
    * doNetherVoidAbove
-   * 
+   *
    */
   @SubscribeEvent
-  public void onLivingUpdateEvent(LivingTickEvent event) {
+  public void onLivingUpdateEvent(EntityTickEvent.Pre event) {
     Entity entity = event.getEntity();
     if (RuleRegistry.isEnabled(entity.level(), RuleRegistry.doFriendlyIronGolems)
-        && event.getEntity() instanceof IronGolem
-        && event.getEntity().getKillCredit() instanceof Player) {
-      //STAAAP 
-      MobUtil.removeAttackTargets(event.getEntity());
+        && event.getEntity() instanceof IronGolem golem
+        && golem.getLastHurtByMob() instanceof Player) { // .getKillCredit()
+      //STAAAP
+      MobUtil.removeAttackTargets(golem);
     }
     if (entity.yOld > 128 // yas gbaked into rule for now
         && LevelWorldUtil.dimensionToString(entity.level()).equalsIgnoreCase("minecraft:the_nether")
@@ -280,10 +291,10 @@ public class CustomRuleEvents extends EventFlib {
 
   /***
    * doEyesAlwaysBreak
-   * 
+   *
    */
   @SubscribeEvent
-  public void onNonLivingEntityTick(EntityEvent event) {
+  public void onNonLivingEntityTick(EntityTickEvent.Pre event) {
     Entity entity = event.getEntity();
     if (entity == null || entity.level() == null) {
       return;
@@ -302,20 +313,21 @@ public class CustomRuleEvents extends EventFlib {
   @SubscribeEvent
   public void onCropGrowEvent(CropGrowEvent.Pre event) {
     if (RuleRegistry.isEnabled(event.getLevel(), RuleRegistry.disableCropGrowth)) {
-      //      event.setCanceled(true);//not allowed
-      event.setResult(Result.DENY);
+      event.setResult(CropGrowEvent.Pre.Result.DO_NOT_GROW);
     }
   }
 
   /**
    * disableSaplingGrowth
+   *
+   * SaplingGrowTreeEvent class is gone, merged into block grow
    */
   @SubscribeEvent
-  public void onSaplingGrowTreeEvent(SaplingGrowTreeEvent event) {
-    if (event.getLevel() instanceof Level &&
+  public void onSaplingGrowTreeEvent(BlockGrowFeatureEvent event) {
+    BlockState state = event.getLevel().getBlockState(event.getPos());
+    if (state.getBlock() instanceof SaplingBlock &&
         RuleRegistry.isEnabled((Level) event.getLevel(), RuleRegistry.disableSaplingGrowth)) {
-      //      event.setCanceled(true);//not allowed 
-      event.setResult(Result.DENY);
+      event.setCanceled(true);
     }
   }
 
@@ -327,14 +339,14 @@ public class CustomRuleEvents extends EventFlib {
     Level world = event.getEntity().level();
     if (event.isVanillaCritical() &&
         RuleRegistry.isEnabled(world, RuleRegistry.disableCriticalHits)) {
-      event.setResult(Result.DENY);
-      // event.setCanceled(true); 
+      event.setCriticalHit(false);
+      // event.setCanceled(true);
     }
   }
 
   /***
    * pearlDamage disableEndermanTeleport disableShulkerTeleport
-   * 
+   *
    */
   @SubscribeEvent
   public void onEnderTeleportEvent(EntityTeleportEvent.EnderEntity event) {
@@ -361,7 +373,7 @@ public class CustomRuleEvents extends EventFlib {
    * disablePetFriendlyFire
    */
   @SubscribeEvent
-  public void onLivingAttackEvent(LivingAttackEvent event) {
+  public void onLivingAttackEvent(LivingIncomingDamageEvent event) {
     Level world = event.getEntity().level();
     if (RuleRegistry.isEnabled(world, RuleRegistry.disablePetFriendlyFire)
         && event.getSource().getEntity() instanceof Player dmgOwner) {
@@ -396,8 +408,13 @@ public class CustomRuleEvents extends EventFlib {
       return;
     }
     if (source == null && !RuleRegistry.isEnabled(event.getLevel(), RuleRegistry.respawnBlocksExplode)) {
-      if (event.getExplosion().getDamageSource().is(DamageTypes.BAD_RESPAWN_POINT)) {
-        ModGameRule.LOGGER.debug("respawnBlocksExplode=false, cancelling explosion");
+      // getter does not existgetDamageCalculator(); see AT.cfg
+      ExplosionDamageCalculator calculator = event.getExplosion().damageCalculator;
+
+//      if (event.getExplosion().getDamageSource().is(DamageTypes.BAD_RESPAWN_POINT)) {
+      if (!(calculator instanceof SimpleExplosionDamageCalculator)) {
+
+          ModGameRule.LOGGER.debug("respawnBlocksExplode=false, cancelling explosion");
         event.setCanceled(true);
       }
     }
@@ -407,7 +424,7 @@ public class CustomRuleEvents extends EventFlib {
    * berryDamage cactusDamage doLilypadsBreak suffocationDamage
    */
   @SubscribeEvent
-  public void onLivingDamageEvent(LivingDamageEvent event) {
+  public void onLivingDamageEvent(LivingIncomingDamageEvent event) {
     Level world = event.getEntity().level();
     if (event.getSource().is(DamageTypes.IN_WALL) &&
         !RuleRegistry.isEnabled(world, RuleRegistry.suffocationDamage)) {
@@ -415,15 +432,15 @@ public class CustomRuleEvents extends EventFlib {
     }
     if (event.getSource().is(DamageTypes.CACTUS) &&
         !RuleRegistry.isEnabled(world, RuleRegistry.cactusDamage)) {
-      //     
+      //
       event.setCanceled(true);
-      //      event.setAmount(0); 
+      //      event.setAmount(0);
     }
     if (event.getSource().is(DamageTypes.SWEET_BERRY_BUSH) &&
         !RuleRegistry.isEnabled(world, RuleRegistry.berryDamage)) {
       event.setCanceled(true);
     }
-    // 
+    //
     if ((event.getEntity() instanceof Player) == false) {
       return;
     }
@@ -455,50 +472,50 @@ public class CustomRuleEvents extends EventFlib {
     //check if we want to deny specific mobs
     //if that mobs rule is FALSE then deny it
     if (!RuleRegistry.isEnabled(world, RuleRegistry.mobGriefingSnowgolem) && ent instanceof SnowGolem) {
-      event.setResult(Result.DENY);
+      event.setCanGrief(false);
       return;
     }
     if (!RuleRegistry.isEnabled(world, RuleRegistry.mobGriefingCreeper) && ent instanceof Creeper) {
-      event.setResult(Result.DENY);
+      event.setCanGrief(false);
       return;
     }
     if (!RuleRegistry.isEnabled(world, RuleRegistry.mobGriefingZombie) && ent instanceof Zombie) {
       //turtle eggs, doors
-      event.setResult(Result.DENY);
+      event.setCanGrief(false);
       return;
     }
     if (!RuleRegistry.isEnabled(world, RuleRegistry.mobGriefingEnderman) && ent instanceof EnderMan) {
-      event.setResult(Result.DENY);
+      event.setCanGrief(false);
       return;
     }
     if (!RuleRegistry.isEnabled(world, RuleRegistry.mobGriefingWither) &&
         (ent instanceof WitherBoss || ent instanceof WitherSkull)) {
-      event.setResult(Result.DENY);
+      event.setCanGrief(false);
       return;
     }
     if (!RuleRegistry.isEnabled(world, RuleRegistry.mobGriefingRavager) && ent instanceof Ravager) {
       //break on collide
-      event.setResult(Result.DENY);
+      event.setCanGrief(false);
       return;
     }
     if (!RuleRegistry.isEnabled(world, RuleRegistry.mobGriefingSilverfish) && ent instanceof Silverfish) {
       //entering the stone
-      event.setResult(Result.DENY);
+      event.setCanGrief(false);
       return;
     }
     if (!RuleRegistry.isEnabled(world, RuleRegistry.mobGriefingGhast) && (ent instanceof LargeFireball || ent instanceof Ghast)) {//
-      // GHAST Fireball 
-      event.setResult(Result.DENY);
+      // GHAST Fireball
+      event.setCanGrief(false);
       return;
     }
     if (!RuleRegistry.isEnabled(world, RuleRegistry.mobGriefingBlaze) && ent instanceof SmallFireball) {
       // blaze  Fireball
-      event.setResult(Result.DENY);
+      event.setCanGrief(false);
       return;
     }
     if (!RuleRegistry.isEnabled(world, RuleRegistry.mobGriefingVillager) && ent instanceof Villager) {
       // farming
-      event.setResult(Result.DENY);
+      event.setCanGrief(false);
       return;
     }
     //    GameRuleMod.info(" deny trigger ALLOW  " + ent);

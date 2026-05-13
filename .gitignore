@@ -3,7 +3,7 @@ bin
 *.launch
 .settings
 .metadata
-.cl#
+.cla*
 .project
 
 # idea
@@ -16,14 +16,10 @@ out
 # gradle
 build
 .gradle
+deploy.properties
 
 # other
 run
 logs
 libs
-
-.mixins.out
-mcmodsrepo/
-
-# Files from Forge MDK
-forge*changelog.txt
+repo
