@@ -1,0 +1,10 @@
+repositories {
+  maven {
+    name = "SpongePowered"
+    url = 'https://repo.spongepowered.org/repository/maven-public/'
+  }
+}
+
+dependencies {
+  annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
+}
