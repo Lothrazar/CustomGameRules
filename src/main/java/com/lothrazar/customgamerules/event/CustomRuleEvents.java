@@ -148,10 +148,7 @@ public class CustomRuleEvents extends EventFlib {
       return;
     }
     Level world = (Level) event.getLevel();
-    //    if (event.getOriginalState().getBlock() == Blocks.REDSTONE_WIRE) {
-    //      //      FluidMotionEvent abc;
-    //      GameRuleMod.LOGGER.info("water redstone?");
-    //    }
+
     Block newBlock = event.getNewState().getBlock();
     if (newBlock == Blocks.OBSIDIAN &&
         RuleRegistry.isEnabled(world, RuleRegistry.disableGenerateObsidian)) {
