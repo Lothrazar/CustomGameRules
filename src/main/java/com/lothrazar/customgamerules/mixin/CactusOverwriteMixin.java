@@ -33,7 +33,7 @@ public class CactusOverwriteMixin {
             level.setBlockAndUpdate(blockpos, me.defaultBlockState());
             BlockState blockstate = state.setValue(CactusBlock.AGE, 0);
             level.setBlock(pos, blockstate, 4);
-            level.neighborChanged(blockstate, blockpos, me, pos, false);
+            level.neighborChanged(blockstate, blockpos, me, null, false);
           } else {
             level.setBlock(pos, state.setValue(CactusBlock.AGE, j + 1), 4);
           }

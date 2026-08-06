@@ -20,9 +20,9 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.TamableAnimal;
-import net.minecraft.world.entity.animal.IronGolem;
-import net.minecraft.world.entity.animal.SnowGolem;
-import net.minecraft.world.entity.animal.horse.AbstractHorse;
+import net.minecraft.world.entity.animal.golem.IronGolem;
+import net.minecraft.world.entity.animal.golem.SnowGolem;
+import net.minecraft.world.entity.animal.equine.AbstractHorse;
 import net.minecraft.world.entity.boss.wither.WitherBoss;
 import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -33,17 +33,17 @@ import net.minecraft.world.entity.monster.Ghast;
 import net.minecraft.world.entity.monster.Ravager;
 import net.minecraft.world.entity.monster.Shulker;
 import net.minecraft.world.entity.monster.Silverfish;
-import net.minecraft.world.entity.monster.Zombie;
-import net.minecraft.world.entity.npc.Villager;
+import net.minecraft.world.entity.monster.zombie.Zombie;
+import net.minecraft.world.entity.npc.villager.Villager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.EyeOfEnder;
-import net.minecraft.world.entity.projectile.LargeFireball;
-import net.minecraft.world.entity.projectile.SmallFireball;
-import net.minecraft.world.entity.projectile.WitherSkull;
+import net.minecraft.world.entity.projectile.hurtingprojectile.LargeFireball;
+import net.minecraft.world.entity.projectile.hurtingprojectile.SmallFireball;
+import net.minecraft.world.entity.projectile.hurtingprojectile.WitherSkull;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ExplosionDamageCalculator;
-import net.minecraft.world.level.GameRules;
+import net.minecraft.world.level.gamerules.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.SimpleExplosionDamageCalculator;
 import net.minecraft.world.level.block.Block;
@@ -185,7 +185,7 @@ public class CustomRuleEvents extends EventFlib {
     Player player = event.getEntity();
     boolean disableHunger = RuleRegistry.isEnabled(player.level(), RuleRegistry.disableHunger);
     if (System.currentTimeMillis() % 40 == 0
-        && !player.level().isClientSide
+        && !player.level().isClientSide()
         && player instanceof ServerPlayer serverPlayer) {
       //hack to push gamerule to client to hide hunger bar
       PacketDistributor.sendToPlayer(serverPlayer, new PacketHungerRuleSync(disableHunger));
@@ -239,7 +239,7 @@ public class CustomRuleEvents extends EventFlib {
   @SubscribeEvent
   public void onEntityInteractSpecific(PlayerInteractEvent.EntityInteractSpecific event) {
     //
-    if (event.getLevel().isClientSide) {
+    if (event.getLevel().isClientSide()) {
       return;
     } //server side only
     if (!RuleRegistry.isEnabled(event.getLevel(), RuleRegistry.doArmorStandWeapons)) {
@@ -461,7 +461,7 @@ public class CustomRuleEvents extends EventFlib {
     }
     Entity ent = event.getEntity();
     Level world = ent.level();
-    if (!RuleRegistry.isEnabled(world, GameRules.RULE_MOBGRIEFING)) {
+    if (!RuleRegistry.isEnabled(world, GameRules.MOB_GRIEFING)) {
       //mob griefing not allowed, do nothing
       return;
     }
@@ -535,7 +535,7 @@ public class CustomRuleEvents extends EventFlib {
     //        && player.getMaxHealth() > 2) {
     //      EntityHelpers.incrementMaxHealth(player);
     //    }
-    if (RuleRegistry.isEnabled(world, GameRules.RULE_KEEPINVENTORY)) {
+    if (RuleRegistry.isEnabled(world, GameRules.KEEP_INVENTORY)) {
       //sub- rules of keep inventory
       if (RuleRegistry.isEnabled(world, RuleRegistry.keepInventoryExperience)) {
         PlayerUtil.clearAllExp(player);
@@ -549,13 +549,12 @@ public class CustomRuleEvents extends EventFlib {
   @SubscribeEvent
   public void onPlayerDrops(LivingDropsEvent event) {
     Level world = event.getEntity().level();
-    if (RuleRegistry.isEnabled(world, GameRules.RULE_KEEPINVENTORY)
+    if (RuleRegistry.isEnabled(world, GameRules.KEEP_INVENTORY)
         && event.getEntity() instanceof Player player) {
       //sub- rules of keep inventory
       if (RuleRegistry.isEnabled(world, RuleRegistry.keepInventoryArmor)) {
-        Iterator<ItemStack> i = player.getArmorSlots().iterator();
-        while (i.hasNext()) {
-          ItemStack is = i.next();
+        for (net.minecraft.world.entity.EquipmentSlot slot : net.minecraft.world.entity.EquipmentSlotGroup.ARMOR) {
+          ItemStack is = player.getItemBySlot(slot);
           //player.dropItem will drop AFTER DEATH. so
           //          this.drop(player.world, deathPos, is);
           event.getDrops().add(new ItemEntity(world,

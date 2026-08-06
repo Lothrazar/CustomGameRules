@@ -19,14 +19,14 @@ public class FilledMapItemRefreshMixin {
   // put a map in your inventory, this will trigger every time inventoryTick is triggered
   @Inject(at = @At("HEAD"), method = "inventoryTick(Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/level/Level;Lnet/minecraft/world/entity/Entity;IZ)V", remap = false)
   public void inventoryTickMixin(ItemStack stack, Level worldIn, Entity entityIn, int itemSlot, boolean isSelected, CallbackInfo info) {
-    if (!worldIn.isClientSide &&
+    if (!worldIn.isClientSide() &&
         RuleRegistry.isEnabled(worldIn, RuleRegistry.doMapsAlwaysUpdate)) {
       ModGameRule.LOGGER.debug("FilledMapItemRefreshMixin rule doMapsAlwaysUpdate=true");
       MapItemSavedData mapdata = MapItem.getSavedData(stack, worldIn);
       if (mapdata != null) {
         MapItem map = (MapItem) (Object) this;
         if (entityIn instanceof Player playerentity) {
-          mapdata.tickCarriedBy(playerentity, stack);
+          mapdata.tickCarriedBy(playerentity, stack, null);
         }
         if (!mapdata.locked) {
           map.update(worldIn, entityIn, mapdata);
