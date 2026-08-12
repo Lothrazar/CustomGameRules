@@ -127,73 +127,73 @@ public class RuleRegistry {
     //
     //____Damage
     //
-    suffocationDamage = createBoolean("suffocationDamage", true, GameRuleCategory.PLAYER);
-    pearlDamage = createBoolean("pearlDamage", true, GameRuleCategory.PLAYER);
-    cactusDamage = createBoolean("cactusDamage", true, GameRuleCategory.PLAYER);
-    berryDamage = createBoolean("berryDamage", true, GameRuleCategory.PLAYER);
+    suffocationDamage = createBoolean("customgamerules:suffocation_damage", true, GameRuleCategory.PLAYER);
+    pearlDamage = createBoolean("customgamerules:pearl_damage", true, GameRuleCategory.PLAYER);
+    cactusDamage = createBoolean("customgamerules:cactus_damage", true, GameRuleCategory.PLAYER);
+    berryDamage = createBoolean("customgamerules:berry_damage", true, GameRuleCategory.PLAYER);
     //
     //   keepInventory _______
     //
-    keepInventoryExperience = createBoolean("keepInventoryExperience", false, GameRuleCategory.PLAYER);
-    keepInventoryArmor = createBoolean("keepInventoryArmor", false, GameRuleCategory.PLAYER);
+    keepInventoryExperience = createBoolean("customgamerules:keep_inventory_experience", false, GameRuleCategory.PLAYER);
+    keepInventoryArmor = createBoolean("customgamerules:keep_inventory_armor", false, GameRuleCategory.PLAYER);
     //
     // do______
     //
-    doFriendlyIronGolems = createBoolean("doFriendlyIronGolems", true, GameRuleCategory.MOBS);
-    doMapsAlwaysUpdate = createBoolean("doMapsAlwaysUpdate", true, GameRuleCategory.PLAYER);
-    doLilypadsBreak = createBoolean("doLilypadsBreak", true, GameRuleCategory.PLAYER);
-    doInstantEating = createBoolean("doInstantEating", false, GameRuleCategory.PLAYER);
-    doInstantExp = createBoolean("doInstantExp", false, GameRuleCategory.PLAYER);
-    doArmorStandWeapons = createBoolean("doArmorStandWeapons", true, GameRuleCategory.PLAYER);
-    doEyesAlwaysBreak = createBoolean("doEyesAlwaysBreak", false, GameRuleCategory.DROPS);
-    doNetherVoidAbove = createBoolean("doNetherVoidAbove", false, GameRuleCategory.MISC);
-    doCactusGrowthUnlimited = createBoolean("doCactusGrowthUnlimited", false, GameRuleCategory.MISC);
-    doSugarGrowthUnlimited = createBoolean("doSugarGrowthUnlimited", false, GameRuleCategory.MISC);
-    //= RuleFactory.createBoolean("doInstantEating", true, GameRuleCategory.PLAYER);
+    doFriendlyIronGolems = createBoolean("customgamerules:do_friendly_iron_golems", true, GameRuleCategory.MOBS);
+    doMapsAlwaysUpdate = createBoolean("customgamerules:do_maps_always_update", true, GameRuleCategory.PLAYER);
+    doLilypadsBreak = createBoolean("customgamerules:do_lilypads_break", true, GameRuleCategory.PLAYER);
+    doInstantEating = createBoolean("customgamerules:do_instant_eating", false, GameRuleCategory.PLAYER);
+    doInstantExp = createBoolean("customgamerules:do_instant_exp", false, GameRuleCategory.PLAYER);
+    doArmorStandWeapons = createBoolean("customgamerules:do_armor_stand_weapons", true, GameRuleCategory.PLAYER);
+    doEyesAlwaysBreak = createBoolean("customgamerules:do_eyes_always_break", false, GameRuleCategory.DROPS);
+    doNetherVoidAbove = createBoolean("customgamerules:do_nether_void_above", false, GameRuleCategory.MISC);
+    doCactusGrowthUnlimited = createBoolean("customgamerules:do_cactus_growth_unlimited", false, GameRuleCategory.MISC);
+    doSugarGrowthUnlimited = createBoolean("customgamerules:do_sugar_growth_unlimited", false, GameRuleCategory.MISC);
+    //= RuleFactory.createBoolean("customgamerules:do_instant_eating", true, GameRuleCategory.PLAYER);
     //
     //disable_____
-    disablePortalCreationEnd = createBoolean("disablePortalCreationEnd", false, GameRuleCategory.PLAYER);
-    disablePortalCreationNether = createBoolean("disablePortalCreationNether", false, GameRuleCategory.PLAYER);
-    disableLightningTransform = createBoolean("disableLightningTransform", false, GameRuleCategory.MOBS);
-    disableTargetingPlayers = createBoolean("disableTargetingPlayers", false, GameRuleCategory.MOBS);
-    disableVillagerTrading = createBoolean("disableVillagerTrading", false, GameRuleCategory.MOBS);
-    disableBlockGravity = createBoolean("disableBlockGravity", false, GameRuleCategory.UPDATES);
-    disableBiomeFreezeIce = createBoolean("disableBiomeFreezeIce", false, GameRuleCategory.UPDATES);
-    disableLightMeltIce = createBoolean("disableLightMeltIce", false, GameRuleCategory.UPDATES);
-    disableDecayLeaves = createBoolean("disableDecayLeaves", false, GameRuleCategory.UPDATES);
-    disableDecayCoral = createBoolean("disableDecayCoral", false, GameRuleCategory.UPDATES);
-    disableGenerateStone = createBoolean("disableGenerateStone", false, GameRuleCategory.UPDATES);
-    disableGenerateObsidian = createBoolean("disableGenerateObsidian", false, GameRuleCategory.UPDATES);
-    disablePetFriendlyFire = createBoolean("disablePetFriendlyFire", true, GameRuleCategory.UPDATES);
-    disableFarmlandTrampling = createBoolean("disableFarmlandTrampling", false, GameRuleCategory.UPDATES);
-    disableMobItemPickup = createBoolean("disableMobItemPickup", false, GameRuleCategory.MOBS);
-    disableEndermanTeleport = createBoolean("disableEndermanTeleport", false, GameRuleCategory.MOBS);
-    disableShulkerTeleport = createBoolean("disableShulkerTeleport", false, GameRuleCategory.MOBS);
-    disableCropGrowth = createBoolean("disableCropGrowth", false, GameRuleCategory.UPDATES);
-    disableSaplingGrowth = createBoolean("disableSaplingGrowth", false, GameRuleCategory.UPDATES);
-    disableCriticalHits = createBoolean("disableCriticalHits", false, GameRuleCategory.UPDATES);
-    disableHunger = createBoolean("disableHunger", false, GameRuleCategory.PLAYER);
+    disablePortalCreationEnd = createBoolean("customgamerules:disable_portal_creation_end", false, GameRuleCategory.PLAYER);
+    disablePortalCreationNether = createBoolean("customgamerules:disable_portal_creation_nether", false, GameRuleCategory.PLAYER);
+    disableLightningTransform = createBoolean("customgamerules:disable_lightning_transform", false, GameRuleCategory.MOBS);
+    disableTargetingPlayers = createBoolean("customgamerules:disable_targeting_players", false, GameRuleCategory.MOBS);
+    disableVillagerTrading = createBoolean("customgamerules:disable_villager_trading", false, GameRuleCategory.MOBS);
+    disableBlockGravity = createBoolean("customgamerules:disable_block_gravity", false, GameRuleCategory.UPDATES);
+    disableBiomeFreezeIce = createBoolean("customgamerules:disable_biome_freeze_ice", false, GameRuleCategory.UPDATES);
+    disableLightMeltIce = createBoolean("customgamerules:disable_light_melt_ice", false, GameRuleCategory.UPDATES);
+    disableDecayLeaves = createBoolean("customgamerules:disable_decay_leaves", false, GameRuleCategory.UPDATES);
+    disableDecayCoral = createBoolean("customgamerules:disable_decay_coral", false, GameRuleCategory.UPDATES);
+    disableGenerateStone = createBoolean("customgamerules:disable_generate_stone", false, GameRuleCategory.UPDATES);
+    disableGenerateObsidian = createBoolean("customgamerules:disable_generate_obsidian", false, GameRuleCategory.UPDATES);
+    disablePetFriendlyFire = createBoolean("customgamerules:disable_pet_friendly_fire", true, GameRuleCategory.UPDATES);
+    disableFarmlandTrampling = createBoolean("customgamerules:disable_farmland_trampling", false, GameRuleCategory.UPDATES);
+    disableMobItemPickup = createBoolean("customgamerules:disable_mob_item_pickup", false, GameRuleCategory.MOBS);
+    disableEndermanTeleport = createBoolean("customgamerules:disable_enderman_teleport", false, GameRuleCategory.MOBS);
+    disableShulkerTeleport = createBoolean("customgamerules:disable_shulker_teleport", false, GameRuleCategory.MOBS);
+    disableCropGrowth = createBoolean("customgamerules:disable_crop_growth", false, GameRuleCategory.UPDATES);
+    disableSaplingGrowth = createBoolean("customgamerules:disable_sapling_growth", false, GameRuleCategory.UPDATES);
+    disableCriticalHits = createBoolean("customgamerules:disable_critical_hits", false, GameRuleCategory.UPDATES);
+    disableHunger = createBoolean("customgamerules:disable_hunger", false, GameRuleCategory.PLAYER);
     //
     //mobGriefing_______
     //
-    mobGriefingCreeper = createBoolean("mobGriefingCreeper", true, GameRuleCategory.MOBS);
-    mobGriefingEnderman = createBoolean("mobGriefingEnderman", true, GameRuleCategory.MOBS);
-    mobGriefingVillager = createBoolean("mobGriefingVillager", true, GameRuleCategory.MOBS);
-    mobGriefingZombie = createBoolean("mobGriefingZombie", true, GameRuleCategory.MOBS);
-    mobGriefingWither = createBoolean("mobGriefingWither", true, GameRuleCategory.MOBS);
-    mobGriefingRavager = createBoolean("mobGriefingRavager", true, GameRuleCategory.MOBS);
-    mobGriefingSilverfish = createBoolean("mobGriefingSilverfish", true, GameRuleCategory.MOBS);
-    mobGriefingGhast = createBoolean("mobGriefingGhast", true, GameRuleCategory.MOBS);
-    mobGriefingBlaze = createBoolean("mobGriefingBlaze", true, GameRuleCategory.MOBS);
-    mobGriefingSnowgolem = createBoolean("mobGriefingSnowgolem", true, GameRuleCategory.MOBS);
+    mobGriefingCreeper = createBoolean("customgamerules:mob_griefing_creeper", true, GameRuleCategory.MOBS);
+    mobGriefingEnderman = createBoolean("customgamerules:mob_griefing_enderman", true, GameRuleCategory.MOBS);
+    mobGriefingVillager = createBoolean("customgamerules:mob_griefing_villager", true, GameRuleCategory.MOBS);
+    mobGriefingZombie = createBoolean("customgamerules:mob_griefing_zombie", true, GameRuleCategory.MOBS);
+    mobGriefingWither = createBoolean("customgamerules:mob_griefing_wither", true, GameRuleCategory.MOBS);
+    mobGriefingRavager = createBoolean("customgamerules:mob_griefing_ravager", true, GameRuleCategory.MOBS);
+    mobGriefingSilverfish = createBoolean("customgamerules:mob_griefing_silverfish", true, GameRuleCategory.MOBS);
+    mobGriefingGhast = createBoolean("customgamerules:mob_griefing_ghast", true, GameRuleCategory.MOBS);
+    mobGriefingBlaze = createBoolean("customgamerules:mob_griefing_blaze", true, GameRuleCategory.MOBS);
+    mobGriefingSnowgolem = createBoolean("customgamerules:mob_griefing_snowgolem", true, GameRuleCategory.MOBS);
     ////    disableHunger// ONLY if we can HIDE the hunger bar
     //    RenderGameOverlayEvent yz;//CLIENT ONLY
     //
     //
     // bedrock feature parity
     //
-    tntExplodes = createBoolean("tntExplodes", true, GameRuleCategory.PLAYER);
-    respawnBlocksExplode = createBoolean("respawnBlocksExplode", true, GameRuleCategory.PLAYER);
+    tntExplodes = createBoolean("customgamerules:tnt_explodes", true, GameRuleCategory.PLAYER);
+    respawnBlocksExplode = createBoolean("customgamerules:respawn_blocks_explode", true, GameRuleCategory.PLAYER);
     // TODO:  showCoordinates, showDaysPlayed, pvp, recipesUnlock, showTags
 
   }

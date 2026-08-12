@@ -4,7 +4,7 @@
   "package": "com.lothrazar.customgamerules.mixin",
   "refmap": "customgamerules.refmap.json",
   "target": "@env(DEFAULT)",
-  "compatibilityLevel": "JAVA_21",
+  "compatibilityLevel": "JAVA_25",
   "mixins": [
     "BiomeAntiFreezeMixin",
     "CactusOverwriteMixin",
