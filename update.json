@@ -6,5 +6,8 @@
   "1.21.1": {
     "1.1.4":"Ported to MC 1.20"
     ,"1.2.0": "Merged language from EvanHsieh0415:i18n/zh_tw. Fix bug where rules were forced to true by default.  Fixed and ported some gamerules that existed in mc1.18.2 and below: \ndisableBiomeFreezeIce\ndisableBlockGravity\ndisableDecayCoral\ndisableDecayLeaves\ndisableLightMeltIce\ndoCactusGrowthUnlimited\ndoMapsAlwaysUpdate\ndoSugarGrowthUnlimited.  Added two NEW gamerules for bedrock parity: tntExplodes & respawnBlocksExplode"
+  },
+  "26.1.2": {
+    "1.2.0": "Ported"
   }
 }
